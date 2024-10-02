@@ -7,7 +7,7 @@ import { Product } from "../../types/types";
 import data from "../../assets/data.json";
 
 const CartPage: React.FC = () => {
-  const { cartItems, addItem, removeItem} = useCart();
+  const { cartItems, addItem, removeItem, clearCart } = useCart();
   const products: Product[] = data.products;
 
   // Get only the products that are in the cart
@@ -23,13 +23,13 @@ const CartPage: React.FC = () => {
   );
 
   return (
-    <div>
-      <div className="p-4 bg-gray-100 flex w-full justify-between fixed top-0 mb-4">
+    <div className="mb-20">
+      <div className="p-4 bg-gray-100 flex w-full justify-between fixed top-0 mb-20">
         <h1 className="text-2xl font-bold">Cart</h1>
 
         {cartProductItems.length > 0 && (
           <span
-//          onClick={clearCart} 
+        onClick={() => clearCart} 
             className="cursor-pointer text-red-500 font-bold text-center border rounded-3xl p-2"
           >
             Clear cart
@@ -54,7 +54,7 @@ const CartPage: React.FC = () => {
           </Link>
         </div>
       ) : (
-        <div className="flex flex-col gap-6 pt-20 border-t border-gray-300">
+        <div className="p-4 flex flex-col gap-6 pt-20 border-t border-gray-300">
           {cartProductItems.map((product) => (
             <div
               key={product.product_id}
