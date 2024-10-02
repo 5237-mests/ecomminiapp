@@ -7,7 +7,7 @@ import { Product } from "../../types/types";
 import data from "../../assets/data.json";
 
 const CartPage: React.FC = () => {
-  const { cartItems, addItem, removeItem, clearCart } = useCart();
+  const { cartItems, addItem, removeItem} = useCart();
   const products: Product[] = data.products;
 
   // Get only the products that are in the cart
@@ -29,7 +29,7 @@ const CartPage: React.FC = () => {
 
         {cartProductItems.length > 0 && (
           <span
-{/*             onClick={clearCart} // Correctly call clearCart */}
+//          onClick={clearCart} 
             className="cursor-pointer text-red-500 font-bold text-center border rounded-3xl p-2"
           >
             Clear cart
