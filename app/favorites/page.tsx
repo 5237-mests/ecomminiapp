@@ -7,7 +7,7 @@ const Page = () => {
   const navigate = useRouter();
 
   return (
-    <div className="flex flex-col items-center mt-20 min-h-screen bg-gray-100">
+    <div className="flex flex-col items-center mt-20 bg-gray-100">
       <h1 className=" bg-gray-100 w-full p-4 text-2xl font-bold mb-4 fixed top-0 ">
         Favorites
       </h1>

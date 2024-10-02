@@ -1,6 +1,8 @@
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import Footer from "@/components/Footer";
+// import { Providers } from "./providers";
+import { CartProvider } from "../context/CartContext";
 // import img from "./assets/img.png";
 
 interface RootLayoutProps {
@@ -19,7 +21,9 @@ export default function RootLayout({ children }: RootLayoutProps) {
             enableSystem
             disableTransitionOnChange
           >
+            <CartProvider>
             {children}
+            </CartProvider>
             <Footer />
           </ThemeProvider>
         </body>
