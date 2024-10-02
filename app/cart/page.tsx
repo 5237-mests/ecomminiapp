@@ -29,7 +29,7 @@ const CartPage: React.FC = () => {
 
         {cartProductItems.length > 0 && (
           <span
-            onClick={clearCart} // Correctly call clearCart
+{/*             onClick={clearCart} // Correctly call clearCart */}
             className="cursor-pointer text-red-500 font-bold text-center border rounded-3xl p-2"
           >
             Clear cart
