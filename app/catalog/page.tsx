@@ -6,7 +6,6 @@ import Image from "next/image";
 
 const page: React.FC = () => {
   const categories: Category[] = data.categories;
-
   return (
     <div>
       <h1 className="bg-gray-100 w-full p-4 text-2xl font-bold mb-4 fixed top-0">
@@ -14,6 +13,7 @@ const page: React.FC = () => {
       </h1>
       <div className="grid grid-cols-2 gap-1 p-2 mt-16">
         {categories.map((category: Category) => (
+      // console.log(category.img)
           <Link
             key={category.category_id}
             href={`catalog/products/${category.category_id}`} 
@@ -25,6 +25,8 @@ const page: React.FC = () => {
                 src={category.img}
                 alt={category.name}
                 className="h-[150px]"
+                width="200"
+                height="150"
               />
             </div>
           </Link>
