@@ -1,10 +1,11 @@
+// app/catalog/products/[categoryId]/page.tsx
 "use client";
 import { useRouter } from "next/navigation";
 import data from "../../../../assets/data.json";
 import { Category, Product } from "../../../../types/types";
 import { FaArrowLeft, FaMinus, FaPlus } from "react-icons/fa";
 import Image from "next/image";
-import { useState } from "react";
+import { useCart } from "../../../../context/CartContext"; // Import the context
 
 interface ProductsProps {
   params: {
@@ -13,7 +14,8 @@ interface ProductsProps {
 }
 
 const ProductsPage: React.FC<ProductsProps> = ({ params }) => {
-  const [cartItems, setCartItems] = useState<{ [key: number]: number }>({});
+  const { cartItems, addItem, removeItem } = useCart(); 
+  console.log(cartItems);
   const { categoryId } = params;
   const router = useRouter();
   const categories: Category[] = data.categories;
@@ -33,24 +35,9 @@ const ProductsPage: React.FC<ProductsProps> = ({ params }) => {
     (prod) => prod.category_id === parseInt(categoryId)
   );
 
-
-  const addItem = (productId: number) => {
-    setCartItems((prevCart) => ({
-      ...prevCart,
-      [productId]: (prevCart[productId] || 0) + 1,
-    }));
-  };
-
-  const removeItem = (productId: number) => {
-    setCartItems((prevCart) => ({
-      ...prevCart,
-      [productId]: Math.max((prevCart[productId] || 0) - 1, 0),
-    }));
-  };
-
   return (
-    <div>
-      <div className="flex w-full fixed bg-gray-100 p-4 text-2xl font-bold mb-20 gap-10 left-0">
+    <div className="mb-20">
+      <div className="flex w-full fixed bg-gray-100 p-4 text-2xl font-bold gap-10 left-0 mb-20">
         <FaArrowLeft
           size={30}
           onClick={() => router.back()}
@@ -59,14 +46,14 @@ const ProductsPage: React.FC<ProductsProps> = ({ params }) => {
         <h1 className="bg-gray-100 text-2xl font-bold ">{category.name}</h1>
       </div>
 
-      <div className="grid grid-cols-2 px-4 gap-1 pt-20">
+      <div className="grid grid-cols-2 p-4 gap-1 pt-20">
         {filteredProducts.map((product: Product) => (
           <div key={product.product_id}>
             <div
               onClick={() =>
                 router.push(`/catalog/products/detail/${product.product_id}`)
               }
-              className="w-full h-[150px] overflow-hidden object-cover bg-white border rounded-lg"
+              className="mb-4 w-full h-[150px] overflow-hidden object-cover bg-white border rounded-lg"
             >
               <Image
                 src={product.img}
@@ -86,23 +73,21 @@ const ProductsPage: React.FC<ProductsProps> = ({ params }) => {
                   className="p-1 flex items-center justify-center text-white bg-sky-500 font-bold border rounded-3xl"
                 />
               ) : (
-                <>
-                  <div className="flex gap-2">
-                    <FaMinus
-                      size={25}
-                      onClick={() => removeItem(product.product_id)}
-                      className="p-1 flex items-center justify-center text-sky-500 bg-white font-bold border rounded-3xl"
-                    />
-                    <p className="flex items-center justify-center text-white bg-sky-500 font-bold border rounded-3xl w-10 h-6">
-                      {cartItems[product.product_id] || 0}
-                    </p>
-                    <FaPlus
-                      size={25}
-                      onClick={() => addItem(product.product_id)}
-                      className="p-1 flex items-center justify-center text-white bg-sky-500 font-bold border rounded-3xl"
-                    />
-                  </div>
-                </>
+                <div className="flex gap-2">
+                  <FaMinus
+                    size={25}
+                    onClick={() => removeItem(product.product_id)}
+                    className="p-1 flex items-center justify-center text-sky-500 bg-white font-bold border rounded-3xl"
+                  />
+                  <span className="flex items-center justify-center text-white bg-sky-500 font-bold border rounded-3xl w-10 h-6">
+                    {cartItems[product.product_id] || 0}
+                  </span>
+                  <FaPlus
+                    size={25}
+                    onClick={() => addItem(product.product_id)}
+                    className="p-1 flex items-center justify-center text-sky-500 bg-white font-bold border rounded-3xl"
+                  />
+                </div>
               )}
             </div>
           </div>

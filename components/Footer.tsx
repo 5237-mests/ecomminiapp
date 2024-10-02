@@ -22,8 +22,8 @@ const Navbar: React.FC = () => {
         href="/favorites"
         className={
           isActive("/favorites")
-            ? "text-sky-500 flex flex-col items-center rounded-md p-2"
-            : "text-gray-500 flex flex-col items-center p-2 hover:bg-sky-100 hover:text-sky-500 rounded-md"
+            ? "text-sky-500 flex flex-col items-center rounded-md p-2 w-[60px] "
+            : "text-gray-500 flex flex-col items-center p-2 hover:bg-sky-100 hover:text-sky-500 rounded-md w-[60px]"
         }
       >
         <FaHeart className="text-2xl" />
@@ -34,8 +34,8 @@ const Navbar: React.FC = () => {
         href="/search"
         className={
           isActive("/search")
-            ? "text-sky-500 flex flex-col items-center rounded-md p-2"
-            : "text-gray-500 flex flex-col items-center p-2 hover:bg-sky-100 hover:text-sky-500 rounded-md"
+            ? "text-sky-500 flex flex-col items-center rounded-md p-2 w-[60px]"
+            : "text-gray-500 flex flex-col items-center p-2 hover:bg-sky-100 hover:text-sky-500 rounded-md w-[60px]"
         }
       >
         <FaSearch className="text-2xl" />
@@ -46,8 +46,8 @@ const Navbar: React.FC = () => {
         href="/catalog"
         className={
           isActive("/catalog")
-            ? "text-sky-500 flex flex-col items-center rounded-md p-2"
-            : "text-gray-500 flex flex-col items-center p-2 hover:bg-sky-100 hover:text-sky-500 rounded-md"
+            ? "text-sky-500 flex flex-col items-center rounded-md p-2 w-[60px]"
+            : "text-gray-500 flex flex-col items-center p-2 hover:bg-sky-100 hover:text-sky-500 rounded-md w-[60px]"
         }
       >
         <FaThLarge className="text-2xl" />
@@ -58,8 +58,8 @@ const Navbar: React.FC = () => {
         href="/cart"
         className={
           isActive("/cart")
-            ? "text-sky-500 flex flex-col items-center relative rounded-md p-2"
-            : "text-gray-500 flex flex-col items-center relative p-2 hover:bg-sky-100 hover:text-sky-500 rounded-md"
+            ? "text-sky-500 flex flex-col items-center relative rounded-md p-2 w-[60px]"
+            : "text-gray-500 flex flex-col items-center relative p-2 hover:bg-sky-100 hover:text-sky-500 rounded-md w-[60px]"
         }
       >
         <FaShoppingCart className="text-2xl" />
@@ -73,8 +73,8 @@ const Navbar: React.FC = () => {
         href="/profile"
         className={
           isActive("/profile")
-            ? "text-sky-500 flex flex-col items-center rounded-md p-2"
-            : "text-gray-500 flex flex-col items-center p-2 hover:bg-sky-100 hover:text-sky-500 rounded-md"
+            ? "text-sky-500 flex flex-col items-center rounded-md p-2 w-[60px]"
+            : "text-gray-500 flex flex-col items-center p-2 hover:bg-sky-100 hover:text-sky-500 rounded-md w-[60px]"
         }
       >
         <FaUser className="text-2xl" />
