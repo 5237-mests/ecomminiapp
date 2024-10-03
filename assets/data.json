@@ -28,7 +28,7 @@
   "products": [
     {
       "product_id": 1,
-      "name": "Cheeseburger",
+      "name": "Cheese burger",
       "description": "Juicy cheeseburger with lettuce and tomato",
       "price": 5.99,
       "available": true,
@@ -64,7 +64,7 @@
     },
     {
       "product_id": 5,
-      "name": "Double Cheeseburger",
+      "name": "Double Cheese burger",
       "description": "Two beef patties with double cheese",
       "price": 8.99,
       "available": true,

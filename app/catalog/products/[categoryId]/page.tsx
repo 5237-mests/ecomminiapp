@@ -1,11 +1,11 @@
 // app/catalog/products/[categoryId]/page.tsx
 "use client";
 import { useRouter } from "next/navigation";
-import data from "../../../../assets/data.json";
-import { Category, Product } from "../../../../types/types";
+import data from "@/assets/data.json";
+import { Category, Product } from "@/types/types";
 import { FaArrowLeft, FaMinus, FaPlus } from "react-icons/fa";
 import Image from "next/image";
-import { useCart } from "../../../../context/CartContext"; // Import the context
+import { useCart } from "@/context/CartContext"; // Import the context
 
 interface ProductsProps {
   params: {
@@ -15,7 +15,6 @@ interface ProductsProps {
 
 const ProductsPage: React.FC<ProductsProps> = ({ params }) => {
   const { cartItems, addItem, removeItem } = useCart(); 
-  console.log(cartItems);
   const { categoryId } = params;
   const router = useRouter();
   const categories: Category[] = data.categories;
