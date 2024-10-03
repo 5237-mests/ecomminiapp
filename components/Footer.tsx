@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation"; // Import from next/navigation
+import { usePathname } from "next/navigation";
+import { useCart } from "@/context/CartContext";
+
 import {
   FaHeart,
   FaSearch,
@@ -12,6 +14,7 @@ import {
 
 const Navbar: React.FC = () => {
   const pathname = usePathname(); // Get current path
+  const { cartItems } = useCart();
 
   // Function to apply active class based on current route
   const isActive = (path: string) => pathname === path;
@@ -27,7 +30,7 @@ const Navbar: React.FC = () => {
         }
       >
         <FaHeart className="text-2xl" />
-        <span className="text-xs mt-1">favorites</span>
+        <span className="text-xs mt-1">Favorites</span>
       </Link>
 
       <Link
@@ -64,9 +67,11 @@ const Navbar: React.FC = () => {
       >
         <FaShoppingCart className="text-2xl" />
         <span className="text-xs mt-1">Cart</span>
-        <div className="absolute bottom-10 left-6 bg-sky-500 text-white rounded-full w-5 h-5 flex justify-center items-center text-xs">
-          1
-        </div>
+        {Object.keys(cartItems).length > 0 && (
+          <div className="absolute bottom-10 left-8 bg-sky-500 text-white rounded-full w-5 h-5 flex justify-center items-center text-xs">
+            {Object.keys(cartItems).length}
+          </div>
+        )}
       </Link>
 
       <Link

@@ -3,6 +3,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import Footer from "@/components/Footer";
 // import { Providers } from "./providers";
 import { CartProvider } from "../context/CartContext";
+import { FavoritesProvider } from "@/context/FavoriteContext";
 // import img from "./assets/img.png";
 
 interface RootLayoutProps {
@@ -21,10 +22,13 @@ export default function RootLayout({ children }: RootLayoutProps) {
             enableSystem
             disableTransitionOnChange
           >
+            <FavoritesProvider>
             <CartProvider>
             {children}
-            </CartProvider>
             <Footer />
+            </CartProvider>
+            </FavoritesProvider>
+
           </ThemeProvider>
         </body>
       </html>
