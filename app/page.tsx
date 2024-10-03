@@ -2,6 +2,7 @@
 import WebApp from "@twa-dev/sdk";
 import { useState, useEffect } from "react";
 import { ModeToggle } from "@/components/header";
+import Link from "next/link";
 
 interface UserData {
   id: number;
@@ -36,6 +37,8 @@ export default function Home() {
           <p>{userData.isPremium ? "Premium" : "Not Premium"}</p>
         </div>
       )}
+
+      <Link href="/user">Go to User Page</Link>
     </div>
   );
 }
