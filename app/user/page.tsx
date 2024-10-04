@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from "react";
 
-function page() {
+function Page() {
     const [userData, setUserData] = useState([] as User[]);
 
     useEffect(() => {
@@ -68,7 +68,7 @@ function page() {
     )
 }
 
-export default page;
+export default Page;
 
 
 interface User {
