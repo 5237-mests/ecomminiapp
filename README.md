@@ -46,3 +46,6 @@ npx prisma db push
 
 <!-- migrate new change -->
 npx prisma generate
+
+<!-- delete built .next folder -->
+rm -rf .next
