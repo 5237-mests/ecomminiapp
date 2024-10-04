@@ -40,3 +40,9 @@ npx prisma studio
 
 <!-- Make db migration -->
 npx prisma migrate dev --name init
+
+<!-- push db -->
+npx prisma db push
+
+<!-- migrate new change -->
+npx prisma generate
