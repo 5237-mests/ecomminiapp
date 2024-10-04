@@ -10,6 +10,7 @@ import {
   FaExclamation,
 } from "react-icons/fa";
 import React from "react";
+import Link from "next/link";
 
 const page: React.FC = () => {
   return (
@@ -24,10 +25,14 @@ const page: React.FC = () => {
           <FaUser className="text-2xl" />
           <span>
             <p>user-name</p>
-            <h2>Your Profile</h2>
+            <h2>
+              Your Profile
+            </h2>
           </span>
         </span>
-        <FaChevronRight className="text-2xl" />
+        <Link href="/user">
+          <FaChevronRight className="text-2xl" />
+        </Link>
       </div>
 
       {/* Orders and Addresses Section */}
