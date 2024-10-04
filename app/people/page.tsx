@@ -5,7 +5,7 @@ const getPeople = async () => {
     const people = await fetch("/api/people");
     return people.json();
 }
-export default async function Page() {
+export default function Page() {
     return <div className="mt-10 mb-20" >
         <h1 className="bg-gray-100 w-full p-4 text-2xl font-bold mb-4 fixed top-0"  >People</h1> 
         {/* {people} */}
