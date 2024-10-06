@@ -35,7 +35,7 @@ function Page() {
                     <div key={user.id} className="m-5">
                         <p>firstname: {user.first_name}</p>
                         <p>lastname: {user.last_name}</p>
-                        <p>Username: {user.username}</p>
+                        <p>Username: {user.user_name}</p>
                         <hr />
                     </div>
                 ))}
@@ -75,5 +75,5 @@ interface User {
     id: string;
     first_name: string;
     last_name: string;
-    username: string;
+    user_name: string;
 }
