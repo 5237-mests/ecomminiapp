@@ -5,16 +5,22 @@ function Page() {
     const [userData, setUserData] = useState([] as User[]);
 
     useEffect(() => {
-        fetch('/api/user')
-            .then(res => res.json())
-            .then(data => setUserData(data));
-    }, []);
+     // fetch user data from db
+     getUserData();
+    }, [ ]);
+
+    // fetch user data from db
+    const getUserData = async () => {
+        const data = await fetch('/api/user');
+        const user = await data.json();
+        setUserData(user);
+    };
 
     // add or post user to db
     const addUser = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const form = e.currentTarget;
-        
+
         const first_name = (form.elements.namedItem("first_name") as HTMLInputElement).value;
         const last_name = (form.elements.namedItem("last_name") as HTMLInputElement).value;
         const user_name = (form.elements.namedItem("user_name") as HTMLInputElement).value;
@@ -24,11 +30,13 @@ function Page() {
             headers: { "Content-Type": "application/json" },
             method: "POST",
         });
+
+        // fetch user data from db
+        await getUserData();
     };
-    
 
     return (
-        <div className="flex items-center justify-between m-5">
+        <div className="flex items-center justify-between m-5 mb-20">
             <div className="w-full">
                 <h1>This is User Page</h1>
                 {userData.map((user : User) => (
