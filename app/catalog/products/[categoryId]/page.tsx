@@ -1,4 +1,3 @@
-// app/catalog/products/[categoryId]/page.tsx
 "use client";
 import { useRouter } from "next/navigation";
 import data from "@/assets/data.json";
@@ -13,6 +12,9 @@ import {
 } from "react-icons/fa";
 import Image from "next/image";
 import { useCart } from "@/context/CartContext"; // Import the context
+import useTelegram from "@/hooks/useTelegram";
+import WebApp from "@twa-dev/sdk";
+import { useEffect } from "react";
 
 interface ProductsProps {
   params: {
@@ -45,6 +47,8 @@ const ProductsPage: React.FC<ProductsProps> = ({ params }) => {
   // const lickProduct = (product: Product) => {
     
   // };
+  
+  WebApp.BackButton.show();
 
   return (
     <div className="mb-20">

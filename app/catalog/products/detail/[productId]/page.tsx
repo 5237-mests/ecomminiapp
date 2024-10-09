@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import data from "@/assets/data.json";
 import { Product } from "@/types/types";
@@ -7,6 +7,7 @@ import { useFavorites } from "@/context/FavoriteContext"; // Import the useFavor
 import { useCart } from "@/context/CartContext"; // Import the context
 import { FaArrowLeft, FaHeart, FaMinus, FaPlus } from "react-icons/fa";
 import Image from "next/image";
+import WebApp from "@twa-dev/sdk";
 
 interface ProductProps {
   params: {
@@ -42,7 +43,7 @@ const ProductDetail: React.FC<ProductProps> = ({ params }) => {
       addFavorite(product.product_id);
     }
   };
-
+  WebApp.BackButton.show();
   return (
     <div>
       <div className="flex justify-between w-full fixed bg-gray-100 p-4 text-2xl font-bold mb-20 left-0">
