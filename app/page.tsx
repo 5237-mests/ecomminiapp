@@ -3,7 +3,8 @@
 // import { useState, useEffect } from "react";
 // import { ModeToggle } from "@/components/header";
 import Image from "next/image";
-import img from "../assets/banner.webp";
+import img from "@/assets/banner.webp";
+// import WebApp from "@twa-dev/sdk";
 
 // interface UserData {
 //   id: number;

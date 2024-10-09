@@ -1,4 +1,5 @@
 "use client";
+
 import WebApp from "@twa-dev/sdk";
 import { useState, useEffect } from "react";
 
@@ -36,4 +37,5 @@ export default function Home() {
       )}
     </div>
   );
+
 }
