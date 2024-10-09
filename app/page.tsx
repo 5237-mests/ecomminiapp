@@ -4,8 +4,7 @@
 // import { ModeToggle } from "@/components/header";
 import Image from "next/image";
 import img from "@/assets/banner.webp";
-import useTelegram from "@/hooks/useTelegram";
-import WebApp from "@twa-dev/sdk";
+// import WebApp from "@twa-dev/sdk";
 
 // interface UserData {
 //   id: number;
@@ -25,7 +24,6 @@ export default function Home() {
   //     setUserData(WebApp.initDataUnsafe.user as UserData);
   //   }
   // }, []);
-   WebApp.enableClosingConfirmation();
   return (
     <div>
       <main>

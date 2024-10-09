@@ -6,8 +6,6 @@ import Footer from "@/components/Footer";
 import { CartProvider } from "../context/CartContext";
 import { FavoritesProvider } from "@/context/FavoriteContext";
 import useTelegram from "@/hooks/useTelegram";
-import { useEffect } from "react";
-import WebApp from "@twa-dev/sdk";
 // import img from "./assets/img.png";
 
 interface RootLayoutProps {
@@ -22,7 +20,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
     <>
       <html lang="en" suppressHydrationWarning>
         <head >
-        <script src="https://telegram.org/js/telegram-web-app.js"></script>
+        {/* <script src="https://telegram.org/js/telegram-web-app.js"></script> */}
         </head>
         <body>
           <ThemeProvider

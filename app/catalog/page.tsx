@@ -6,7 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import WebApp from "@twa-dev/sdk";
 
-const page: React.FC = () => {
+const Page: React.FC = () => {
   const categories: Category[] = data.categories;
 
   useEffect(() => {
@@ -44,4 +44,4 @@ const page: React.FC = () => {
   );
 };
 
-export default page;
+export default Page;

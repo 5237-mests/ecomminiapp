@@ -1,5 +1,4 @@
 "use client";
-import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import data from "@/assets/data.json";
 import { Product } from "@/types/types";
