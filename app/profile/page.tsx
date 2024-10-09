@@ -1,3 +1,4 @@
+'use client';
 import {
   FaUser,
   FaChevronRight,
@@ -9,10 +10,16 @@ import {
   FaLanguage,
   FaExclamation,
 } from "react-icons/fa";
-import React from "react";
+import React, { useEffect } from "react";
 import Link from "next/link";
+import WebApp from "@twa-dev/sdk";
 
-const page: React.FC = () => {
+const Page = () => {
+  useEffect(() => {
+    // Hide the back button only on the client side
+    WebApp.BackButton.hide();
+  }, []);
+
   return (
     <div className="mt-10 mb-20">
       <h1 className="bg-gray-100 w-full p-4 text-2xl font-bold mb-4 fixed top-0">
@@ -103,4 +110,4 @@ const page: React.FC = () => {
   );
 };
 
-export default page;
+export default Page;

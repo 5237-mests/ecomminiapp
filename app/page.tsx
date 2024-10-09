@@ -5,6 +5,8 @@
 import Image from "next/image";
 import img from "@/assets/banner.webp";
 // import WebApp from "@twa-dev/sdk";
+// import { useEffect } from "react";
+// import WebApp from "@twa-dev/sdk";
 
 // interface UserData {
 //   id: number;
@@ -15,7 +17,12 @@ import img from "@/assets/banner.webp";
 //   isPremium: boolean;
 // }
 
-export default function Home() {
+export default function Page() {
+  // useEffect(() => {
+  //   // Hide the back button only on the client side
+  //   WebApp.BackButton.hide();
+  // }, []);
+
   // const [userData, setUserData] = useState<UserData | null>(null);
 
   //fetch user data from telegram api

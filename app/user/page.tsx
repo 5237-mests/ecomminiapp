@@ -9,9 +9,9 @@ interface UserData {
   last_name: string;
   username: string;
   language_code: string;
-}
+};
 
-export default function Home() {
+export default function Page() {
   const [userData, setUserData] = useState<UserData | null>(null);
 
   // fetch user data from telegram api
@@ -38,4 +38,4 @@ export default function Home() {
     </div>
   );
 
-}
+};

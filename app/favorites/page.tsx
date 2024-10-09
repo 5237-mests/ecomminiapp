@@ -6,6 +6,8 @@ import { useFavorites } from "@/context/FavoriteContext"; // Import the useFavor
 import data from "@/assets/data.json"; // Example data
 import Image from "next/image";
 import { useCart } from "@/context/CartContext";
+import { useEffect } from "react";
+import WebApp from "@twa-dev/sdk";
 
 const Page = () => {
   const router = useRouter();
@@ -13,6 +15,11 @@ const Page = () => {
   const { addItem, removeItem, cartItems } = useCart();
   const { isFavorite, removeFavorite, clearFavorites } = useFavorites();
   const products = data.products; // Example products from data.json
+
+  useEffect(() => {
+    // Hide the back button only on the client side
+    WebApp.BackButton.hide();
+  }, []);
 
   // Get the products that are marked as favorite
   const favoriteProductItems = products.filter((product) =>

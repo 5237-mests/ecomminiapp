@@ -6,7 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import WebApp from "@twa-dev/sdk";
 
-const Page: React.FC = () => {
+const Page = () => {
   const categories: Category[] = data.categories;
 
   useEffect(() => {

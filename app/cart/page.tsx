@@ -6,8 +6,15 @@ import { useCart } from "@/context/CartContext";
 import { Product } from "@/types/types";
 import data from "@/assets/data.json";
 import { useFavorites } from "@/context/FavoriteContext";
+import WebApp from "@twa-dev/sdk";
+import { useEffect } from "react";
 
-const CartPage: React.FC = () => {
+const Page = () => {
+  useEffect(() => {
+    // Hide the back button only on the client side
+    WebApp.BackButton.hide();
+  }, []);
+
   const { cartItems, addItem, removeItem, clearCart } = useCart();
   const { isFavorite, addFavorite, removeFavorite } = useFavorites();
   const products: Product[] = data.products;
@@ -130,4 +137,4 @@ const CartPage: React.FC = () => {
   );
 };
 
-export default CartPage;
+export default Page;

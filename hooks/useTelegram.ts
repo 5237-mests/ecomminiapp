@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 const useTelegram = () => {
   const router = useRouter();
 
+  WebApp.enableClosingConfirmation();
   useEffect(() => {
     if (typeof window !== "undefined") {
       WebApp.BackButton.show();

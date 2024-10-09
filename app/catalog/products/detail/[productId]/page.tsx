@@ -14,7 +14,7 @@ interface ProductProps {
   };
 }
 
-const ProductDetail: React.FC<ProductProps> = ({ params }) => {
+const Page = ({ params }: ProductProps) => {
   const router = useRouter();
   const { addFavorite, removeFavorite, isFavorite } = useFavorites();
   const { cartItems, addItem, removeItem } = useCart(); 
@@ -108,4 +108,4 @@ const ProductDetail: React.FC<ProductProps> = ({ params }) => {
   );
 };
 
-export default ProductDetail;
+export default Page;
