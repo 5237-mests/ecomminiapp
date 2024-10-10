@@ -1,13 +1,13 @@
 'use client';
-import WebApp from "@twa-dev/sdk";
-import { useEffect } from "react";
+// import WebApp from "@twa-dev/sdk";
+// import { useEffect } from "react";
 import { FaSearch } from "react-icons/fa";
 
 const Page = () => {
-  useEffect(() => {
-    // Hide the back button only on the client side
-    WebApp.BackButton.hide();
-  }, []);
+  // useEffect(() => {
+  //   // Hide the back button only on the client side
+  //   WebApp.BackButton.hide();
+  // }, []);
 
   return (
     <div className="mt-20">

@@ -1,3 +1,4 @@
+'use client';
 import WebApp from "@twa-dev/sdk";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";

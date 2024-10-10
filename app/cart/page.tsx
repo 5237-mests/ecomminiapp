@@ -6,14 +6,14 @@ import { useCart } from "@/context/CartContext";
 import { Product } from "@/types/types";
 import data from "@/assets/data.json";
 import { useFavorites } from "@/context/FavoriteContext";
-import WebApp from "@twa-dev/sdk";
-import { useEffect } from "react";
+// import WebApp from "@twa-dev/sdk";
+// import { useEffect } from "react";
 
 const Page = () => {
-  useEffect(() => {
-    // Hide the back button only on the client side
-    WebApp.BackButton.hide();
-  }, []);
+  // useEffect(() => {
+  //   // Hide the back button only on the client side
+  //   WebApp.BackButton.hide();
+  // }, []);
 
   const { cartItems, addItem, removeItem, clearCart } = useCart();
   const { isFavorite, addFavorite, removeFavorite } = useFavorites();
