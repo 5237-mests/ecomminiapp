@@ -1,18 +1,19 @@
 "use client";
-import { useEffect } from "react";
+//import { useEffect } from "react";
 import data from "../../assets/data.json";
 import { Category } from "../../types/types";
 import Link from "next/link";
 import Image from "next/image";
-import WebApp from "@twa-dev/sdk";
+//import WebApp from "@twa-dev/sdk";
+//te
 
 const Page = () => {
   const categories: Category[] = data.categories;
 
-  useEffect(() => {
+ /* useEffect(() => {
     // Hide the back button only on the client side
     WebApp.BackButton.hide();
-  }, []);
+  }, []);*/
 
   return (
     <div>
