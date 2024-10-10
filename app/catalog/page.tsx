@@ -5,6 +5,7 @@ import { Category } from "../../types/types";
 import Link from "next/link";
 import Image from "next/image";
 //import WebApp from "@twa-dev/sdk";
+//te
 
 const Page: React.FC = () => {
   const categories: Category[] = data.categories;
