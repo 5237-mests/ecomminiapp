@@ -10,15 +10,11 @@ import {
   FaLanguage,
   FaExclamation,
 } from "react-icons/fa";
-import React from "react";
 import Link from "next/link";
 // import WebApp from "@twa-dev/sdk";
 
 const Page = () => {
-  // useEffect(() => {
-  //   // Hide the back button only on the client side
-  //   WebApp.BackButton.hide();
-  // }, []);
+   
 
   return (
     <div className="mt-10 mb-20">

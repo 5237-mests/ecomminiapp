@@ -8,6 +8,8 @@ const useTelegram = () => {
 
   WebApp.enableClosingConfirmation();
   useEffect(() => {
+    // WebApp.initData(JSON.parse(window.Telegram.WebApp.initDataUnsafe));
+    WebApp.enableClosingConfirmation();
     if (typeof window !== "undefined") {
       WebApp.BackButton.show();
 

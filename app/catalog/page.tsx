@@ -7,7 +7,7 @@ import Image from "next/image";
 //import WebApp from "@twa-dev/sdk";
 //te
 
-const Page = () => {
+const Page: React.FC = () => {
   const categories: Category[] = data.categories;
 
  /* useEffect(() => {

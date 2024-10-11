@@ -1,6 +1,7 @@
 "use client";
 
 import WebApp from "@twa-dev/sdk";
+import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 
 interface UserData {
@@ -13,12 +14,18 @@ interface UserData {
 
 export default function Page() {
   const [userData, setUserData] = useState<UserData | null>(null);
+  const router = useRouter();
 
   // fetch user data from telegram api
   useEffect(() => {
     if (WebApp.initDataUnsafe.user) {
       setUserData(WebApp.initDataUnsafe.user as UserData);
     }
+     WebApp.BackButton.show();
+     WebApp.BackButton.onClick(() => {
+       //router back
+       router.back();
+     });
   }, []);
 
   return (
