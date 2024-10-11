@@ -116,19 +116,20 @@ const Page = ({ params } : ProductsProps) => {
         ))}
       </div> */}
 
-      <div className=" p-4 gap-1 pt-20">
+      <div className=" p-8 gap-1 pt-20">
         {filteredProducts.map((product: Product) => (
-          <div className="border rounded-lg mb-4" key={product.product_id}>
+          // set border shadow
+          <div className="border rounded-lg mb-4 shadow-xl bg-gray-50" key={product.product_id}>
             <div
               onClick={() =>
                 router.push(`/catalog/products/detail/${product.product_id}`)
               }
-              className="mx-auto mt-1 mb-4 w-[98%]  h-[400px] overflow-hidden object-cover bg-white border rounded-lg"
+              className="mx-auto mt-3 mb-4 w-[90%]  h-[250px] overflow-hidden object-cover bg-white border rounded-lg"
             >
               <Image
                 src={product.img}
                 alt={product.name}
-                className="h-[350px] w-full object-cover"
+                className="h-auto w-full object-cover"
                 width="100"
                 height="150"
               />
