@@ -26,7 +26,7 @@ export default function Page() {
        //router back
        router.back();
      });
-  }, []);
+  }, [router]);
 
   return (
     <div className="m-10">
