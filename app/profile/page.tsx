@@ -11,10 +11,25 @@ import {
   FaExclamation,
 } from "react-icons/fa";
 import Link from "next/link";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 // import WebApp from "@twa-dev/sdk";
 
 const Page = () => {
-   
+     const router = useRouter();
+     useEffect(() => {
+       const tg = window?.Telegram?.WebApp;
+       if (tg) {
+         if (!tg.BackButton.isVisible) {
+           tg.BackButton.show();
+         }
+         tg.BackButton.onClick(() => router.push("/"));
+
+         return () => {
+           tg.BackButton.offClick(() => router.push("/"));
+         };
+       }
+     }, [router]); 
 
   return (
     <div className="mt-10 mb-20">

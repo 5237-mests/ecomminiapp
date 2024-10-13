@@ -6,14 +6,25 @@ import { useCart } from "@/context/CartContext";
 import { Product } from "@/types/types";
 import data from "@/assets/data.json";
 import { useFavorites } from "@/context/FavoriteContext";
-// import WebApp from "@twa-dev/sdk";
-// import { useEffect } from "react";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+
 
 const Page = () => {
-  // useEffect(() => {
-  //   // Hide the back button only on the client side
-  //   WebApp.BackButton.hide();
-  // }, []);
+  const router = useRouter();
+  useEffect(() => {
+    const tg = window?.Telegram?.WebApp;
+    if (tg) {
+      if (!tg.BackButton.isVisible) {
+        tg.BackButton.show();
+      }
+      tg.BackButton.onClick(() => router.push("/"));
+
+      return () => {
+        tg.BackButton.offClick(() => router.push("/"));
+      };
+    }
+  }, [router]); 
 
   const { cartItems, addItem, removeItem, clearCart } = useCart();
   const { isFavorite, addFavorite, removeFavorite } = useFavorites();
