@@ -13,6 +13,7 @@ import {
 import Image from "next/image";
 import { useCart } from "@/context/CartContext"; // Import the context
 import WebApp from "@twa-dev/sdk";
+import { useEffect } from "react";
 
 interface ProductsProps {
   params: {
@@ -21,9 +22,28 @@ interface ProductsProps {
 }
 
 const Page = ({ params } : ProductsProps) => {
+  const back = () => {
+    router.back();
+  };
+  
+  useEffect(() => {
+    WebApp.BackButton.show();
+  
+    const handleBackClick = () => {
+      back();
+      WebApp.BackButton.offClick(handleBackClick);
+    };
+  
+    WebApp.BackButton.onClick(handleBackClick);
+  
+    return () => {
+      WebApp.BackButton.offClick(handleBackClick);
+    };
+  });
+
+  const router = useRouter();
   const { cartItems, addItem, removeItem } = useCart();
   const { categoryId } = params;
-  const router = useRouter();
   const categories: Category[] = data.categories;
   const products: Product[] = data.products;
 //  const [isLiked, setIsLiked] = React.useState(false);
@@ -40,20 +60,15 @@ const Page = ({ params } : ProductsProps) => {
 
   const filteredProducts = products.filter(
     (prod) => prod.category_id === parseInt(categoryId)
-  );
+  )
 
-  // const lickProduct = (product: Product) => {
-    
-  // };
-  
-  WebApp.BackButton.show();
 
   return (
     <div className="mb-20">
       <div className="flex z-10 w-full fixed bg-gray-100 p-4 text-2xl font-bold gap-10 left-0 mb-20">
         <FaArrowLeft
           size={30}
-          onClick={() => router.back()}
+          onClick={() => back()}
           className="bg-white text-black hover:bg-sky-700 font-bold w-20 h-10 py-2 px-4 border rounded-3xl"
         />
         <h1 className="bg-gray-100 text-2xl font-bold ">{category.name}</h1>
@@ -116,19 +131,20 @@ const Page = ({ params } : ProductsProps) => {
         ))}
       </div> */}
 
-      <div className=" p-4 gap-1 pt-20">
+      <div className=" p-8 gap-1 pt-20">
         {filteredProducts.map((product: Product) => (
-          <div className="border rounded-lg mb-4" key={product.product_id}>
+          // set border shadow
+          <div className="border rounded-lg mb-4 shadow-xl bg-gray-50" key={product.product_id}>
             <div
               onClick={() =>
                 router.push(`/catalog/products/detail/${product.product_id}`)
               }
-              className="mx-auto mt-1 mb-4 w-[98%]  h-[400px] overflow-hidden object-cover bg-white border rounded-lg"
+              className="mx-auto mt-3 mb-4 w-[90%]  h-[250px] overflow-hidden object-cover bg-white border rounded-lg"
             >
               <Image
                 src={product.img}
                 alt={product.name}
-                className="h-[350px] w-full object-cover"
+                className="h-auto w-full object-cover"
                 width="100"
                 height="150"
               />

@@ -1,19 +1,28 @@
 "use client";
-//import { useEffect } from "react";
+import { useEffect } from "react";
 import data from "../../assets/data.json";
 import { Category } from "../../types/types";
 import Link from "next/link";
 import Image from "next/image";
-//import WebApp from "@twa-dev/sdk";
-//te
+import { useRouter } from "next/navigation";
 
-const Page = () => {
+const Page: React.FC = () => {
   const categories: Category[] = data.categories;
+  const router = useRouter();
 
- /* useEffect(() => {
-    // Hide the back button only on the client side
-    WebApp.BackButton.hide();
-  }, []);*/
+  useEffect(() => {
+    const tg = window?.Telegram?.WebApp;
+    if (tg) {
+      if (!tg.BackButton.isVisible) {
+        tg.BackButton.show();
+      }
+      tg.BackButton.onClick(() => router.push("/"));
+
+      return () => {
+        tg.BackButton.offClick(() => router.push("/"));
+      };
+    }
+  }, [router]); 
 
   return (
     <div>
@@ -22,7 +31,6 @@ const Page = () => {
       </h1>
       <div className="grid grid-cols-2 gap-1 p-2 mt-16">
         {categories.map((category: Category) => (
-          // console.log(category.img)
           <Link
             key={category.category_id}
             href={`catalog/products/${category.category_id}`}
@@ -34,8 +42,8 @@ const Page = () => {
                 src={category.img}
                 alt={category.name}
                 className="h-[150px]"
-                width="200"
-                height="150"
+                width={200}
+                height={150}
               />
             </div>
           </Link>
@@ -46,3 +54,8 @@ const Page = () => {
 };
 
 export default Page;
+// declare global {
+//   interface Window {
+//     Telegram: any;
+//   }
+// }

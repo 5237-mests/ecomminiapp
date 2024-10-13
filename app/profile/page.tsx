@@ -15,26 +15,40 @@ import Link from "next/link";
 import Image from "next/image";
 import axios from "axios";
 import { retrieveLaunchParams } from "@telegram-apps/sdk";
+import { useRouter } from "next/navigation";
 
 const Page = () => {
-  const [photoUrl, setPhotoUrl] = useState<string | null>(null);
-  const [firstName, setFirstName] = useState<string | null>(null);
+     const router = useRouter();
+     const [photoUrl, setPhotoUrl] = useState<string | null>(null);
+     const [firstName, setFirstName] = useState<string | null>(null);
+   
+     useEffect(() => {
+       const { initData } = retrieveLaunchParams();
+       const userId = initData?.user?.id;
+       setFirstName(initData?.user?.firstName || null);
+   
+       axios.post('/api/get-profile-photo', { userId })
+         .then(response => {
+           setPhotoUrl(response.data.photoUrl);
+         })
+         .catch(error => {
+           console.error('Error fetching profile photo:', error);
+         });
+     }, []);
 
-  useEffect(() => {
-    const { initData } = retrieveLaunchParams();
-    const userId = initData?.user?.id;
-    setFirstName(initData?.user?.firstName || null);
+     useEffect(() => {
+       const tg = window?.Telegram?.WebApp;
+       if (tg) {
+         if (!tg.BackButton.isVisible) {
+           tg.BackButton.show();
+         }
+         tg.BackButton.onClick(() => router.push("/"));
 
-    axios.post('/api/get-profile-photo', { userId })
-      .then(response => {
-        setPhotoUrl(response.data.photoUrl);
-      })
-      .catch(error => {
-        console.error('Error fetching profile photo:', error);
-      });
-  }, []);
-
-  
+         return () => {
+           tg.BackButton.offClick(() => router.push("/"));
+         };
+       }
+     }, [router]); 
 
   return (
     <div className="mt-10 mb-20">

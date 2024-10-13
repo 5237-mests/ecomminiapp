@@ -1,14 +1,23 @@
 'use client';
-// import WebApp from "@twa-dev/sdk";
-// import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { FaSearch } from "react-icons/fa";
 
 const Page = () => {
-  // useEffect(() => {
-  //   // Hide the back button only on the client side
-  //   WebApp.BackButton.hide();
-  // }, []);
+   const router = useRouter();
+   useEffect(() => {
+     const tg = window?.Telegram?.WebApp;
+     if (tg) {
+       if (!tg.BackButton.isVisible) {
+         tg.BackButton.show();
+       }
+       tg.BackButton.onClick(() => router.push("/"));
 
+       return () => {
+         tg.BackButton.offClick(() => router.push("/"));
+       };
+     }
+   }, [router]); 
   return (
     <div className="mt-20">
       <h1 className="bg-gray-100 w-full p-4 text-2xl font-bold mb-4 fixed top-0">

@@ -2,30 +2,34 @@
 
 import { FaHeart, FaMinus, FaPlus, FaRegHeart } from "react-icons/fa";
 import { useRouter } from "next/navigation";
-import { useFavorites } from "@/context/FavoriteContext"; // Import the useFavorites hook
-import data from "@/assets/data.json"; // Example data
+import { useFavorites } from "@/context/FavoriteContext"; 
+import data from "@/assets/data.json"; 
 import Image from "next/image";
 import { useCart } from "@/context/CartContext";
-// import { useEffect } from "react";
-// import WebApp from "@twa-dev/sdk";
+import { useEffect } from "react";
 
 const Page = () => {
   const router = useRouter();
-  // const { isFavorite, favoriteItems } = useFavorites();
+  useEffect(() => {
+    const tg = window?.Telegram?.WebApp;
+    if (tg) {
+      if (!tg.BackButton.isVisible) {
+        tg.BackButton.show();
+      }
+      tg.BackButton.onClick(() => router.push("/"));
+
+      return () => {
+        tg.BackButton.offClick(() => router.push("/"));
+      };
+    }
+  }, [router]); 
+
   const { addItem, removeItem, cartItems } = useCart();
   const { isFavorite, removeFavorite, clearFavorites } = useFavorites();
   const products = data.products; // Example products from data.json
-
-  // useEffect(() => {
-  //   // Hide the back button only on the client side
-  //   WebApp.BackButton.hide();
-  // }, []);
-
-  // Get the products that are marked as favorite
   const favoriteProductItems = products.filter((product) =>
     isFavorite(product.product_id)
   );
-
   return (
     <div className="mt-20 p-4">
       <div className="p-4 bg-gray-100 flex w-full justify-between fixed top-0 mb-20">
