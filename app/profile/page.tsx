@@ -48,7 +48,7 @@ const Page = () => {
            tg.BackButton.offClick(() => router.push("/"));
          };
        }
-     }, [router]); 
+     }, [router]);
 
   return (
     <div className="mt-10 mb-20">

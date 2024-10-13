@@ -44,7 +44,7 @@ export default function Page() {
     return () => {
       WebApp.BackButton.offClick(handleBackClick);
     };
-  });
+  }, []);
 
   return (
     <div className="m-10">
@@ -65,7 +65,7 @@ export default function Page() {
           <p>Username: {userData.username}</p>
           <p>Language: {userData.language_code}</p>
           <p>Photo URL: {userData.photo_url}</p>
-          <img src={userData.photo_url} alt="User profile" />
+          <Image src={userData.photo_url} alt="User profile" />
         </div>
       )}
     </div>
