@@ -1,33 +1,29 @@
 "use client";
+import { useEffect } from "react";
 import data from "../../assets/data.json";
 import { Category } from "../../types/types";
 import Link from "next/link";
 import Image from "next/image";
-// import { useRouter } from "next/navigation";
-// import { useEffect} from "react";
-// import WebApp from "@twa-dev/sdk";
+import { useRouter } from "next/navigation";
 
 const Page: React.FC = () => {
   const categories: Category[] = data.categories;
+  const router = useRouter();
 
-  // const router = useRouter();
-  // const back = () => {
-  //   router.back();
-  // };
-  // useEffect(() => {
-  //   WebApp.BackButton.show();
-  
-  //   const handleBackClick = () => {
-  //     back();
-  //     WebApp.BackButton.offClick(handleBackClick);
-  //   };
-  
-  //   WebApp.BackButton.onClick(handleBackClick);
-  
-  //   return () => {
-  //     WebApp.BackButton.offClick(handleBackClick);
-  //   };
-  // });
+  useEffect(() => {
+    const tg = window?.Telegram?.WebApp;
+    if (tg) {
+      if (!tg.BackButton.isVisible) {
+        tg.BackButton.show();
+      }
+      tg.BackButton.onClick(() => router.push("/"));
+
+      return () => {
+        tg.BackButton.offClick(() => router.push("/"));
+      };
+    }
+  }, [router]); 
+
   return (
     <div>
       <h1 className="bg-gray-100 w-full p-4 text-2xl font-bold mb-4 fixed top-0">
@@ -58,3 +54,8 @@ const Page: React.FC = () => {
 };
 
 export default Page;
+// declare global {
+//   interface Window {
+//     Telegram: any;
+//   }
+// }
