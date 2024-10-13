@@ -6,11 +6,13 @@ import Footer from "@/components/Footer";
 import { CartProvider } from "../context/CartContext";
 import { FavoritesProvider } from "@/context/FavoriteContext";
 import Script from "next/script";
+// import useTelegram from "@/hooks/useTelegram";
 
 interface RootLayoutProps {
   children: React.ReactNode;
 }
 export default function RootLayout({ children }: RootLayoutProps) {
+  // useTelegram();
   return (
     <>
       <html lang="en" suppressHydrationWarning>

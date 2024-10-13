@@ -7,6 +7,7 @@ import { useCart } from "@/context/CartContext"; // Import the context
 import { FaArrowLeft, FaHeart, FaMinus, FaPlus } from "react-icons/fa";
 import Image from "next/image";
 import WebApp from "@twa-dev/sdk";
+import { useEffect } from "react";
 
 interface ProductProps {
   params: {
@@ -16,6 +17,23 @@ interface ProductProps {
 
 const Page = ({ params }: ProductProps) => {
   const router = useRouter();
+  const back = () => {
+    router.back();
+  };
+  useEffect(() => {
+    WebApp.BackButton.show();
+  
+    const handleBackClick = () => {
+      back();
+      WebApp.BackButton.offClick(handleBackClick);
+    };
+  
+    WebApp.BackButton.onClick(handleBackClick);
+  
+    return () => {
+      WebApp.BackButton.offClick(handleBackClick);
+    };
+  });
   const { addFavorite, removeFavorite, isFavorite } = useFavorites();
   const { cartItems, addItem, removeItem } = useCart(); 
 
@@ -42,7 +60,10 @@ const Page = ({ params }: ProductProps) => {
       addFavorite(product.product_id);
     }
   };
-  WebApp.BackButton.show();
+
+
+
+
   return (
     <div>
       <div className="flex justify-between w-full fixed bg-gray-100 p-4 text-2xl font-bold mb-20 left-0">

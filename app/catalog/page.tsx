@@ -1,20 +1,33 @@
 "use client";
-//import { useEffect } from "react";
 import data from "../../assets/data.json";
 import { Category } from "../../types/types";
 import Link from "next/link";
 import Image from "next/image";
-//import WebApp from "@twa-dev/sdk";
-//te
+// import { useRouter } from "next/navigation";
+// import { useEffect} from "react";
+// import WebApp from "@twa-dev/sdk";
 
 const Page: React.FC = () => {
   const categories: Category[] = data.categories;
 
- /* useEffect(() => {
-    // Hide the back button only on the client side
-    WebApp.BackButton.hide();
-  }, []);*/
-
+  // const router = useRouter();
+  // const back = () => {
+  //   router.back();
+  // };
+  // useEffect(() => {
+  //   WebApp.BackButton.show();
+  
+  //   const handleBackClick = () => {
+  //     back();
+  //     WebApp.BackButton.offClick(handleBackClick);
+  //   };
+  
+  //   WebApp.BackButton.onClick(handleBackClick);
+  
+  //   return () => {
+  //     WebApp.BackButton.offClick(handleBackClick);
+  //   };
+  // });
   return (
     <div>
       <h1 className="bg-gray-100 w-full p-4 text-2xl font-bold mb-4 fixed top-0">
@@ -22,7 +35,6 @@ const Page: React.FC = () => {
       </h1>
       <div className="grid grid-cols-2 gap-1 p-2 mt-16">
         {categories.map((category: Category) => (
-          // console.log(category.img)
           <Link
             key={category.category_id}
             href={`catalog/products/${category.category_id}`}
@@ -34,8 +46,8 @@ const Page: React.FC = () => {
                 src={category.img}
                 alt={category.name}
                 className="h-[150px]"
-                width="200"
-                height="150"
+                width={200}
+                height={150}
               />
             </div>
           </Link>

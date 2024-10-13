@@ -6,6 +6,7 @@ import { useFavorites } from "@/context/FavoriteContext"; // Import the useFavor
 import data from "@/assets/data.json"; // Example data
 import Image from "next/image";
 import { useCart } from "@/context/CartContext";
+// import useTelegram from "@/hooks/useTelegram";
 // import { useEffect } from "react";
 // import WebApp from "@twa-dev/sdk";
 
@@ -25,7 +26,7 @@ const Page = () => {
   const favoriteProductItems = products.filter((product) =>
     isFavorite(product.product_id)
   );
-
+// useTelegram();
   return (
     <div className="mt-20 p-4">
       <div className="p-4 bg-gray-100 flex w-full justify-between fixed top-0 mb-20">
