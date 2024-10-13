@@ -13,6 +13,7 @@ import {
 import Image from "next/image";
 import { useCart } from "@/context/CartContext"; // Import the context
 import WebApp from "@twa-dev/sdk";
+import { useEffect } from "react";
 
 interface ProductsProps {
   params: {
@@ -21,9 +22,28 @@ interface ProductsProps {
 }
 
 const Page = ({ params } : ProductsProps) => {
+  const back = () => {
+    router.back();
+  };
+  
+  useEffect(() => {
+    WebApp.BackButton.show();
+  
+    const handleBackClick = () => {
+      back();
+      WebApp.BackButton.offClick(handleBackClick);
+    };
+  
+    WebApp.BackButton.onClick(handleBackClick);
+  
+    return () => {
+      WebApp.BackButton.offClick(handleBackClick);
+    };
+  });
+
+  const router = useRouter();
   const { cartItems, addItem, removeItem } = useCart();
   const { categoryId } = params;
-  const router = useRouter();
   const categories: Category[] = data.categories;
   const products: Product[] = data.products;
 //  const [isLiked, setIsLiked] = React.useState(false);
@@ -40,20 +60,15 @@ const Page = ({ params } : ProductsProps) => {
 
   const filteredProducts = products.filter(
     (prod) => prod.category_id === parseInt(categoryId)
-  );
+  )
 
-  // const lickProduct = (product: Product) => {
-    
-  // };
-  
-  WebApp.BackButton.show();
 
   return (
     <div className="mb-20">
       <div className="flex z-10 w-full fixed bg-gray-100 p-4 text-2xl font-bold gap-10 left-0 mb-20">
         <FaArrowLeft
           size={30}
-          onClick={() => router.back()}
+          onClick={() => back()}
           className="bg-white text-black hover:bg-sky-700 font-bold w-20 h-10 py-2 px-4 border rounded-3xl"
         />
         <h1 className="bg-gray-100 text-2xl font-bold ">{category.name}</h1>

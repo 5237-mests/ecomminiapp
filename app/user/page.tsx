@@ -3,6 +3,7 @@
 import WebApp from "@twa-dev/sdk";
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 // import InitData from "@/components/InitData";
 // import { initData } from "@telegram-apps/sdk-react";
 
@@ -19,14 +20,31 @@ export default function Page() {
   const [userData, setUserData] = useState<UserData | null>(null);
   const [photo, setPhoto] = useState<string | null>("");
 
-  // fetch user data from telegram api
+  const router = useRouter();
+  const back = () => {
+    router.back();
+  };
+  
   useEffect(() => {
     if (WebApp.initDataUnsafe.user) {
       setPhoto(WebApp.initDataUnsafe?.user?.photo_url as string);
       console.log("effect", WebApp.initDataUnsafe.user.username);
       setUserData(WebApp.initDataUnsafe.user as UserData);
     }
-  }, []);
+
+    WebApp.BackButton.show();
+  
+    const handleBackClick = () => {
+      back();
+      WebApp.BackButton.offClick(handleBackClick);
+    };
+  
+    WebApp.BackButton.onClick(handleBackClick);
+  
+    return () => {
+      WebApp.BackButton.offClick(handleBackClick);
+    };
+  });
 
   return (
     <div className="m-10">
