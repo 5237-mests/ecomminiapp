@@ -10,7 +10,7 @@ export async function POST(request: Request) {
     const response = await axios.get(`https://api.telegram.org/bot${botToken}/getUserProfilePhotos`, {
       params: {
         user_id: userId,
-        limit: 1
+        limit: 5
       }
     });
 
@@ -24,7 +24,7 @@ export async function POST(request: Request) {
       });
 
       const filePath = fileResponse.data.result.file_path;
-      const photoUrl = `https://api.telegram.org/file/bot${botToken}/${filePath}`;
+      const photoUrl = `https://api.telegram.org/file/bot${botToken}/${filePath}?${new Date().getTime()}`;
 
       return NextResponse.json({ photoUrl });
     } else {

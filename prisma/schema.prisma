@@ -10,20 +10,14 @@ datasource db {
   directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
 
-
-model People {
-  id            String       @default(cuid()) @id
-  name          String?
-  age           Int
-  createdAt     DateTime  @default(now()) @map(name: "created_at")
-  updatedAt     DateTime  @updatedAt @map(name: "updated_at")
-}
-
 model User {
   id            String @default(cuid()) @id
+  tg_id        Int? @unique
   first_name    String
   last_name     String
-  user_name     String
+  username     String @default("")
+  language_code String @default("en")
+  photo_url     String @default("")
   createdAt     DateTime @default(now()) @map(name: "created_at")
   updatedAt     DateTime  @updatedAt @map(name: "updated_at")
 }
