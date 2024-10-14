@@ -4,10 +4,12 @@ import data from "@/assets/data.json";
 import { Product } from "@/types/types";
 import { useFavorites } from "@/context/FavoriteContext"; // Import the useFavorites hook
 import { useCart } from "@/context/CartContext"; // Import the context
-import { FaArrowLeft, FaHeart, FaMinus, FaPlus } from "react-icons/fa";
+import { FaHeart, FaMinus, FaPlus } from "react-icons/fa";
 import Image from "next/image";
 import WebApp from "@twa-dev/sdk";
+import logo from "@/assets/fun shop.png";
 import { useEffect } from "react";
+import { useTheme } from "@/context/ThemeContext";
 
 interface ProductProps {
   params: {
@@ -34,6 +36,7 @@ const Page = ({ params }: ProductProps) => {
       WebApp.BackButton.offClick(handleBackClick);
     };
   });
+  const { theme } = useTheme();
   const { addFavorite, removeFavorite, isFavorite } = useFavorites();
   const { cartItems, addItem, removeItem } = useCart(); 
 
@@ -66,14 +69,25 @@ const Page = ({ params }: ProductProps) => {
 
   return (
     <div>
-      <div className="flex justify-between w-full fixed bg-gray-100 p-4 text-2xl font-bold mb-20 left-0">
-        <FaArrowLeft
-          size={30}
-          onClick={() => router.back()} // Use router.back() to go back
-          className="bg-white text-black hover:bg-sky-500 font-bold w-20 h-10 py-2 px-4 border rounded-3xl"
+      <div
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          backdropFilter: "blur(10px)",
+          backgroundColor: "rgba(255, 255, 255, 0.2)",
+          zIndex: 9999,
+        }}
+        className="flex z-10 w-full fixed p-4 justify-between text-2xl font-bold left-0 mb-16 px-8"
+      >
+        <Image
+          onClick={() => router.push("/")}
+          src={logo}
+          alt={product.name}
+          width="100"
+          height="100"
+          style={{ color: theme.textColor }}
         />
-
-        {/* FaHeart icon with click functionality to toggle favorites */}
         <FaHeart
           onClick={handleFavoriteToggle}
           className={`bg-white w-20 h-10 py-2 px-4 border rounded-3xl ${
@@ -81,6 +95,7 @@ const Page = ({ params }: ProductProps) => {
           } `}
         />
       </div>
+     
 
       <div className="pt-20 p-4 w-full">
         <Image
