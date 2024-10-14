@@ -13,3 +13,9 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+.animate-wave {
+  animation-name: wave;
+  animation-duration: 2s; /* Adjusted to 2 seconds */
+  animation-iteration-count: 1; /* Runs only once */
+}
+
