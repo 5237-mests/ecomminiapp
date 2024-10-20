@@ -15,9 +15,9 @@ const SidebarItems: React.FC<SidebarItemsProps> = ({ toggleMobileSidebar }) => {
   return (
     <div>
       <section className="">
-        {Menuitems.map((item) => (
+        {Menuitems.map((item, index) => (
           <NavItem
-            key={item.id}
+            key={index}
             item={item} // Ensure item is typed correctly
             pathDirect={pathDirect}
             onClick={() => {

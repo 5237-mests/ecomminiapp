@@ -9,7 +9,6 @@ import { IconProps as TablerIconProps } from "@tabler/icons-react";
 type NavGroup = {
   navlabel?: boolean;
   subheader?: string;
-  id: string;
   title: string;
   icon?: React.ComponentType<TablerIconProps>; 
   href: string;
