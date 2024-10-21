@@ -67,7 +67,6 @@ export default function Page() {
       const response = await fetch(`/api/user?user_id=${id}`, {
         method: "DELETE",
       });
-      const data = await response.json();
     } catch (error) {
       console.log("Error:", error);
     }

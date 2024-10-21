@@ -1,75 +1,6 @@
-// // "use client";
-// // import { CldImage } from 'next-cloudinary';
-
-// // // By default, the CldImage component applies auto-format and auto-quality to all delivery URLs for optimized delivery.
-// // export default function Page() {
-// //   return (
-// //     <CldImage
-// //       src="cld-sample-5" // Use this sample image or upload your own via the Media Explorer
-// //       width="500" // Transform the image: auto-crop to square aspect_ratio
-// //       height="500"
-// //       alt="sample image"
-// //       crop={{
-// //         type: 'auto',
-// //         source: true
-// //       }}
-// //     />
-// //   );
-// // }
-
-
-// 'use client';
-
-// import { useState } from 'react';
-
-// export default function Page() {
-//   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-//   const [imageUrl, setImageUrl] = useState<string | null>(null);
-
-//   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-//     if (e.target.files && e.target.files.length > 0) {
-//       setSelectedFile(e.target.files[0]);
-//     }
-//   };
-
-//   const handleUpload = async () => {
-//     if (!selectedFile) return;
-
-//     const formData = new FormData();
-//     formData.append('file', selectedFile);
-
-//     try {
-//       const res = await fetch('/api/product', {
-//         method: 'POST',
-//         body: formData,
-//       });
-
-//       const data = await res.json();
-//       setImageUrl(data.data.secure_url);
-//     } catch (err) {
-//       console.error('Error uploading file:', err);
-//     }
-//   };
-
-//   return (
-//     <div>
-//       <h1>Upload an Image</h1>
-//       <input type="file" onChange={handleFileChange} />
-//       <button onClick={handleUpload}>Upload</button>
-//       {imageUrl && (
-//         <div>
-//           <p>Uploaded Image:</p>
-//           <img src={imageUrl} alt="Uploaded" width="300" />
-//         </div>
-//       )}
-//     </div>
-//   );
-// }
-
-
 'use client';
-
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 
 interface Product {
   id: number;
@@ -191,7 +122,7 @@ export default function ProductsPage() {
           <li key={product.id} className="border p-2 mb-2">
             <p>{product.name}</p>
             <p>{product.description}</p>
-            <img src={product.img} alt={product.name} width="100" />
+            <Image src={product.img} alt={product.name} width="100" />
             <button onClick={() => fetchProductById(product.id)} className="bg-green-500 text-white px-4 py-2">
               View
             </button>
@@ -209,7 +140,7 @@ export default function ProductsPage() {
           <p>Description: {selectedProduct.description}</p>
           <p>Price: {selectedProduct.price}</p>
           <p>Available: {selectedProduct.available ? 'Yes' : 'No'}</p>
-          <img src={selectedProduct.img} alt={selectedProduct.name} width="300" />
+          <Image src={selectedProduct.img} alt={selectedProduct.name} width="300" />
         </div>
       )}
     </div>

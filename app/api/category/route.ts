@@ -32,9 +32,8 @@ export const POST = async (req: Request) => {
     });
 
     return NextResponse.json({ data: category }, { status: 201 });
-  } catch (error: any) {
-    console.log('erorr', error);
-    return NextResponse.json({ error: 'Creation failed', details: error.message }, { status: 500 });
+  } catch (error: unknown) {
+    return NextResponse.json({ error: 'Creation failed', details: error }, { status: 500 });
   }
 };
 
@@ -43,8 +42,8 @@ export const GET = async () => {
   try {
     const categories = await prisma.category.findMany();
     return NextResponse.json({ data: categories }, { status: 200 });
-  } catch (error: any) {
-    return NextResponse.json({ error: 'Fetch failed', details: error.message }, { status: 500 });
+  } catch (error: unknown) {
+    return NextResponse.json({ error: 'Fetch failed', details: error }, { status: 500 });
   }
 };
 
@@ -60,8 +59,7 @@ export const DELETE = async (req: Request) => {
     });
 
     return NextResponse.json({ message: 'Category deleted successfully' }, { status: 200 });
-  } catch (error: any) {
-    console.log('éroro', error);
-    return NextResponse.json({ error: 'Deletion failed', details: error.message }, { status: 500 });
+  } catch (error: unknown) {
+    return NextResponse.json({ error: 'Deletion failed', details: error }, { status: 500 });
   }
 };

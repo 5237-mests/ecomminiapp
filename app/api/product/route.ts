@@ -49,7 +49,7 @@ export const POST = async (req: Request) => {
     });
 
     return NextResponse.json({ data: newProduct }, { status: 201 });
-  } catch (error: any) {
-    return NextResponse.json({ error: 'Create failed', details: error.message }, { status: 500 });
+  } catch (error: unknown) {
+    return NextResponse.json({ error: 'Create failed', details: error }, { status: 500 });
   }
 };

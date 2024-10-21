@@ -7,9 +7,10 @@ export const PUT = async (req: Request, { params }: { params: { id: string } }) 
   try {
     const id = parseInt(params.id);
     const formData = await req.formData();
-    let data = Object.fromEntries(formData);
+    const data = Object.fromEntries(formData);
 
     //Type assertion for FormData entries
+    //@typescript-eslint/no-explicit-any
     const productData: Record<string, any> = { ...data };
 
     // parsefloat price
@@ -46,8 +47,8 @@ export const PUT = async (req: Request, { params }: { params: { id: string } }) 
     });
 
     return NextResponse.json({ data: updatedProduct }, { status: 200 });
-  } catch (error: any) {
-    return NextResponse.json({ error: 'Update failed', details: error.message }, { status: 500 });
+  } catch (error: unknown) {
+    return NextResponse.json({ error: 'Update failed', details: error }, { status: 500 });
   }
 };
 
@@ -61,8 +62,8 @@ export const DELETE = async (req: Request, { params }: { params: { id: string } 
     });
 
     return NextResponse.json({ data: deletedProduct }, { status: 200 });
-  } catch (error: any) {
-    return NextResponse.json({ error: 'Delete failed', details: error.message }, { status: 500 });
+  } catch (error: unknown) {
+    return NextResponse.json({ error: 'Delete failed', details: error }, { status: 500 });
   }
 };
 
@@ -79,7 +80,7 @@ export const GET = async (req: Request, { params }: { params: { id: string } }) 
     }
 
     return NextResponse.json({ data: product }, { status: 200 });
-  } catch (error: any) {
-    return NextResponse.json({ error: 'Fetch failed', details: error.message }, { status: 500 });
+  } catch (error: unknown) {
+    return NextResponse.json({ error: 'Fetch failed', details: error }, { status: 500 });
   }
 };

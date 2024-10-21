@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import Image from 'next/image';
 
 interface Category {
   id: number;
@@ -221,7 +222,7 @@ export default function CategoriesAndProductsPage() {
                 <li key={category.id} className="border p-2 mb-2">
                 <p>{category.name}</p>
                 <p>{category.description}</p>
-                <img src={category.img} alt={category.name} width="100" />
+                <Image src={category.img} alt={category.name} width="100" />
                 <button onClick={() => handleEditCategory(category)} className="bg-blue-500 text-white px-2 py-1">Edit</button>
                 <button onClick={() => handleDeleteCategory(category.id)} className="bg-red-500 text-white px-2 py-1">Delete</button>
                 </li>
@@ -298,7 +299,7 @@ export default function CategoriesAndProductsPage() {
               <p>{product.name}</p>
               <p>{product.description}</p>
               <p>Price: {product.price}</p>
-              <img src={product.img} alt={product.name} width="100" />
+              <Image src={product.img} alt={product.name} width="100" />
               <button onClick={() => handleEditProduct(product)} className="bg-yellow-500 text-white px-2 py-1">Edit</button>
               <button onClick={() => handleDeleteProduct(product.id)} className="bg-red-500 text-white px-2 py-1">Delete</button>
             </li>

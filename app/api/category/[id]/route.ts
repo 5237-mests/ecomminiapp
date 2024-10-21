@@ -7,7 +7,7 @@ export const PUT = async (req: Request, { params }: { params: { id: string } }) 
     try {
       const id = parseInt(params.id); // Parse the product ID from the URL params
       const formData = await req.formData(); // Get form data from the request
-      let data = Object.fromEntries(formData.entries()); // Convert formData to a plain object
+      const data = Object.fromEntries(formData.entries()); // Convert formData to a plain object
 
       const existingCategory = await prisma.category.findUnique({
         where: { id },
@@ -18,6 +18,7 @@ export const PUT = async (req: Request, { params }: { params: { id: string } }) 
       }      
   
       // Type assertion for formData entries
+      //@typescript-eslint/no-explicit-any
       const productCategory: Record<string, any> = { ...data };
   
       // Remove the 'id' field from the product data as it should not be updated
@@ -50,8 +51,8 @@ export const PUT = async (req: Request, { params }: { params: { id: string } }) 
   
       // Respond with the updated product
       return NextResponse.json({ data: updatedProduct }, { status: 200 });
-    } catch (error: any) {
+    } catch (error: unknown) {
       // Handle errors and return a 500 response with the error message
-      return NextResponse.json({ error: 'Update failed', details: error.message }, { status: 500 });
+      return NextResponse.json({ error: 'Update failed', details: error }, { status: 500 });
     }
 };
