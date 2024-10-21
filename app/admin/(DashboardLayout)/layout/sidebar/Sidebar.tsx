@@ -1,50 +1,90 @@
-'use client';
-import React, { useState } from 'react';
-import SidebarItems from './SidebarItems';
-import { SidebarProfile } from './sidbarProfil';
+"use client";
+import React, { useEffect, useState } from "react";
+import SidebarItems from "./SidebarItems";
+import { SidebarProfile } from "./sidbarProfil";
+import {
+  Dialog,
+  DialogBackdrop,
+  DialogPanel,
+  DialogTitle,
+} from "@headlessui/react"; 
 
-const Sidebar = () => {
-  const [isSidebarOpen, setSidebarOpen] = useState(true);
+interface ItemType {
+  isMobileSidebarOpen: boolean;
+  onSidebarClose: (event: MouseEvent | null) => void;
+}
+const Sidebar = ({
+  isMobileSidebarOpen,
+  onSidebarClose,
+}: ItemType) => {
+  
+  const useMediaQuery = (query: string): boolean => {
+  const [matches, setMatches] = useState(false);
 
-  const toggleMobileSidebar = () => {
-    setSidebarOpen(!isSidebarOpen);
-  };
+  useEffect(() => {
+    const media = window.matchMedia(query);
+    if (media.matches !== matches) {
+      setMatches(media.matches);
+    }
+    const listener = () => setMatches(media.matches);
+    media.addListener(listener);
+    return () => media.removeListener(listener);
+  }, [matches, query]);
+
+  return matches;
+};
+const matches = useMediaQuery("(min-width: 1024px)");
+ if (matches) {
+   return (
+     <div className="w-1/6 absolute h-full ">
+       <div className="flex h-full flex-col  bg-white shadow-xl">
+         <div className=" ">
+           <div className="text-base font-semibold leading-6 text-gray-900">
+             <SidebarProfile />
+           </div>
+         </div>
+         <div className="relative mt-6  flex-1  ">
+           {/* Your content */}
+           <SidebarItems {...{ toggleMobileSidebar: onSidebarClose }} />
+         </div>
+       </div>
+     </div>
+   );
+ }
 
   return (
-    <div className="" >
-      {/* Sidebar container */}
-      <div
-        className={`bg-red-300  w-[200px] ${
-          isSidebarOpen ? "block" : "hidden"
-        } sm:block`}
-      >
-        <section
-          id="default-sidebar"
-          className={`fixed left-0 z-40 w-64 h-screen transition-transform ${
-            isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-          } sm:translate-x-0`}
-          aria-label="Sidebar"
-        >
-          <div className="h-full shadow-2xl overflow-y-auto bg-gray-500 dark:bg-white">
-            <div>
-              <SidebarProfile/>
-              {/* <Image src={cart} alt="logo" width={100} height={100} /> */}
-            </div>
-            <div className="px-3 py-4 overflow-y-auto text-sm text-gray-500 dark:text-gray-400">
-            <SidebarItems toggleMobileSidebar={toggleMobileSidebar} />
-            </div>
+    <Dialog
+      open={isMobileSidebarOpen}
+      onClose={() => onSidebarClose(null)}
+      className="relative z-10"
+    >
+      <DialogBackdrop
+        transition 
+        className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity duration-500 ease-in-out data-[closed]:opacity-0"
+      />
+      <div className="fixed inset-0 overflow-hidden">
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="pointer-events-none fixed inset-y-0 left-0 flex max-w-full pr-40">
+            <DialogPanel
+              transition
+              className="pointer-events-auto relative w-screen max-w-md transform transition duration-500 ease-in-out data-[closed]:-translate-x-full sm:duration-700"
+            >
+              <div className="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
+                <div className=" ">
+                  <DialogTitle className="text-base font-semibold leading-6 text-gray-900">
+                    <SidebarProfile />
+                  </DialogTitle>
+                </div>
+                <div className="relative mt-6 flex-1 px-4 ">
+                  {/* Your content */}
+                  <SidebarItems {...{ toggleMobileSidebar: onSidebarClose }} />
+                </div>
+              </div>
+            </DialogPanel>
           </div>
-        </section>
+        </div>
       </div>
-
-      {/* Sidebar Toggle Button for mobile */}
-      <button
-        className="fixed top-4 left-4 z-50 sm:hidden bg-gray-800 text-white p-2 rounded"
-        onClick={toggleMobileSidebar}
-      >
-        {isSidebarOpen ? "Close" : "Open"} Sidebar
-      </button>
-    </div>
+    </Dialog>
   );
 };
 
