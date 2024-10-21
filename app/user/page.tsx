@@ -64,7 +64,7 @@ export default function Page() {
   // delete user
   const deleteUser = async (id: number) => {
     try {
-      const response = await fetch(`/api/user?user_id=${id}`, {
+      await fetch(`/api/user?user_id=${id}`, {
         method: "DELETE",
       });
     } catch (error) {
