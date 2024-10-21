@@ -5,24 +5,28 @@ import { usePathname } from "next/navigation";
 import NavItem from "./NavItem";
 
 interface SidebarItemsProps {
-  toggleMobileSidebar: () => void;
+  toggleMobileSidebar: (event: MouseEvent | null) => void;
 }
 
 const SidebarItems: React.FC<SidebarItemsProps> = ({ toggleMobileSidebar }) => {
   const pathname = usePathname();
   const pathDirect = pathname;
 
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    if (event) {
+      toggleMobileSidebar(event as unknown as MouseEvent);
+    }
+  };
+
   return (
     <div>
       <section className="">
         {Menuitems.map((item, index) => (
           <NavItem
+            item={item}
             key={index}
-            item={item} // Ensure item is typed correctly
             pathDirect={pathDirect}
-            onClick={() => {
-              toggleMobileSidebar();
-            }}
+            onClick={handleClick}
           />
         ))}
       </section>
@@ -31,5 +35,3 @@ const SidebarItems: React.FC<SidebarItemsProps> = ({ toggleMobileSidebar }) => {
 };
 
 export default SidebarItems;
-
-
