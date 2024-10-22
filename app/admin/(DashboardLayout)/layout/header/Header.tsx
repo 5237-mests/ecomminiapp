@@ -4,15 +4,17 @@ import Image from "next/image";
 import React from "react";
 import logo from "@/assets/fun shop-black.png";
 import auth from "@/assets/auth.jpg";
-
+// import { useState } from "react";
 interface ItemType {
   toggleMobileSidebar: (event: React.MouseEvent<HTMLElement>) => void;
 }
 
 const Header = ({ toggleMobileSidebar }: ItemType) => {
+  const [isShowLogOut, setIsShowLogout] = React.useState(false);
+
   return (
     <div>
-      <section className="sticky top-0 bg-blue-400 sm:h-20 h-16 flex justify-between px-8 items-center w-full shadow-2xl">
+      <section className="sticky top-0 bg-blue-400 sm:h-20 h-16 flex justify-between px-8 items-center w-full shadow-lg">
         <Image
           src={logo}
           alt="logo"
@@ -44,13 +46,20 @@ const Header = ({ toggleMobileSidebar }: ItemType) => {
             ></path>
           </svg>
         </button>
-        <Image
-          src={auth}
-          alt="Picture of the author"
-          width={690}
-          height={690}
-          className="rounded-full sm:h-16 h-10 w-auto"
-        />
+        <div className="flex items-center gap-4">
+          {isShowLogOut && (<button className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+            🔓 Logout
+          </button>)}
+          
+          <Image
+            onClick={() => setIsShowLogout(!isShowLogOut)}
+            src={auth}
+            alt="Picture of the author"
+            width={690}
+            height={690}
+            className="rounded-full sm:h-16 h-10 w-auto cursor-pointer"
+          />
+        </div>
       </section>
     </div>
   );

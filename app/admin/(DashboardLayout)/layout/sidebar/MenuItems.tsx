@@ -44,7 +44,7 @@ const Menuitems = [
   {
     title: "Product Categories",
     icon: IconTags,
-    href: "/admin/ui-components/pagination",
+    href: "/admin/ui-components/category",
   },
   {
     title: "Products",
