@@ -2,48 +2,48 @@ import { NextResponse } from 'next/server';
 import prisma from '@/utils/prisma';
 import cloudinary from '@/lib/cloudinary';
 
-//Update product
+// Define types for Product
+type ProductData = {
+  id?: number;
+  name?: string;
+  description?: string;
+  price?: number;
+  category_id?: number;
+  available?: boolean;
+  img?: string;
+};
+
+// Update product
 export const PUT = async (req: Request, { params }: { params: { id: string } }) => {
   try {
     const id = parseInt(params.id);
     const formData = await req.formData();
     const data = Object.fromEntries(formData);
 
-    //Type assertion for FormData entries
-    //@typescript-eslint/no-explicit-any
-    const productData: Record<string, any> = { ...data };
+    // Convert form data to the correct types
+    const productData: ProductData = {
+      ...data,
+      price: data.price ? parseFloat(data.price as string) : undefined,
+      category_id: data.category_id ? parseInt(data.category_id as string) : undefined,
+      available: data.available === 'true',
+    };
 
-    // parsefloat price
-    if (productData.price) {
-      productData.price = parseFloat(productData.price); //convert price to float
-    }
+    // Remove the 'id' field if present (shouldn't be updated)
+    delete productData['id'];
 
-    if (data.category_id) {
-      productData.category_id = parseInt(productData.category_id);
-    }
-
-    if (productData.available) {
-      productData.available = productData.available === 'true' ? true : false;
-    }
-
-    // delete id from data
-    delete productData.id;
-
-    //check if there is a file
+    // Check if there is a file to upload
     const file = formData.get('file') as Blob | null;
     if (file) {
       const uploadResponse = await cloudinary.uploader.upload(`data:${file.type};base64,${Buffer.from(await file.arrayBuffer()).toString('base64')}`, {
         upload_preset: 'erm5tqn2',
       });
-      data.img = uploadResponse.secure_url;
+      productData.img = uploadResponse.secure_url; // Add image URL to product data
     }
 
-    // delete file from data
-    delete productData.file;
-  
+    // Update product in the database
     const updatedProduct = await prisma.product.update({
       where: { id },
-      data : productData,
+      data: productData,
     });
 
     return NextResponse.json({ data: updatedProduct }, { status: 200 });
@@ -67,6 +67,7 @@ export const DELETE = async (req: Request, { params }: { params: { id: string } 
   }
 };
 
+// Get product by ID
 export const GET = async (req: Request, { params }: { params: { id: string } }) => {
   try {
     const id = parseInt(params.id);
