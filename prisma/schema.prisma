@@ -1,5 +1,3 @@
-// schema.prisma
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,14 +8,247 @@ datasource db {
   directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
 
+// User Table
 model User {
-  id            String @default(cuid()) @id
-  tg_id        Int? @unique
+  id            String   @default(cuid()) @id
+  tg_id        Int?     @unique
   first_name    String
   last_name     String
-  username     String @default("")
-  language_code String @default("en")
-  photo_url     String @default("")
+  username      String   @default("")
+  language_code String   @default("en")
+  photo_url     String   @default("")
+  phone_number  String   @default("")
+  role          Role     @default(user)
+  password_hash String   @default("")
+  email         String   @default("")
   createdAt     DateTime @default(now()) @map(name: "created_at")
-  updatedAt     DateTime  @updatedAt @map(name: "updated_at")
+  updatedAt     DateTime @updatedAt @map(name: "updated_at")
+
+  // Relation to Cart
+  cart         Cart?
+
+  // Relation to Order
+  orders       Order[]
+
+  // Relation to DeliveryPersonnel
+  delivery     DeliveryPersonnel?
+
+  // Relation to Favorites
+  favorites    Favorite[]
 }
+
+enum Role {
+  user
+  admin
+  superadmin
+  delivery
+}
+
+// Category model
+model Category {
+  id           Int      @id @default(autoincrement())
+  name         String
+  description  String
+  img          String
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  // Relation to Product
+  products     Product[]
+}
+
+// Product model
+model Product {
+  id           Int      @id @default(autoincrement())
+  name         String
+  description  String
+  price        Float
+  available    Boolean
+  likes        Int      @default(0)
+  category_id  Int
+  img          String
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  // Foreign key relation to Category
+  category     Category @relation(fields: [category_id], references: [id], onDelete: Cascade)
+
+  // Relation to Comment
+  comments     Comment[]
+
+  // One-to-many relation to CartItem
+  cartItems    CartItem[]
+
+  // One-to-many relation to OrderItem
+  orderItems   OrderItem[]
+
+  // Relation to Favorite
+  favorites    Favorite[]
+}
+
+// Comment model
+model Comment {
+  id           Int      @id @default(autoincrement())
+  content      String
+  product_id   Int
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  // Foreign key relation to Product
+  product      Product  @relation(fields: [product_id], references: [id], onDelete: Cascade)
+}
+
+// Cart model
+model Cart {
+  id           Int      @id @default(autoincrement())
+  user_id      String   @unique
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  // Foreign key relation to User
+  user         User     @relation(fields: [user_id], references: [id])
+
+  // One-to-many relation to CartItem
+  items        CartItem[]
+}
+
+// CartItem model
+model CartItem {
+  id           Int      @id @default(autoincrement())
+  cart_id      Int
+  product_id   Int
+  quantity     Int
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  // Foreign key relation to Cart
+  cart         Cart     @relation(fields: [cart_id], references: [id])
+
+  // Foreign key relation to Product
+  product      Product  @relation(fields: [product_id], references: [id], onDelete: Cascade)
+}
+
+// Order model
+model Order {
+  order_id         Int      @id @default(autoincrement())
+  user_id          String
+  total_price      Decimal  @db.Decimal(10, 2)
+  delivery_id      Int?
+  status           OrderStatus @default(PENDING)
+  order_date       DateTime @default(now()) @map("order_date")
+  delivery_date    DateTime?
+  pickup_address   String   @db.VarChar(255)
+  delivery_type    DeliveryType @default(ontable)
+  delivery_address String   @db.VarChar(255)
+  delivery_fee     Decimal  @db.Decimal(10, 2) @default(0)
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
+
+  // Foreign key relations to User (customer)
+  user             User     @relation(fields: [user_id], references: [id])
+
+  // Foreign key relations to User (delivery person)
+  delivery         DeliveryPersonnel? @relation(fields: [delivery_id], references: [delivery_id])
+
+  // Relations to OrderItems
+  orderItems       OrderItem[]
+
+  // Relation to Payment
+  payment          Payment?
+}
+
+enum DeliveryType {
+  takeaway
+  delivery 
+  ontable
+}
+
+// Enum for the status field
+enum OrderStatus {
+  PENDING
+  ACCEPTED
+  DELIVERING
+  COMPLETED
+  CANCELLED
+}
+
+// OrderItem model
+model OrderItem {
+  id          Int     @id @default(autoincrement())
+  order_id    Int
+  product_id  Int
+  quantity    Int
+
+  // Foreign key relation to Order
+  order       Order   @relation(fields: [order_id], references: [order_id])
+
+  // Foreign key relation to Product
+  product     Product @relation(fields: [product_id], references: [id], onDelete: Cascade)
+}
+
+// DeliveryPersonnel model
+model DeliveryPersonnel {
+  delivery_id   Int      @id @default(autoincrement())
+  user_id       String   @unique
+  availability  Boolean  @default(true)
+  vehicle_type  String   @db.VarChar(50)
+  license_plate String   @db.VarChar(50)
+
+  // Foreign key relation to User
+  user          User     @relation(fields: [user_id], references: [id])
+
+  // Relation to Order
+  orders        Order[]
+}
+
+// Favorites model
+model Favorite {
+  favorite_id   Int     @id @default(autoincrement())
+  user_id       String
+  product_id    Int
+  added_date    DateTime @default(now()) @map("added_date")
+
+  @@unique([user_id, product_id])
+
+  // Foreign key relations to User and Product
+  user          User     @relation(fields: [user_id], references: [id])
+  product       Product  @relation(fields: [product_id], references: [id], onDelete: Cascade)
+}
+
+// Payments model
+model Payment {
+  payment_id     Int      @id @default(autoincrement())
+  order_id       Int      @unique
+  amount         Decimal  @db.Decimal(10, 2)
+  payment_method PaymentMethod
+  status         PaymentStatus @default(pending)
+  payment_date   DateTime @default(now()) @map("payment_date")
+
+  // Foreign key relation to Order
+  order          Order     @relation(fields: [order_id], references: [order_id])
+}
+
+enum PaymentMethod {
+  cash
+  credit_card
+  online
+}
+
+enum PaymentStatus {
+  pending
+  completed
+  failed
+}
+
+// // DeliveryRoute model
+// model DeliveryRoute {
+//   route_id       Int      @id @default(autoincrement())
+//   order_id       Int
+//   pickup_lat     Float?
+//   pickup_long    Float?
+//   delivery_lat   Float?
+//   delivery_long  Float?
+//   distance       Decimal  @db.Decimal(10, 2)
+
+//   // Foreign key relation to Order
+//   order          Order     @relation(fields: [order_id], references: [order_id])
+// }

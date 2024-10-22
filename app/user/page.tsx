@@ -19,6 +19,7 @@ interface UserData {
 export default function Page() {
   const [userData, setUserData] = useState<UserData | null>(null);
   const [photo, setPhoto] = useState<string | null>("");
+  const [allUser, setAllUser] = useState([{} as UserData]);
 
   const router = useRouter();
   const back = () => {
@@ -46,6 +47,34 @@ export default function Page() {
     };
   }, []);
 
+  //get all user
+  useEffect(() => {
+    const getAllUser = async () => {
+      try {
+        const response = await fetch("/api/user");
+        const data = await response.json();
+        setAllUser(data);
+      } catch (error) {
+        console.log("Error:", error);
+      }
+    };
+    getAllUser();
+  }, [])
+
+  // delete user
+  const deleteUser = async (id: number) => {
+    try {
+      await fetch(`/api/user?user_id=${id}`, {
+        method: "DELETE",
+      });
+    } catch (error) {
+      console.log("Error:", error);
+    }
+
+    const updatedUser = allUser.filter((user: UserData) => user.id !== id);
+    setAllUser(updatedUser);
+  };
+
   return (
     <div className="m-10">
       <h1 className="text-xl font-bold">Profile Details</h1>
@@ -68,6 +97,16 @@ export default function Page() {
           <Image src={userData.photo_url} alt="User profile" />
         </div>
       )}
+
+      {/* render all user */}
+      <div>
+        <h1 className="text-xl font-bold">All Users</h1>
+        <ul>
+          {allUser.map((user: UserData) => (
+            <li key={user.id}>{user.username} - {user.first_name} <button className="text-red-500" onClick={() => deleteUser(user.id)}>Delete</button></li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }
