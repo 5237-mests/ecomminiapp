@@ -4,11 +4,10 @@ import React from 'react'
 
 const page = () => {
   return (
-    <div className='bg-blue-300 w-full h-screen'>
-      admin page ook
-      {/* <Test/> */}
-    </div>
-  )
+    <div className="">
+      admin page ooooo ooooo ooooo oooooo oooooooo oooooo ooo ooooo oooooo ooooo ooooooo oooooo oo oooo ooooooo oooooo oooo oo
+    </div> 
+  );
 }
 
 export default page

@@ -2,12 +2,14 @@
 import React, { useEffect, useState } from "react";
 import SidebarItems from "./SidebarItems";
 import { SidebarProfile } from "./sidbarProfil";
+import logo from "@/assets/fun shop.png";
 import {
   Dialog,
   DialogBackdrop,
   DialogPanel,
   DialogTitle,
 } from "@headlessui/react"; 
+import Image from "next/image";
 
 interface ItemType {
   isMobileSidebarOpen: boolean;
@@ -33,20 +35,16 @@ const Sidebar = ({
 
   return matches;
 };
-const matches = useMediaQuery("(min-width: 1024px)");
+
+const matches = useMediaQuery("(min-width: 768px)");
  if (matches) {
    return (
-     <div className="w-1/6 absolute h-full ">
-       <div className="flex h-full flex-col  bg-white shadow-xl">
-         <div className=" ">
-           <div className="text-base font-semibold leading-6 text-gray-900">
-             <SidebarProfile />
-           </div>
-         </div>
-         <div className="relative mt-6  flex-1  ">
-           {/* Your content */}
-           <SidebarItems {...{ toggleMobileSidebar: onSidebarClose }} />
-         </div>
+     <div className="md:w-1/4 lg:w-1/6 fixed h-full flex flex-col bg-white shadow-xl">
+       <div className="text-base font-semibold leading-6 text-gray-900">
+         <SidebarProfile />
+       </div>
+       <div className="relative mt-2 flex-1 overflow-y-auto">
+         <SidebarItems toggleMobileSidebar={onSidebarClose} />
        </div>
      </div>
    );
@@ -70,12 +68,13 @@ const matches = useMediaQuery("(min-width: 1024px)");
               className="pointer-events-auto relative w-screen max-w-md transform transition duration-500 ease-in-out data-[closed]:-translate-x-full sm:duration-700"
             >
               <div className="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
-                <div className=" ">
+                <div className=" bg-white  ">
                   <DialogTitle className="text-base font-semibold leading-6 text-gray-900">
+                    <Image className=" rounded-full h-10 w-auto" src={logo} alt="Fun Shop" width={200} height={200} />
                     <SidebarProfile />
                   </DialogTitle>
                 </div>
-                <div className="relative mt-6 flex-1 px-4 ">
+                <div className="relative mt-2 flex-1 px-4 ">
                   {/* Your content */}
                   <SidebarItems {...{ toggleMobileSidebar: onSidebarClose }} />
                 </div>
