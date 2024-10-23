@@ -8,7 +8,9 @@ interface SidebarItemsProps {
   toggleMobileSidebar: (event: MouseEvent | null) => void;
 }
 
-const SidebarItems: React.FC<SidebarItemsProps> = ({ toggleMobileSidebar }) => {
+const SidebarItems: React.FC<SidebarItemsProps> = ({
+  toggleMobileSidebar,
+}) => {
   const pathname = usePathname();
   const pathDirect = pathname;
 
