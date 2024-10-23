@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import Header from "@/app/admin/(DashboardLayout)/layout/header/Header";
-import Sidebar from "@/app/admin/(DashboardLayout)/layout/sidebar/Sidebar";
+import Header from "@/components/dashboard/header/Header";
+import Sidebar from "@/components/dashboard/sideBar/Sidebar";
 
 export default function RootLayout({
   children,
@@ -19,7 +19,7 @@ export default function RootLayout({
           isMobileSidebarOpen={isMobileSidebarOpen}
           onSidebarClose={() => setMobileSidebarOpen(false)}
         />
-        <main className="pl-4 md:ml-[25%] lg:ml-[16.67%] w-full p-8 bg-[#EEF5F9]">
+        <main className="pl-4 md:ml-[25%] lg:ml-[16.67%] sm:mt-[5rem] mt-[4rem] w-full p-8 bg-[#EEF5F9]">
           <div>{children}</div>
         </main>
       </div>

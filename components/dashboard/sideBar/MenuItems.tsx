@@ -9,7 +9,6 @@ import {
   IconPackage,
 } from "@tabler/icons-react";
 
-
 const Menuitems = [
   {
     title: "Dashboard",
@@ -19,37 +18,37 @@ const Menuitems = [
   {
     title: "Orders",
     icon: IconShoppingCart,
-    href: "/admin/ui-components/buttons",
+    href: "/admin/buttons",
   },
   {
     title: "Customers",
     icon: IconUsers,
-    href: "/admin/ui-components/forms",
+    href: "/admin/forms",
   },
   {
     title: "Employees",
     icon: IconUserCheck,
-    href: "/admin/ui-components/alerts",
+    href: "/admin/alerts",
   },
   {
     title: "Order Status",
     icon: IconTimeline,
-    href: "/admin/ui-components/ratings",
+    href: "/admin/ratings",
   },
   {
     title: "Images",
     icon: IconPhoto,
-    href: "/admin/ui-components/images",
+    href: "/admin/images",
   },
   {
     title: "Product Categories",
     icon: IconTags,
-    href: "/admin/ui-components/category",
+    href: "/admin/product_category",
   },
   {
     title: "Products",
     icon: IconPackage,
-    href: "/admin/ui-components/table",
+    href: "/admin/product",
   },
 ];
 
