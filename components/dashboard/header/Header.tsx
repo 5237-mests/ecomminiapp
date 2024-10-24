@@ -4,6 +4,8 @@ import Image from "next/image";
 import React from "react";
 import logo from "@/assets/fun shop-black.png";
 import auth from "@/assets/auth.jpg";
+import { useRouter } from "next/navigation";
+
 // import { useState } from "react";
 interface ItemType {
   toggleMobileSidebar: (event: React.MouseEvent<HTMLElement>) => void;
@@ -11,7 +13,7 @@ interface ItemType {
 
 const Header = ({ toggleMobileSidebar }: ItemType) => {
   const [isShowLogOut, setIsShowLogout] = React.useState(false);
-
+const router = useRouter();
   return (
     <div>
       <section className="fixed top-0 z-50 bg-blue-400 sm:h-20 h-16 flex justify-between px-8 items-center w-full shadow-lg">
@@ -48,7 +50,7 @@ const Header = ({ toggleMobileSidebar }: ItemType) => {
         </button>
         <div className="flex items-center gap-4">
           {isShowLogOut && (
-            <button className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+            <button onClick={()=>router.push("/admin/login")} className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
               🔓 Logout
             </button>
           )}
