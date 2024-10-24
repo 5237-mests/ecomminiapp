@@ -72,22 +72,24 @@ export default function ProductsPage() {
     setAvailableItemLoading(product.id);
     const newAvailability = !product.available;
 
-    // Create a FormData object
     const formData = new FormData();
-    formData.append("available", newAvailability.toString()); // Add availability as a string
+    formData.append("available", newAvailability.toString()); 
 
-    // Send the PUT request with FormData
     const res = await fetch(`/api/product/${product.id}`, {
       method: "PUT",
-      body: formData, // Send formData
+      body: formData, 
     });
 
     if (res.ok) {
       fetchProducts();
       setAvailableItemLoading(null);
-      // Re-fetch products after the update
     }
   };
+
+const getCategoryName = (categoryId: number) => {
+  const category = categories.find((category) => category.id === categoryId);
+  return category?.name;
+}
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
@@ -232,7 +234,7 @@ export default function ProductsPage() {
                   />
                   <span>
                     <p className="ml-2 font-medium">{product.name}</p>
-                    <p className="ml-2 text-gray-400">category name</p>
+                    <p className="ml-2 text-gray-400 text-sm">{getCategoryName(product.category_id)}</p>
                   </span>
                 </td>
                 <td className="py-2 px-4">{product.description}</td>
