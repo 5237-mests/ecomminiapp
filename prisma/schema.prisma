@@ -67,6 +67,7 @@ model Product {
   likes        Int      @default(0)
   category_id  Int
   img          String
+  detail_img   String[]
   createdAt    DateTime @default(now()) @map("created_at")
   updatedAt    DateTime @updatedAt @map("updated_at")
 
