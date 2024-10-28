@@ -6,7 +6,6 @@ export interface Category {
 }
 
 export interface Product {
- 
   product_id: number;
   name: string;
   description: string;
@@ -14,17 +13,19 @@ export interface Product {
   available: boolean;
   category_id: number;
   img: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 
-// src/types/product.ts
-// export type Product = {
-//   id: number | null;
-//   name: string;
-//   description: string;
-//   price: number;
-//   available: boolean;
-//   category_id: string;
-//   image?: string | null;
-//   file?: any;
-// };
+export interface Products {
+  id: number | null;
+  name: string;
+  description: string;
+  price: number;
+  available: boolean;
+  category_id: number;
+  image?: string | null;
+  file?: any;
+  createdAt?: string;
+};

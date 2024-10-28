@@ -1,11 +1,13 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 // import axios from "axios";
 import Image from "next/image";
 import React from "react";
 import { IconSearch } from "@tabler/icons-react";
 import AddProduct from "@/components/dashboard/product/addProduct";
 import { BeatLoader } from "react-spinners";
+import { useRouter } from "next/navigation";
+import { Link } from "lucide-react";
 
 interface Category {
   id: number;
@@ -33,7 +35,12 @@ export default function ProductsPage() {
   const [filteredProducts, setFilteredProducts] = useState<Product[]>(products);
   const [activeCategory, setActiveCategory] = useState<number | null>(null);
   const [availableItems, setAvailableItems] = useState<Product[]>(products);
-  const [availableItemLoading, setAvailableItemLoading] = useState<number | null>(null);
+  const [availableItemLoading, setAvailableItemLoading] = useState<
+    number | null
+  >(null);
+
+  const router = useRouter();
+
   // Fetch categories and products
   useEffect(() => {
     fetchCategories();
@@ -73,11 +80,11 @@ export default function ProductsPage() {
     const newAvailability = !product.available;
 
     const formData = new FormData();
-    formData.append("available", newAvailability.toString()); 
+    formData.append("available", newAvailability.toString());
 
     const res = await fetch(`/api/product/${product.id}`, {
       method: "PUT",
-      body: formData, 
+      body: formData,
     });
 
     if (res.ok) {
@@ -86,10 +93,10 @@ export default function ProductsPage() {
     }
   };
 
-const getCategoryName = (categoryId: number) => {
-  const category = categories.find((category) => category.id === categoryId);
-  return category?.name;
-}
+  const getCategoryName = (categoryId: number) => {
+    const category = categories?.find((category) => category.id === categoryId);
+    return category?.name;
+  };
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
@@ -116,18 +123,22 @@ const getCategoryName = (categoryId: number) => {
   };
 
   // Filter search products
- const filteredData = filteredProducts
-   .filter((product) =>
-     product.name.toLowerCase().includes(searchTerm.toLowerCase())
-   )
-   .sort((a, b) => {
-     return a.available === b.available ? 0 : a.available ? -1 : 1;
-   });
+  const filteredData = filteredProducts
+    .filter((product) =>
+      product.name.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+    .sort((a, b) => {
+      return a.available === b.available ? 0 : a.available ? -1 : 1;
+    });
+
+    function formatDate(dateString: string) {
+      const date = new Date(dateString);
+      return date.toLocaleDateString() + " " + date.toLocaleTimeString(); // Formats date as "MM/DD/YYYY HH:MM:SS AM/PM"
+    }
 
 
-  
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div className="min-h-screen bg-gray-50 p-6 ">
       <header className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold text-gray-800">Products</h1>
         <button
@@ -140,10 +151,10 @@ const getCategoryName = (categoryId: number) => {
 
       {/* Filters */}
       <div className="mb-6 flex items-center gap-4">
-        <div className="flex gap-4 border-b w-full">
+        <div className="flex gap-4 border-b w-full relative">
           <button
             onClick={() => showAllProducts()}
-            className={`text-sm text-gray-600 pb-1 ${
+            className={`w-24 text-sm text-gray-600 pb-1  bg-gray-100 hover:bg-gray-200 rounded-md ${
               activeCategory === null ? "border-b-2 border-blue-500 pb-1" : ""
             }`}
           >
@@ -153,15 +164,28 @@ const getCategoryName = (categoryId: number) => {
             <button
               key={category.id}
               onClick={() => filterProductsByCategory(category.id)}
-              className={`text-sm text-gray-600 pb-1 ${
+              className={`text-sm text-gray-600 pb-1  bg-gray-100 hover:bg-gray-200 rounded-md items-center flex justify-center ${
                 activeCategory === category.id
                   ? "border-b-2 border-blue-500"
                   : ""
               }`}
             >
-              {category.name}
+              <Image
+                src={category.img}
+                alt={category.name}
+                width={120}
+                height={120}
+                className="w-auto h-10 rounded-full"
+              />
+              <p className="text-center w-16">{category.name}</p>
             </button>
           ))}
+          <button
+            onClick={() => router.push("/admin/product/category")}
+            className="ml-auto absolute right-0 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+          >
+            Add Category
+          </button>
         </div>
       </div>
       {/* quantity and status */}
@@ -195,7 +219,7 @@ const getCategoryName = (categoryId: number) => {
       </div>
       {/* Product Table */}
       <div className="overflow-x-auto shadow-md rounded-2xl">
-        <table className="min-w-full bg-white">
+        <table className="min-w-full divide-y divide-gray-200 bg-white ">
           <thead className="bg-gray-100 ">
             <tr>
               <th className="py-2 px-4 text-left text-sm font-medium text-gray-500 ">
@@ -219,53 +243,82 @@ const getCategoryName = (categoryId: number) => {
               <th className="py-2 px-4 text-left text-sm font-medium text-gray-500">
                 CREATED AT
               </th>
+              <th className="py-2 px-4 text-left text-sm font-medium text-gray-500">
+                ACTION
+              </th>
             </tr>
           </thead>
-          <tbody>
-            {filteredData.map((product) => (
-              <tr key={product.id} className="border-t">
-                <td className="py-2 px-4 flex items-center">
-                  <Image
-                    src={product.img}
-                    alt="Product Image"
-                    width={25}
-                    height={25}
-                    className="rounded-lg h-10 w-10"
-                  />
-                  <span>
-                    <p className="ml-2 font-medium">{product.name}</p>
-                    <p className="ml-2 text-gray-400 text-sm">{getCategoryName(product.category_id)}</p>
-                  </span>
-                </td>
-                <td className="py-2 px-4">{product.description}</td>
-                <td className="py-2 px-4">ETB : {product.price}</td>
-                <td className="py-2 px-4">
-                  <label className="inline-flex items-center cursor-pointer bg-blue-100 rounded-2xl">
-                    <input
-                      checked={product.available}
-                      onClick={() => updateProductAvailability(product)}
-                      type="checkbox"
-                      className="sr-only peer"
-                    />
-                    <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-0 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:w-5 after:h-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-400"></div>
-
-                    <span className="ms-3 text-sm font-medium text-gray-600 mr-3 w-20">
-                      {availableItemLoading ===product.id ? (
-                        <BeatLoader color="#14eca5" size={8}/>
-                      ) : product.available ? (
-                        "Available"
-                      ) : (
-                        "Unavailable"
-                      )}
-                    </span>
-                  </label>
-                </td>
-                <td className="py-2 px-4">?</td>
-                <td className="py-2 px-4">?</td>
-                <td className="py-2 px-4">{product.createdAt}</td>
-              </tr>
-            ))}
-          </tbody>
+          <Suspense
+            fallback={
+              <div className="text-center p-5">
+                <BeatLoader color="#14eca5" size={10} />
+              </div>
+            }
+          >
+            <tbody>
+              {filteredData.length === 0 ? (
+                <tr>
+                  <td colSpan={6} className="py-2 px-4 text-center text-sm font-medium text-red-500">
+                    <p>No products found.</p>
+                  </td>
+                </tr>
+              ) : (
+                filteredData.map((product) => (
+                  <tr key={product.id} className="border-t">
+                    <td className="py-2 px-4 flex items-center">
+                      
+                      <Image
+                        src={product.img}
+                        alt="Product Image"
+                        width={25}
+                        height={25}
+                        className="rounded-lg h-10 w-10"
+                      />
+                      <span>
+                        <p className="ml-2 font-medium">{product.name}</p>
+                        <p className="ml-2 text-gray-400 text-sm">
+                          {getCategoryName(product.category_id)}
+                        </p>
+                      </span>
+                    </td>
+                    <td className="py-2 px-4">{product.description}</td>
+                    <td className="py-2 px-4">ETB : {product.price}</td>
+                    <td className="py-2 px-4">
+                      <label className="inline-flex items-center cursor-pointer bg-blue-100 rounded-2xl">
+                        <input
+                          checked={product.available}
+                          onClick={() => updateProductAvailability(product)}
+                          type="checkbox"
+                          className="sr-only peer"
+                        />
+                        <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-0 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:w-5 after:h-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-400"></div>
+                        <span className="ms-3 text-sm font-medium text-gray-600 mr-3 w-20">
+                          {availableItemLoading === product.id ? (
+                            <BeatLoader color="#14eca5" size={8} />
+                          ) : product.available ? (
+                            "Available"
+                          ) : (
+                            "Unavailable"
+                          )}
+                        </span>
+                      </label>
+                    </td>
+                    <td className="py-2 px-4">7</td>
+                    <td className="py-2 px-4">2</td>
+                    <td className="py-2 px-4">
+                      {formatDate(product.createdAt)}
+                    </td>
+                    <td className="py-2 px-4 cursor-pointer">
+                      <Link
+                        onClick={()=>router.push(`/admin/product/${product.id}`)}
+                        className=""
+                      />
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </Suspense>
         </table>
       </div>
 
@@ -283,18 +336,4 @@ const getCategoryName = (categoryId: number) => {
       )}
     </div>
   );
-}
-
-{
-  /* <span
-                    className={`px-2 py-1 text-xs rounded-full ${
-                      product.status === "Published"
-                        ? "bg-green-100 text-green-800"
-                        : product.status === "Draft"
-                        ? "bg-gray-100 text-gray-800"
-                        : "bg-red-100 text-red-800"
-                    }`}
-                  >
-                    {product.status}
-                  </span> */
 }

@@ -22,7 +22,7 @@ const SidebarItems: React.FC<SidebarItemsProps> = ({
 
   return (
     <div>
-      <section className="">
+      <section  className="">
         {Menuitems.map((item, index) => (
           <NavItem
             item={item}
