@@ -45,15 +45,15 @@ export default function CategoriesAndProductsPage() {
     setCategories(data.data);
   };
 
-  const fetchProducts = async () => {
-    const res = await fetch("/api/product");
-    const data = await res.json();
-    setProducts(data);
-  };
+  // const fetchProducts = async () => {
+  //   const res = await fetch("/api/product");
+  //   const data = await res.json();
+  //   setProducts(data);
+  // };
 
   useEffect(() => {
     fetchCategories();
-    fetchProducts();
+    // fetchProducts();
   }, []);
 
   // Handle Category Input Change
@@ -141,7 +141,7 @@ export default function CategoriesAndProductsPage() {
     });
 
     if (res.ok) {
-      fetchProducts();
+      // fetchProducts();
       setNewProduct({
         id: null,
         name: "",
@@ -167,7 +167,7 @@ export default function CategoriesAndProductsPage() {
 
   const handleDeleteProduct = async (id: number) => {
     await axios.delete(`/api/product/${id}`);
-    fetchProducts();
+    // fetchProducts();
   };
 
   const handleEditProduct = (product: Product) => {

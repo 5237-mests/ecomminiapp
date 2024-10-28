@@ -1,4 +1,4 @@
-// "use client";
+"use client";
 // import React, { useState, useEffect } from "react";
 // import { Product } from "@/types/types";
 // import { fetchProduct, handleDeleteProduct } from "@/controller/controller";
@@ -191,6 +191,7 @@ interface Props {
 
 "use client";
 
+import Image from "next/image";
 import React, { useState, useEffect } from "react";
 
 const Page = ({ params }: Props) => {
@@ -201,6 +202,11 @@ const Page = ({ params }: Props) => {
 
   // Fetch initial images
   useEffect(() => {
+  /**
+   * Fetches the images for the product with the given productId.
+   * Updates the `detailImages` state with the retrieved images.
+   * If the fetch fails, logs the error to the console.
+   */
     const fetchProductImages = async () => {
       try {
         const response = await fetch(`/api/product/${productId}`);
@@ -211,8 +217,7 @@ const Page = ({ params }: Props) => {
       }
     };
     fetchProductImages();
-    console.log("details", detailImages);
-  }, []);
+  }, [ productId, detailImages ]);
 
   // Handle file input change
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -293,7 +298,7 @@ const Page = ({ params }: Props) => {
       <div className="grid grid-cols-3 gap-4">
         {detailImages?.map((imageUrl) => (
           <div key={imageUrl} className="relative">
-            <img src={imageUrl} alt="Detail" className="w-full h-auto rounded" />
+            <Image src={imageUrl} alt="Detail" className="w-full h-auto rounded" />
             <button
               onClick={() => handleDelete(imageUrl)}
               disabled={loading}

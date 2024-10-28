@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
@@ -143,7 +144,7 @@ const AddCategory: React.FC = () => {
           </div>
           {imagePreview && (
             <div className="mt-2">
-              <img
+              <Image
                 src={imagePreview}
                 alt="Category Preview"
                 className="w-full h-auto rounded"

@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/utils/prisma'; // Adjust path to your Prisma client instance
 import cloudinary from '@/lib/cloudinary';
-import { parse } from 'path';
 
 export const POST = async (req: Request) => {
   try {
