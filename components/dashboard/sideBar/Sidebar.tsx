@@ -35,15 +35,29 @@ const Sidebar = ({ isMobileSidebarOpen, onSidebarClose }: ItemType) => {
   const matches = useMediaQuery("(min-width: 768px)");
   if (matches) {
     return (
-      <div className="md:w-1/4 lg:w-1/6 fixed top-0 left-0 z-40 h-full flex flex-col bg-white shadow-xl mt-[5rem] border">
-        <div className="text-base font-semibold leading-6 text-gray-900">
-          <SidebarProfile />
+      <>
+        <style>
+          {`
+        .no-scrollbar::-webkit-scrollbar {
+          display: none; /* Hide scrollbar for Chrome, Safari, and Opera */
+        }
+        .no-scrollbar {
+          -ms-overflow-style: none; /* Hide scrollbar for IE and Edge */
+          scrollbar-width: none; /* Hide scrollbar for Firefox */
+        }
+      `}
+        </style>
+        <div className="md:w-1/4 lg:w-1/6 fixed top-0 left-0 z-40 h-[calc(100vh-4rem)] sm:h-[calc(100vh-5rem)] flex flex-col bg-white shadow-xl mt-[5rem] border">
+          <div className="text-base font-semibold leading-6 text-gray-900">
+            <SidebarProfile />
+          </div>
+          <div className="relative mt-2 flex-1 overflow-y-auto no-scrollbar">
+            <SidebarItems toggleMobileSidebar={onSidebarClose} />
+          </div>
         </div>
-        <div className="relative mt-2 flex-1 overflow-y-auto">
-          <SidebarItems toggleMobileSidebar={onSidebarClose} />
-        </div>
-      </div>
+      </>
     );
+
   }
 
   return (

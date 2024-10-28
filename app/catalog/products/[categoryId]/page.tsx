@@ -36,7 +36,7 @@ const Page = ({ params }: ProductsProps) => {
      return () => {
        WebApp.BackButton.offClick(handleBackClick);
      };
-   });
+   }, []);
   const { theme } = useTheme();
   const [likedProducts, setLikedProducts] = useState<{
     [key: number]: boolean;
