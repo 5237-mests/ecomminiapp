@@ -12,12 +12,14 @@ import Loading from "@/components/Loading/page";
 import Image from "next/image";
 import { IconEdit, IconPlus, IconTrash } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
+handleDeleteProduct } from "@/controller/controller";
 
 interface Props {
   params: {
     productId: number;
   };
 }
+
 
 const Page = ({ params }: Props) => {
   const { productId } = params;
@@ -34,6 +36,7 @@ const Page = ({ params }: Props) => {
 
   useEffect(() => {
     const getProduct = async () => {
+
       try {
         const productData = await fetchProduct(productId);
         setProduct(productData);
@@ -47,6 +50,7 @@ const Page = ({ params }: Props) => {
     };
     getProduct();
   }, [productId, render]);
+
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     if (acceptedFiles.length > 0) {
@@ -106,6 +110,7 @@ const Page = ({ params }: Props) => {
       const date = new Date(dateString);
       return date.toLocaleDateString() + " " + date.toLocaleTimeString(); // Formats date as "MM/DD/YYYY HH:MM:SS AM/PM"
     }
+
 
 
   return (
@@ -209,6 +214,7 @@ const Page = ({ params }: Props) => {
               <IconEdit size={18} />
               <span>Edit</span>
             </button>
+
             <button
               onClick={handleDelete}
               className="flex items-center space-x-2 px-4 py-2 bg-orange-600 text-white font-semibold rounded-lg shadow hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-orange-500"
