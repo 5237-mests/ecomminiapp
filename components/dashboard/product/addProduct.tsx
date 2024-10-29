@@ -1,3 +1,4 @@
+import Image from "next/image";
 import React, { useState } from "react";
 
 interface Category {
@@ -47,6 +48,7 @@ const AddProduct: React.FC<AddProductProps> = ({
     setNewProduct((prevProduct) => ({
       ...prevProduct,
       [name]: value,
+
     }));
   };
 
@@ -73,6 +75,7 @@ const AddProduct: React.FC<AddProductProps> = ({
   const fileInputRef = React.createRef<HTMLInputElement>();
   const handleClick = () => {
     fileInputRef.current?.click();
+    console.log("clicked", fileInputRef.current?.files);
   };
 
   const handleProductSubmit = async (e: React.FormEvent) => {
@@ -232,11 +235,24 @@ const AddProduct: React.FC<AddProductProps> = ({
                     Upload Image
                   </label>
                   <div
-                    className="flex items-center justify-center w-full h-24 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-200 dark:bg-gray-800 dark:border-gray-600 hover:bg-gray-300 dark:hover:bg-gray-700"
+                    className="flex gap-4 items-center justify-center w-full h-24 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-200 dark:bg-gray-800 dark:border-gray-600 hover:bg-gray-300 dark:hover:bg-gray-700"
                     onDrop={handleDrop}
                     onDragOver={handleDragOver}
                     onClick={handleClick}
                   >
+                    {newProduct.file ? (
+                      <div className="w-42 h-full">
+                        <Image
+                          src={newProduct.file ? URL.createObjectURL(newProduct.file) : ""}
+                          alt="Preview"
+                          width={200}
+                          height={200}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    ) : (
+                      ""
+                    )}
                     <div className="flex flex-col items-center justify-center pt-5 pb-6">
                       <svg
                         className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400"
@@ -258,7 +274,7 @@ const AddProduct: React.FC<AddProductProps> = ({
                         or drag and drop
                       </p>
                       <p className="text-xs text-gray-500 dark:text-gray-400">
-                        SVG, PNG, JPG or GIF (MAX. 800x400px)
+                        SVG, PNG, JPG or GIF (MAX. 400x400px)
                       </p>
                     </div>
                     <input
