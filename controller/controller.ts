@@ -48,3 +48,73 @@ export const handleDeleteProduct = async (
     return false; // return failure status
   }
 };
+
+//upload productDetailImg
+export const handleUploadProductDetailImg = async (productId:number, file: File) => {
+  const formData = new FormData();
+  formData.append("productId", productId.toString());
+  formData.append("file", file);
+  try {
+    const response = await fetch("/api/product/detail_img", {
+      method: "POST",
+      body: formData,
+    });
+    const data = await response.json();
+
+    if (data.error) {
+      console.error(data.error);
+    } else {
+      return data.data.detail_img;
+    }
+  } catch (error) {
+    console.error("Failed to upload image", error);
+  }
+};
+
+//delate productDetailImg
+export const handleDeleteDetailImg = async (imageUrl: string, productId: number) => {
+  try {
+    const response = await fetch("/api/product/detail_img", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ productId, imageUrlToRemove: imageUrl }),
+    });
+    const data = await response.json();
+
+    if (data.error) {
+      console.error(data.error);
+    } else {
+      return data.data.detail_img;
+      // setDetailImages(data.data.detail_img); // Update images array after deletion
+    }
+  } catch (error) {
+    console.error("Failed to delete image", error);
+  }
+}
+
+// export const handleDeleteDetailImg = async (
+//   imageUrl: string,
+//   productId: number
+// ) => {
+//   try {
+//     const response = await axios.delete("/api/product/detail_img", {
+//       data: { productId, imageUrlToRemove: imageUrl },
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//     });
+
+//     const data = response.data;
+
+//     if (data.error) {
+//       console.error(data.error);
+//     } else {
+//       return data.data.detail_img;
+//       // setDetailImages(data.data.detail_img); // Update images array after deletion
+//     }
+//   } catch (error) {
+//     console.error("Failed to delete image", error);
+//   }
+// };
