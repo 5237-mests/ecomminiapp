@@ -12,7 +12,6 @@ import Loading from "@/components/Loading/page";
 import Image from "next/image";
 import { IconEdit, IconPlus, IconTrash } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
-handleDeleteProduct } from "@/controller/controller";
 
 interface Props {
   params: {
