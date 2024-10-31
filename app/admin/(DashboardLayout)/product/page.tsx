@@ -50,7 +50,7 @@ export default function ProductsPage() {
   useEffect(() => {
     // Set initial filtered products to all products when the component mounts
     setFilteredProducts(products);
-    const availableProducts = products.filter((product) => product.available);
+    const availableProducts = products?.filter((product) => product.available);
     setAvailableItems(availableProducts);
     setActiveCategory(null);
   }, [products]);
@@ -69,7 +69,8 @@ export default function ProductsPage() {
     try {
       const res = await fetch("/api/product");
       const data = await res.json();
-      setProducts(data);
+      setProducts(data.data);
+      console.log("products", data);
       // setStatus(data.available);
     } catch (error) {
       console.error("Error fetching products:", error);
@@ -131,11 +132,10 @@ export default function ProductsPage() {
       return a.available === b.available ? 0 : a.available ? -1 : 1;
     });
 
-    function formatDate(dateString: string) {
-      const date = new Date(dateString);
-      return date.toLocaleDateString() + " " + date.toLocaleTimeString(); // Formats date as "MM/DD/YYYY HH:MM:SS AM/PM"
-    }
-
+  function formatDate(dateString: string) {
+    const date = new Date(dateString);
+    return date.toLocaleDateString() + " " + date.toLocaleTimeString(); // Formats date as "MM/DD/YYYY HH:MM:SS AM/PM"
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 p-6 ">
@@ -258,7 +258,10 @@ export default function ProductsPage() {
             <tbody>
               {filteredData.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="py-2 px-4 text-center text-sm font-medium text-red-500">
+                  <td
+                    colSpan={6}
+                    className="py-2 px-4 text-center text-sm font-medium text-red-500"
+                  >
                     <p>No products found.</p>
                   </td>
                 </tr>
@@ -266,7 +269,6 @@ export default function ProductsPage() {
                 filteredData.map((product) => (
                   <tr key={product.product_id} className="border-t">
                     <td className="py-2 px-4 flex items-center">
-                      
                       <Image
                         src={product.img}
                         alt="Product Image"
@@ -310,7 +312,9 @@ export default function ProductsPage() {
                     </td>
                     <td className="py-2 px-4 cursor-pointer">
                       <Link
-                        onClick={()=>router.push(`/admin/product/${product.product_id}`)}
+                        onClick={() =>
+                          router.push(`/admin/product/${product.product_id}`)
+                        }
                         className=""
                       />
                     </td>

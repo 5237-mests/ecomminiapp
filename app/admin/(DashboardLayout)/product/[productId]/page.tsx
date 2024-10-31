@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
-import { formatDistanceToNow } from 'date-fns';
+import { formatDistanceToNow } from "date-fns";
 import { Product, Comment } from "@/types/types";
 import {
   fetchProduct,
@@ -20,7 +20,6 @@ interface Props {
   };
 }
 
-
 const Page = ({ params }: Props) => {
   const { productId } = params;
   const [product, setProduct] = useState<Product | null>(null);
@@ -37,7 +36,6 @@ const Page = ({ params }: Props) => {
 
   useEffect(() => {
     const getProduct = async () => {
-
       try {
         const productData = await fetchProduct(productId);
         setProduct(productData);
@@ -51,7 +49,9 @@ const Page = ({ params }: Props) => {
     };
     const getProductComments = async () => {
       try {
-        const productComments = await fetch(`/api/product/comments/${productId}`);
+        const productComments = await fetch(
+          `/api/product/comments/${productId}`
+        );
         const data = await productComments.json();
         setComments(data.data);
       } catch (error) {
@@ -60,7 +60,7 @@ const Page = ({ params }: Props) => {
       } finally {
         setRender(!render);
       }
-    }
+    };
     getProduct();
     getProductComments();
   }, [productId]);
@@ -68,8 +68,7 @@ const Page = ({ params }: Props) => {
   //sort comments asc
   comments?.sort((a, b) => {
     return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-  })
-
+  });
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     if (acceptedFiles.length > 0) {
@@ -128,8 +127,6 @@ const Page = ({ params }: Props) => {
     const date = new Date(dateString);
     return date.toLocaleDateString() + " " + date.toLocaleTimeString(); // Formats date as "MM/DD/YYYY HH:MM:SS AM/PM"
   }
-
-
 
   return (
     <div className="min-h-screen bg-gray-100 p-8">
@@ -248,8 +245,12 @@ const Page = ({ params }: Props) => {
           <div className="grid grid-cols-2 gap-y-4 text-lg">
             <p className="font-semibold text-gray-700">Product:</p>
             <p className="text-gray-600">{product.name}</p>
+
             <p className="font-semibold text-gray-700">Price:</p>
-            <p className="text-gray-600">${product.price}</p>
+            <p className="text-gray-600">{product.price}</p>
+
+            <p className="font-semibold text-gray-700">Likes:</p>
+            <p className="text-gray-600">{product.likes}</p>
             <p className="font-semibold text-gray-700">Category:</p>
             <p className="text-gray-600">{product.category.name}</p>
             <p className="font-semibold text-gray-700">Availability:</p>
@@ -277,11 +278,15 @@ const Page = ({ params }: Props) => {
           </div>
         </div>
         <div>
-          <p className="text-lg font-semibold text-gray-700 mb-2 border-t border-gray-200">Comments</p>
+          <p className="text-lg font-semibold text-gray-700 mb-2 border-t border-gray-200">
+            Comments
+          </p>
           <div className="space-y-4 mt-4">
             {comments?.map((comment: Comment) => (
               <div key={comment.id} className="bg-gray-100 p-4 rounded-lg">
-                <p className="text-gray-700 font-semibold">@{comment.user?.username}</p>
+                <p className="text-gray-700 font-semibold">
+                  @{comment.user?.username}
+                </p>
                 <p className="text-gray-500 text-sm">
                   {formatRelativeTime(comment.createdAt)}
                 </p>
@@ -296,9 +301,6 @@ const Page = ({ params }: Props) => {
 };
 
 export default Page;
-
-
-
 
 function formatRelativeTime(dateString: string): string {
   const date = new Date(dateString);

@@ -10,6 +10,7 @@ export interface Product {
   name: string;
   description: string;
   price: number;
+  likes: number;
   available: boolean;
   category_id: number;
   category: {
@@ -19,7 +20,6 @@ export interface Product {
   createdAt?: string;
   updatedAt?: string;
 }
-
 
 export interface Products {
   id: number | null;
@@ -31,7 +31,7 @@ export interface Products {
   image?: string | null;
   file?: any;
   createdAt?: string;
-};
+}
 
 export interface Comment {
   id: number;
