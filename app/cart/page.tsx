@@ -28,7 +28,7 @@ const Page = () => {
 
   const { cartItems, addItem, removeItem, clearCart } = useCart();
   const { isFavorite, addFavorite, removeFavorite } = useFavorites();
-  const products: Product[] = data.products;
+  const products = data.products;
 
   // Get only the products that are in the cart
   const cartProductItems = products.filter(

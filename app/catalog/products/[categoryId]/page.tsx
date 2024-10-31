@@ -48,7 +48,7 @@ const Page = ({ params }: ProductsProps) => {
   const { cartItems, addItem, removeItem } = useCart();
   const { categoryId } = params;
   const categories: Category[] = data.categories;
-  const products: Product[] = data.products;
+  const products = data.products;
 
   if (!categoryId || typeof categoryId !== "string") {
     return <p>Loading...</p>;
@@ -110,7 +110,7 @@ const Page = ({ params }: ProductsProps) => {
       </div>
 
       <div className="p-8 gap-1 pt-20">
-        {filteredProducts.map((product: Product) => (
+        {filteredProducts.map((product) => (
           <div
             className="border rounded-lg mb-4 shadow-xl"
             style={{ backgroundColor: theme.sectionBgColor }}

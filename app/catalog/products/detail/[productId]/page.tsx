@@ -41,7 +41,7 @@ const Page = ({ params }: ProductProps) => {
   const { cartItems, addItem, removeItem } = useCart(); 
 
   const { productId } = params;
-  const products: Product[] = data.products;
+  const products = data.products;
 
   if (!productId) {
     return <p>Loading...</p>;
