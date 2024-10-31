@@ -1,13 +1,13 @@
 "use client";
 import { useEffect } from "react";
 import data from "../../assets/data.json";
-import { Category } from "../../types/types";
+import { category } from "../../types/types";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 const Page: React.FC = () => {
-  const categories: Category[] = data.categories;
+  const categories: category[] = data.categories;
   const router = useRouter();
 
   useEffect(() => {
@@ -30,7 +30,7 @@ const Page: React.FC = () => {
         Catalog
       </h1>
       <div className="grid grid-cols-2 gap-1 p-2 mt-16">
-        {categories.map((category: Category) => (
+        {categories.map((category: category) => (
           <Link
             key={category.category_id}
             href={`catalog/products/${category.category_id}`}

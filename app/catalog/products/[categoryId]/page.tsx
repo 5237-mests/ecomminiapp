@@ -1,7 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 import data from "@/assets/data.json";
-import { Category } from "@/types/types";
+import { category } from "@/types/types";
 import {  FaMinus, FaPlus } from "react-icons/fa";
 import Image from "next/image";
 import logo from "@/assets/fun shop.png";
@@ -47,7 +47,7 @@ const Page = ({ params }: ProductsProps) => {
   const [likeCounts, setLikeCounts] = useState<{ [key: number]: number }>({});
   const { cartItems, addItem, removeItem } = useCart();
   const { categoryId } = params;
-  const categories: Category[] = data.categories;
+  const categories: category[] = data.categories;
   const products = data.products;
 
   if (!categoryId || typeof categoryId !== "string") {
