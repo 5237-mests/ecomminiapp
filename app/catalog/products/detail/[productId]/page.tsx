@@ -1,7 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
 import data from "@/assets/data.json";
-import { Product } from "@/types/types";
 import { useFavorites } from "@/context/FavoriteContext"; // Import the useFavorites hook
 import { useCart } from "@/context/CartContext"; // Import the context
 import { FaHeart, FaMinus, FaPlus } from "react-icons/fa";

@@ -3,7 +3,6 @@ import { FaShoppingCart, FaPlus, FaMinus, FaHeart, FaRegHeart } from "react-icon
 import Link from "next/link";
 import Image from "next/image";
 import { useCart } from "@/context/CartContext";
-import { Product } from "@/types/types";
 import data from "@/assets/data.json";
 import { useFavorites } from "@/context/FavoriteContext";
 import { useEffect } from "react";
