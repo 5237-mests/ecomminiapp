@@ -23,7 +23,7 @@ export const POST = async (req: Request) => {
 
     // Step 2: Add the Cloudinary URL to the `detail_img` array in the database
     const updatedProduct = await prisma.product.update({
-      where: { id: parseInt(productId, 10) },
+      where: { product_id: productId },
       data: {
         detail_img: {
           push: newImageUrl,
@@ -47,7 +47,7 @@ export const DELETE = async (req: Request) => {
 
     // Get the current detail_img array
     const product = await prisma.product.findUnique({
-      where: { id: parseInt(productId, 10) },
+      where: { product_id: productId},
     })
 
     if (!product) {
@@ -58,7 +58,7 @@ export const DELETE = async (req: Request) => {
     const updatedDetailImg = product.detail_img.filter((url) => url !== imageUrlToRemove);
     // Update the product with the filtered array
     const updatedProduct = await prisma.product.update({
-      where: { id: parseInt(productId, 10) },
+      where: { product_id: productId },
       data: {
         detail_img: {
           set: updatedDetailImg,
