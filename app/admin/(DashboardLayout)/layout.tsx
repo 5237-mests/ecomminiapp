@@ -12,14 +12,14 @@ export default function RootLayout({
   const [isMobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col">
       <Header toggleMobileSidebar={() => setMobileSidebarOpen(true)} />
       <div className="flex flex-1">
         <Sidebar
           isMobileSidebarOpen={isMobileSidebarOpen}
           onSidebarClose={() => setMobileSidebarOpen(false)}
         />
-        <main className="pl-4 md:ml-[25%] lg:ml-[16.67%] sm:mt-[5rem] mt-[4rem] w-full p-8 bg-[#EEF5F9]">
+        <main className=" md:ml-[30%] lg:ml-[16.67%] sm:mt-[5rem] mt-[4rem] w-full p-2 sm:p-8 bg-[#EEF5F9]">
           <div>{children}</div>
         </main>
       </div>

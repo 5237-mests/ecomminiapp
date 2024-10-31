@@ -1,4 +1,12 @@
 export interface Category {
+  name: string;
+  description: string;
+  img: string;
+  id: number;
+}
+
+// for frontendtesting
+export interface category {
   category_id: number;
   name: string;
   description: string;
@@ -11,6 +19,7 @@ export interface Product {
   description: string;
   price: number;
   likes: number;
+  comments: Comment[];
   available: boolean;
   category_id: number;
   category: {
@@ -20,6 +29,7 @@ export interface Product {
   createdAt?: string;
   updatedAt?: string;
 }
+
 
 export interface Products {
   id: number | null;
@@ -31,7 +41,7 @@ export interface Products {
   image?: string | null;
   file?: any;
   createdAt?: string;
-}
+};
 
 export interface Comment {
   id: number;

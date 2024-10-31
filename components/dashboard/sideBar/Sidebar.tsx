@@ -47,7 +47,7 @@ const Sidebar = ({ isMobileSidebarOpen, onSidebarClose }: ItemType) => {
         }
       `}
         </style>
-        <div className="md:w-1/4 lg:w-1/6 fixed top-0 left-0 z-40 h-[calc(100vh-4rem)] sm:h-[calc(100vh-5rem)] flex flex-col bg-white shadow-xl mt-[5rem] border">
+        <div className="md:w-1/4 lg:w-1/6 fixed top-0 left-0 z-40 h-[calc(100vh-4rem)] sm:h-full flex flex-col bg-white shadow-xl mt-[5rem] border">
           <div className="text-base font-semibold leading-6 text-gray-900">
             <SidebarProfile />
           </div>
