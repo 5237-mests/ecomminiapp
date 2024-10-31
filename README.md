@@ -44,8 +44,10 @@ npx prisma migrate dev --name init
 <!-- push db -->
 npx prisma db push
 
-<!-- migrate new change -->
-npx prisma generate
 
 <!-- delete built .next folder -->
 rm -rf .next
+
+<!-- add new schema change to db -->
+npx prisma generate
+npx prisma migrate dev --name add_favorite_relation

@@ -17,7 +17,7 @@ interface Category {
 }
 
 interface Product {
-  id: number;
+  product_id: string;
   name: string;
   description: string;
   price: number;
@@ -36,7 +36,7 @@ export default function ProductsPage() {
   const [activeCategory, setActiveCategory] = useState<number | null>(null);
   const [availableItems, setAvailableItems] = useState<Product[]>(products);
   const [availableItemLoading, setAvailableItemLoading] = useState<
-    number | null
+    string | null
   >(null);
 
   const router = useRouter();
@@ -76,13 +76,13 @@ export default function ProductsPage() {
     }
   };
   const updateProductAvailability = async (product: Product) => {
-    setAvailableItemLoading(product.id);
+    setAvailableItemLoading(product.product_id);
     const newAvailability = !product.available;
 
     const formData = new FormData();
     formData.append("available", newAvailability.toString());
 
-    const res = await fetch(`/api/product/${product.id}`, {
+    const res = await fetch(`/api/product/${product.product_id}`, {
       method: "PUT",
       body: formData,
     });
@@ -264,7 +264,7 @@ export default function ProductsPage() {
                 </tr>
               ) : (
                 filteredData.map((product) => (
-                  <tr key={product.id} className="border-t">
+                  <tr key={product.product_id} className="border-t">
                     <td className="py-2 px-4 flex items-center">
                       
                       <Image
@@ -293,7 +293,7 @@ export default function ProductsPage() {
                         />
                         <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-0 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:w-5 after:h-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-400"></div>
                         <span className="ms-3 text-sm font-medium text-gray-600 mr-3 w-20">
-                          {availableItemLoading === product.id ? (
+                          {availableItemLoading === product.product_id ? (
                             <BeatLoader color="#14eca5" size={8} />
                           ) : product.available ? (
                             "Available"
@@ -310,7 +310,7 @@ export default function ProductsPage() {
                     </td>
                     <td className="py-2 px-4 cursor-pointer">
                       <Link
-                        onClick={()=>router.push(`/admin/product/${product.id}`)}
+                        onClick={()=>router.push(`/admin/product/${product.product_id}`)}
                         className=""
                       />
                     </td>

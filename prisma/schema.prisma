@@ -35,6 +35,9 @@ model User {
 
   // Relation to Favorites
   favorites    Favorite[]
+
+  // Relation to comments
+  comments     Comment[]
 }
 
 enum Role {
@@ -59,7 +62,7 @@ model Category {
 
 // Product model
 model Product {
-  id           Int      @id @default(autoincrement())
+  product_id   String   @id @default(cuid())
   name         String
   description  String
   price        Float
@@ -88,19 +91,34 @@ model Product {
 }
 
 // Comment model
+// model Comment {
+//   comment_id   String   @id @default(cuid())
+//   content      String
+//   user_id      String
+//   product_id   String
+//   createdAt    DateTime @default(now()) @map("created_at")
+
+//   // Foreign key relation to Product
+//   product      Product  @relation(fields: [product_id], references: [product_id], onDelete: Cascade)
+// }
 model Comment {
   id           Int      @id @default(autoincrement())
   content      String
-  product_id   Int
+  user_id      String
+  product_id   String
   createdAt    DateTime @default(now()) @map("created_at")
 
   // Foreign key relation to Product
-  product      Product  @relation(fields: [product_id], references: [id], onDelete: Cascade)
+  product      Product  @relation(fields: [product_id], references: [product_id], onDelete: Cascade)
+
+  // Foreign key relation to User
+  user         User     @relation(fields: [user_id], references: [id])
 }
+
 
 // Cart model
 model Cart {
-  id           Int      @id @default(autoincrement())
+  cart_id      String   @id @default(cuid())
   user_id      String   @unique
   createdAt    DateTime @default(now()) @map("created_at")
   updatedAt    DateTime @updatedAt @map("updated_at")
@@ -114,26 +132,26 @@ model Cart {
 
 // CartItem model
 model CartItem {
-  id           Int      @id @default(autoincrement())
-  cart_id      Int
-  product_id   Int
+  cart_item_id      String   @id @default(cuid())
+  cart_id           String
+  product_id   String
   quantity     Int
   createdAt    DateTime @default(now()) @map("created_at")
   updatedAt    DateTime @updatedAt @map("updated_at")
 
   // Foreign key relation to Cart
-  cart         Cart     @relation(fields: [cart_id], references: [id])
+  cart         Cart     @relation(fields: [cart_id], references: [cart_id], onDelete: Cascade)
 
   // Foreign key relation to Product
-  product      Product  @relation(fields: [product_id], references: [id], onDelete: Cascade)
+  product      Product  @relation(fields: [product_id], references: [product_id], onDelete: Cascade)
 }
 
 // Order model
 model Order {
-  order_id         Int      @id @default(autoincrement())
+  order_id         String   @id @default(cuid())
   user_id          String
   total_price      Decimal  @db.Decimal(10, 2)
-  delivery_id      Int?
+  delivery_id      String
   status           OrderStatus @default(PENDING)
   order_date       DateTime @default(now()) @map("order_date")
   delivery_date    DateTime?
@@ -174,21 +192,21 @@ enum OrderStatus {
 
 // OrderItem model
 model OrderItem {
-  id          Int     @id @default(autoincrement())
-  order_id    Int
-  product_id  Int
+  order_item_id  String   @id @default(cuid())
+  order_id    String
+  product_id  String
   quantity    Int
 
   // Foreign key relation to Order
   order       Order   @relation(fields: [order_id], references: [order_id])
 
   // Foreign key relation to Product
-  product     Product @relation(fields: [product_id], references: [id], onDelete: Cascade)
+  product     Product @relation(fields: [product_id], references: [product_id], onDelete: Cascade)
 }
 
 // DeliveryPersonnel model
 model DeliveryPersonnel {
-  delivery_id   Int      @id @default(autoincrement())
+  delivery_id   String   @id @default(cuid())
   user_id       String   @unique
   availability  Boolean  @default(true)
   vehicle_type  String   @db.VarChar(50)
@@ -205,27 +223,27 @@ model DeliveryPersonnel {
 model Favorite {
   favorite_id   Int     @id @default(autoincrement())
   user_id       String
-  product_id    Int
+  product_id    String
   added_date    DateTime @default(now()) @map("added_date")
 
-  @@unique([user_id, product_id])
 
   // Foreign key relations to User and Product
   user          User     @relation(fields: [user_id], references: [id])
-  product       Product  @relation(fields: [product_id], references: [id], onDelete: Cascade)
+  product       Product  @relation(fields: [product_id], references: [product_id], onDelete: Cascade)
+  @@unique([user_id, product_id])
 }
 
 // Payments model
 model Payment {
-  payment_id     Int      @id @default(autoincrement())
-  order_id       Int      @unique
+  payment_id     String   @id @default(cuid())
+  order_id       String   @unique
   amount         Decimal  @db.Decimal(10, 2)
   payment_method PaymentMethod
   status         PaymentStatus @default(pending)
   payment_date   DateTime @default(now()) @map("payment_date")
 
   // Foreign key relation to Order
-  order          Order     @relation(fields: [order_id], references: [order_id])
+  order          Order     @relation(fields: [order_id], references: [order_id], onDelete: Cascade)
 }
 
 enum PaymentMethod {

@@ -12,6 +12,9 @@ export interface Product {
   price: number;
   available: boolean;
   category_id: number;
+  category: {
+    name: string;
+  };
   img: string;
   createdAt?: string;
   updatedAt?: string;
@@ -29,3 +32,12 @@ export interface Products {
   file?: any;
   createdAt?: string;
 };
+
+export interface Comment {
+  id: number;
+  content: string;
+  createdAt: string;
+  user: {
+    username: string;
+  };
+}

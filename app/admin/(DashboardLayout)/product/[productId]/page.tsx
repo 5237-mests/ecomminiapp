@@ -1,7 +1,8 @@
 "use client";
 import React, { useState, useEffect, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
-import { Product } from "@/types/types";
+import { formatDistanceToNow } from 'date-fns';
+import { Product, Comment } from "@/types/types";
 import {
   fetchProduct,
   handleDeleteDetailImg,
@@ -30,6 +31,7 @@ const Page = ({ params }: Props) => {
   const [deleteLoading, setDeleteLoading] = useState<boolean>(false);
   const [uploadLoading, setUploadLoading] = useState<boolean>(false);
   const [imgFile, setImgFile] = useState<File | null>(null);
+  const [comments, setComments] = useState([{} as Comment]);
   const [render, setRender] = useState(false);
   const router = useRouter();
 
@@ -47,8 +49,26 @@ const Page = ({ params }: Props) => {
         setLoading(false);
       }
     };
+    const getProductComments = async () => {
+      try {
+        const productComments = await fetch(`/api/product/comments/${productId}`);
+        const data = await productComments.json();
+        console.log("fetched comments", data.data);
+        setComments(data.data);
+      } catch (error) {
+        setError("Failed to load product comments.");
+      } finally {
+        setRender(!render);
+      }
+    }
     getProduct();
-  }, [productId, render]);
+    getProductComments();
+  }, [productId]);
+
+  //sort comments asc
+  comments.sort((a, b) => {
+    return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+  })
 
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
@@ -105,10 +125,10 @@ const Page = ({ params }: Props) => {
     }
   };
 
-    function formatDate(dateString: string) {
-      const date = new Date(dateString);
-      return date.toLocaleDateString() + " " + date.toLocaleTimeString(); // Formats date as "MM/DD/YYYY HH:MM:SS AM/PM"
-    }
+  function formatDate(dateString: string) {
+    const date = new Date(dateString);
+    return date.toLocaleDateString() + " " + date.toLocaleTimeString(); // Formats date as "MM/DD/YYYY HH:MM:SS AM/PM"
+  }
 
 
 
@@ -232,7 +252,7 @@ const Page = ({ params }: Props) => {
             <p className="font-semibold text-gray-700">Price:</p>
             <p className="text-gray-600">${product.price}</p>
             <p className="font-semibold text-gray-700">Category:</p>
-            <p className="text-gray-600">{product.category_id}</p>
+            <p className="text-gray-600">{product.category.name}</p>
             <p className="font-semibold text-gray-700">Availability:</p>
             <p
               className={`font-medium ${
@@ -258,7 +278,18 @@ const Page = ({ params }: Props) => {
           </div>
         </div>
         <div>
-          <p className="text-lg font-semibold text-gray-700 mb-2 border-t border-gray-200"> Comments</p>
+          <p className="text-lg font-semibold text-gray-700 mb-2 border-t border-gray-200">Comments</p>
+          <div className="space-y-4 mt-4">
+            {comments?.map((comment: Comment) => (
+              <div key={comment.id} className="bg-gray-100 p-4 rounded-lg">
+                <p className="text-gray-700 font-semibold">@{comment.user.username}</p>
+                <p className="text-gray-500 text-sm">
+                  {formatRelativeTime(comment.createdAt)}
+                </p>
+                <p className="text-gray-600 text-md">{comment.content}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
     </div>
@@ -266,3 +297,11 @@ const Page = ({ params }: Props) => {
 };
 
 export default Page;
+
+
+
+
+function formatRelativeTime(dateString: string): string {
+  const date = new Date(dateString);
+  return formatDistanceToNow(date, { addSuffix: true });
+}

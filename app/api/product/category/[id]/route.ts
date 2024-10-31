@@ -16,7 +16,7 @@ export const GET = async (
     });
 
     if (!product) {
-      return NextResponse.json({ error: "Product not found" }, { status: 404 });
+      return NextResponse.json({ error: "Product not found*" }, { status: 404 });
     }
 
     return NextResponse.json({ data: product }, { status: 200 });
@@ -27,3 +27,18 @@ export const GET = async (
     );
   }
 };
+
+//delete category
+export const DELETE = async (req: Request, { params }: { params: { id: string } }) => {
+  try {
+    const id = parseInt(params.id);
+
+    const deletedCategory = await prisma.category.delete({
+      where: { id },
+    });
+
+    return NextResponse.json({ data: deletedCategory }, { status: 200 });
+  } catch (error: unknown) {
+    return NextResponse.json({ error: 'Delete failed', details: error }, { status: 500 });
+  }
+}

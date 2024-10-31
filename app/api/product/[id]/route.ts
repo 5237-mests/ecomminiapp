@@ -4,7 +4,7 @@ import cloudinary from '@/lib/cloudinary';
 
 // Define types for Product
 type ProductData = {
-  id?: number;
+  product_id?: string;
   name?: string;
   description?: string;
   price?: number;
@@ -16,7 +16,7 @@ type ProductData = {
 // Update product
 export const PUT = async (req: Request, { params }: { params: { id: string } }) => {
   try {
-    const id = parseInt(params.id);
+    const product_id = params.id;
     const formData = await req.formData();
     const data = Object.fromEntries(formData);
 
@@ -29,7 +29,7 @@ export const PUT = async (req: Request, { params }: { params: { id: string } }) 
     };
 
     // Remove the 'id' field if present (shouldn't be updated)
-    delete productData['id'];
+    delete productData['product_id'];
 
     // Check if there is a file to upload
     const file = formData.get('file') as Blob | null;
@@ -42,7 +42,7 @@ export const PUT = async (req: Request, { params }: { params: { id: string } }) 
 
     // Update product in the database
     const updatedProduct = await prisma.product.update({
-      where: { id },
+      where: { product_id },
       data: productData,
     });
 
@@ -55,10 +55,10 @@ export const PUT = async (req: Request, { params }: { params: { id: string } }) 
 // Delete product
 export const DELETE = async (req: Request, { params }: { params: { id: string } }) => {
   try {
-    const id = parseInt(params.id);
+    const product_id = params.id;
 
     const deletedProduct = await prisma.product.delete({
-      where: { id },
+      where: { product_id },
     });
 
     return NextResponse.json({ data: deletedProduct }, { status: 200 });
@@ -70,14 +70,15 @@ export const DELETE = async (req: Request, { params }: { params: { id: string } 
 // Get product by ID
 export const GET = async (req: Request, { params }: { params: { id: string } }) => {
   try {
-    const id = parseInt(params.id);
+    const product_id = params.id;
 
     const product = await prisma.product.findUnique({
-      where: { id },
+      where: { product_id },
+      include: { category: true },
     });
 
     if (!product) {
-      return NextResponse.json({ error: 'Product not found' }, { status: 404 });
+      return NextResponse.json({ error: 'Product not found*' }, { status: 404 });
     }
 
     return NextResponse.json({ data: product }, { status: 200 });

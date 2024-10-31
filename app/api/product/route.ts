@@ -11,7 +11,8 @@ cloudinary.config({
 
 // Get all products
 export async function GET() {
-  const products = await prisma.product.findMany();
+  const products = await prisma.product.findMany({
+    include: { category: true },});
   return new Response(JSON.stringify(products), {
     headers: { 'Content-Type': 'application/json' },
   });
