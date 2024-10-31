@@ -5,9 +5,8 @@ import cloudinary from "@/lib/cloudinary";
 
 
 // Get product by ID
-export const GET = async ( req: Request ) => {
+export const GET = async ( ) => {
   try {
-
     const product = await prisma.product.findMany();
 
     if (!product) {

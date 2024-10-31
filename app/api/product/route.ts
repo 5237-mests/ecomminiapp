@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 import prisma from '@/utils/prisma';
 
 // // Get all products
-export const GET = async (req: Request) => {
+export const GET = async () => {
     try {
         // const userId = req.headers.get('user-id'); // Retrieve user ID from request headers or session
         const user_id = "cm2w8sjta00009lg4w2152lwo";

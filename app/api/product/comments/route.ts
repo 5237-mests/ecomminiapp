@@ -3,9 +3,8 @@ import prisma from '@/utils/prisma';
 
 
 // Get product by ID
-export const GET = async (req: Request) => {
+export const GET = async () => {
     try {
-
         const product = await prisma.comment.findMany(
             {
                 include: { user: true },

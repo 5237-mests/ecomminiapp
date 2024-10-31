@@ -43,8 +43,8 @@ const Page = ({ params }: Props) => {
         setProduct(productData);
         setDetailImages(productData.detail_img);
       } catch (error) {
-        console.error("Failed to load product details:", error);
         setError("Failed to load product details.");
+        throw new Error("Failed to load product details.");
       } finally {
         setLoading(false);
       }
@@ -53,10 +53,10 @@ const Page = ({ params }: Props) => {
       try {
         const productComments = await fetch(`/api/product/comments/${productId}`);
         const data = await productComments.json();
-        console.log("fetched comments", data.data);
         setComments(data.data);
       } catch (error) {
         setError("Failed to load product comments.");
+        throw new Error("Failed to load product comments.");
       } finally {
         setRender(!render);
       }
@@ -111,15 +111,14 @@ const Page = ({ params }: Props) => {
     try {
       const status = await handleUploadProductDetailImg(productId, imgFile);
       if (status) {
-        console.log("status", status);
         setDetailImages((prev) => [...prev, status]);
         setImagePreview(null);
         setImgFile(null);
         setRender(!render);
       }
     } catch (err) {
-      console.error("Failed to upload image:", err);
       setError("Failed to upload image.");
+      throw new Error("Failed to upload image.");
     } finally {
       setUploadLoading(false);
     }
