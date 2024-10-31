@@ -67,22 +67,40 @@ export const DELETE = async (req: Request, { params }: { params: { id: string } 
   }
 };
 
-// Get product by ID
+// // Get product by ID
 export const GET = async (req: Request, { params }: { params: { id: string } }) => {
-  try {
-    const product_id = params.id;
+    try {
+        const productId  = params.id;
+        // const userId = req.headers.get('user-id'); // Retrieve user ID from request headers or session
+        const user_id = "cm2w8sjta00009lg4w2152lwo";
 
-    const product = await prisma.product.findUnique({
-      where: { product_id },
-      include: { category: true },
-    });
+        // Fetch the product data
+        const product = await prisma.product.findUnique({
+            where: { product_id: productId },
+            include: {
+                category: true,
+                comments: {
+                    include: { user: true },
+                },
+            },
+        });
 
-    if (!product) {
-      return NextResponse.json({ error: 'Product not found*' }, { status: 404 });
+        if (!product) {
+            return NextResponse.json({ error: 'Product not found' }, { status: 404 });
+        }
+
+        // Check if the product is liked by the user
+        const isLiked = Boolean(
+            await prisma.productLike.findUnique({
+                where: {
+                    user_id_product_id: { user_id, product_id: productId },
+                },
+            })
+        );
+
+        // Include `isLiked` in the response
+        return NextResponse.json({ data: { ...product, isLiked } }, { status: 200 });
+    } catch (error: unknown) {
+        return NextResponse.json({ error: 'Failed to fetch product', details: error }, { status: 500 });
     }
-
-    return NextResponse.json({ data: product }, { status: 200 });
-  } catch (error: unknown) {
-    return NextResponse.json({ error: 'Fetch failed', details: error }, { status: 500 });
-  }
 };

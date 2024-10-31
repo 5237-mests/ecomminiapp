@@ -1,22 +1,43 @@
-import { v2 as cloudinary } from 'cloudinary';
+import cloudinary from '@/lib/cloudinary';
 import { NextResponse } from 'next/server';
 import prisma from '@/utils/prisma';
 
-// Configure Cloudinary
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME!,
-  api_key: process.env.CLOUDINARY_API_KEY!,
-  api_secret: process.env.CLOUDINARY_API_SECRET!,
-});
+// // Get all products
+export const GET = async (req: Request) => {
+    try {
+        // const userId = req.headers.get('user-id'); // Retrieve user ID from request headers or session
+        const user_id = "cm2w8sjta00009lg4w2152lwo";
+        // Fetch all products
+        const products = await prisma.product.findMany({
+            include: {
+                category: true,
+                comments: {
+                    include: { user: true },
+                },
+            },
+        });
 
-// Get all products
-export async function GET() {
-  const products = await prisma.product.findMany({
-    include: { category: true },});
-  return new Response(JSON.stringify(products), {
-    headers: { 'Content-Type': 'application/json' },
-  });
-}
+        // Retrieve all product likes for the current user in one query
+        const userLikes = await prisma.productLike.findMany({
+            where: { user_id },
+            select: { product_id: true },
+        });
+
+        // Convert user likes to a set of product IDs for easy lookup
+        const likedProductIds = new Set(userLikes.map((like) => like.product_id));
+
+        // Add `isLiked` property to each product based on whether it exists in likedProductIds
+        const productsWithLikes = products.map((product) => ({
+            ...product,
+            isLiked: likedProductIds.has(product.product_id),
+        }));
+
+        return NextResponse.json({ data: productsWithLikes }, { status: 200 });
+    } catch (error: unknown) {
+        return NextResponse.json({ error: 'Failed to fetch products', details: error }, { status: 500 });
+    }
+};
+
 
 export const POST = async (req: Request) => {
   try {

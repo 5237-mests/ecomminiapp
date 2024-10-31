@@ -66,7 +66,7 @@ const Page = ({ params }: Props) => {
   }, [productId]);
 
   //sort comments asc
-  comments.sort((a, b) => {
+  comments?.sort((a, b) => {
     return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
   })
 
@@ -282,7 +282,7 @@ const Page = ({ params }: Props) => {
           <div className="space-y-4 mt-4">
             {comments?.map((comment: Comment) => (
               <div key={comment.id} className="bg-gray-100 p-4 rounded-lg">
-                <p className="text-gray-700 font-semibold">@{comment.user.username}</p>
+                <p className="text-gray-700 font-semibold">@{comment.user?.username}</p>
                 <p className="text-gray-500 text-sm">
                   {formatRelativeTime(comment.createdAt)}
                 </p>
