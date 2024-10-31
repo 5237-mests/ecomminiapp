@@ -44,7 +44,7 @@ const Page = ({ params }: Props) => {
         setDetailImages(productData.detail_img);
       } catch (error) {
         setError("Failed to load product details.");
-        throw new Error("Failed to load product details.");
+        throw new Error("Failed to load product details." + error);
       } finally {
         setLoading(false);
       }
@@ -56,7 +56,7 @@ const Page = ({ params }: Props) => {
         setComments(data.data);
       } catch (error) {
         setError("Failed to load product comments.");
-        throw new Error("Failed to load product comments.");
+        throw new Error("Failed to load product comments." + error);
       } finally {
         setRender(!render);
       }
@@ -118,7 +118,7 @@ const Page = ({ params }: Props) => {
       }
     } catch (err) {
       setError("Failed to upload image.");
-      throw new Error("Failed to upload image.");
+      throw new Error("Failed to upload image." + err);
     } finally {
       setUploadLoading(false);
     }
