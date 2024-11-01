@@ -17,5 +17,6 @@
   },
   "rules": {
     // Additional rules or overrides
+    "prettier/prettier": "error"
   }
 }
