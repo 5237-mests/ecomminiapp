@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, useState, ReactNode } from 'react';
 
 // Interface defining the shape of the context
 interface FavoritesContextProps {
@@ -13,14 +13,14 @@ interface FavoritesContextProps {
 
 // Create the FavoritesContext with default undefined to handle errors
 const FavoritesContext = createContext<FavoritesContextProps | undefined>(
-  undefined
+  undefined,
 );
 
 // Custom hook to use the context
 export const useFavorites = (): FavoritesContextProps => {
   const context = useContext(FavoritesContext);
   if (!context) {
-    throw new Error("useFavorites must be used within a FavoritesProvider");
+    throw new Error('useFavorites must be used within a FavoritesProvider');
   }
   return context;
 };

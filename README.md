@@ -36,18 +36,22 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 
 <!-- Run prisma studio -->
+
 npx prisma studio
 
 <!-- Make db migration -->
+
 npx prisma migrate dev --name init
 
 <!-- push db -->
+
 npx prisma db push
 
-
 <!-- delete built .next folder -->
+
 rm -rf .next
 
 <!-- add new schema change to db -->
+
 npx prisma generate
 npx prisma migrate dev --name add_favorite_relation

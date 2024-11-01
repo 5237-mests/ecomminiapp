@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 
 // Fetch product details
 export const fetchProduct = async (productId: number) => {
@@ -6,13 +6,13 @@ export const fetchProduct = async (productId: number) => {
     const res = await fetch(`/api/product/${productId}`);
     if (!res.ok) {
       throw new Error(
-        `Failed to fetch product: ${res.status} ${res.statusText}`
+        `Failed to fetch product: ${res.status} ${res.statusText}`,
       );
     }
     const data = await res.json();
     return data.data;
   } catch (error) {
-    console.error("Error fetching product:", error);
+    console.error('Error fetching product:', error);
     return null;
   }
 };
@@ -37,26 +37,29 @@ export const fetchProduct = async (productId: number) => {
 // }
 
 export const handleDeleteProduct = async (
-  productId: number
+  productId: number,
 ): Promise<boolean> => {
   try {
     await axios.delete(`/api/product/${productId}`);
     console.log(`Deleted product with ID ${productId}`);
     return true; // return success status
   } catch (error) {
-    console.error("Error deleting product:", error);
+    console.error('Error deleting product:', error);
     return false; // return failure status
   }
 };
 
 //upload productDetailImg
-export const handleUploadProductDetailImg = async (productId:number, file: File) => {
+export const handleUploadProductDetailImg = async (
+  productId: number,
+  file: File,
+) => {
   const formData = new FormData();
-  formData.append("productId", productId.toString());
-  formData.append("file", file);
+  formData.append('productId', productId.toString());
+  formData.append('file', file);
   try {
-    const response = await fetch("/api/product/detail_img", {
-      method: "POST",
+    const response = await fetch('/api/product/detail_img', {
+      method: 'POST',
       body: formData,
     });
     const data = await response.json();
@@ -67,17 +70,20 @@ export const handleUploadProductDetailImg = async (productId:number, file: File)
       return data.data.detail_img;
     }
   } catch (error) {
-    console.error("Failed to upload image", error);
+    console.error('Failed to upload image', error);
   }
 };
 
 //delate productDetailImg
-export const handleDeleteDetailImg = async (imageUrl: string, productId: number) => {
+export const handleDeleteDetailImg = async (
+  imageUrl: string,
+  productId: number,
+) => {
   try {
-    const response = await fetch("/api/product/detail_img", {
-      method: "DELETE",
+    const response = await fetch('/api/product/detail_img', {
+      method: 'DELETE',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({ productId, imageUrlToRemove: imageUrl }),
     });
@@ -90,9 +96,9 @@ export const handleDeleteDetailImg = async (imageUrl: string, productId: number)
       // setDetailImages(data.data.detail_img); // Update images array after deletion
     }
   } catch (error) {
-    console.error("Failed to delete image", error);
+    console.error('Failed to delete image', error);
   }
-}
+};
 
 // export const handleDeleteDetailImg = async (
 //   imageUrl: string,

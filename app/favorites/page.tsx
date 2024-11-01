@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import { FaHeart, FaMinus, FaPlus, FaRegHeart } from "react-icons/fa";
-import { useRouter } from "next/navigation";
-import { useFavorites } from "@/context/FavoriteContext"; 
-import data from "@/assets/data.json"; 
-import Image from "next/image";
-import { useCart } from "@/context/CartContext";
-import { useEffect } from "react";
+import { FaHeart, FaMinus, FaPlus, FaRegHeart } from 'react-icons/fa';
+import { useRouter } from 'next/navigation';
+import { useFavorites } from '@/context/FavoriteContext';
+import data from '@/assets/data.json';
+import Image from 'next/image';
+import { useCart } from '@/context/CartContext';
+import { useEffect } from 'react';
 
 const Page = () => {
   const router = useRouter();
@@ -16,19 +16,19 @@ const Page = () => {
       if (!tg.BackButton.isVisible) {
         tg.BackButton.show();
       }
-      tg.BackButton.onClick(() => router.push("/"));
+      tg.BackButton.onClick(() => router.push('/'));
 
       return () => {
-        tg.BackButton.offClick(() => router.push("/"));
+        tg.BackButton.offClick(() => router.push('/'));
       };
     }
-  }, [router]); 
+  }, [router]);
 
   const { addItem, removeItem, cartItems } = useCart();
   const { isFavorite, removeFavorite, clearFavorites } = useFavorites();
   const products = data.products; // Example products from data.json
   const favoriteProductItems = products.filter((product) =>
-    isFavorite(product.product_id)
+    isFavorite(product.product_id),
   );
   return (
     <div className="mt-20 p-4">
@@ -55,7 +55,7 @@ const Page = () => {
           <button
             type="button"
             onClick={() => {
-              router.push("/catalog");
+              router.push('/catalog');
             }}
             className="bg-sky-500 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded-3xl"
           >

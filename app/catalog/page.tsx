@@ -1,10 +1,10 @@
-"use client";
-import { useEffect } from "react";
-import data from "../../assets/data.json";
-import { category } from "../../types/types";
-import Link from "next/link";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
+'use client';
+import { useEffect } from 'react';
+import data from '../../assets/data.json';
+import { category } from '../../types/types';
+import Link from 'next/link';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 const Page: React.FC = () => {
   const categories: category[] = data.categories;
@@ -16,13 +16,13 @@ const Page: React.FC = () => {
       if (!tg.BackButton.isVisible) {
         tg.BackButton.show();
       }
-      tg.BackButton.onClick(() => router.push("/"));
+      tg.BackButton.onClick(() => router.push('/'));
 
       return () => {
-        tg.BackButton.offClick(() => router.push("/"));
+        tg.BackButton.offClick(() => router.push('/'));
       };
     }
-  }, [router]); 
+  }, [router]);
 
   return (
     <div>

@@ -1,6 +1,6 @@
-import Image from "next/image";
-import React from "react";
-import { Category } from "@/types/types";
+import Image from 'next/image';
+import React from 'react';
+import { Category } from '@/types/types';
 
 interface CatalogListProps {
   category: Category;
@@ -19,7 +19,7 @@ const CatalogList: React.FC<CatalogListProps> = ({
         key={category.id}
         onClick={() => filterProductsByCategory(category.id)}
         className={`text-sm text-gray-600 pb-1  bg-gray-100 hover:bg-gray-200 rounded-md items-center flex justify-center ${
-          activeCategory === category.id ? "border-b-2 border-blue-500" : ""
+          activeCategory === category.id ? 'border-b-2 border-blue-500' : ''
         }`}
       >
         <Image

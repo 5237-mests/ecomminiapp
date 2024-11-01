@@ -1,5 +1,5 @@
-"use client";
-import "../../app/globals.css";
+'use client';
+import '../../app/globals.css';
 // import Footer from "@/components/Footer";
 
 interface RootLayoutProps {
@@ -9,15 +9,13 @@ function RootLayout({ children }: RootLayoutProps) {
   return (
     <>
       <html lang="en" suppressHydrationWarning>
-        <head>
-        
-        </head>
+        <head></head>
         <body>
-                {children}
-                {/* <Footer /> */}
+          {children}
+          {/* <Footer /> */}
         </body>
       </html>
     </>
   );
 }
-export default RootLayout
+export default RootLayout;

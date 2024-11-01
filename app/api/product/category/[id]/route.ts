@@ -1,12 +1,10 @@
-import { NextResponse } from "next/server";
-import prisma from "@/utils/prisma";
-
-
+import { NextResponse } from 'next/server';
+import prisma from '@/utils/prisma';
 
 // Get product by ID
 export const GET = async (
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: string } },
 ) => {
   try {
     const id = parseInt(params.id);
@@ -16,20 +14,26 @@ export const GET = async (
     });
 
     if (!product) {
-      return NextResponse.json({ error: "Product not found*" }, { status: 404 });
+      return NextResponse.json(
+        { error: 'Product not found*' },
+        { status: 404 },
+      );
     }
 
     return NextResponse.json({ data: product }, { status: 200 });
   } catch (error: unknown) {
     return NextResponse.json(
-      { error: "Fetch failed", details: error },
-      { status: 500 }
+      { error: 'Fetch failed', details: error },
+      { status: 500 },
     );
   }
 };
 
 //delete category
-export const DELETE = async (req: Request, { params }: { params: { id: string } }) => {
+export const DELETE = async (
+  req: Request,
+  { params }: { params: { id: string } },
+) => {
   try {
     const id = parseInt(params.id);
 
@@ -39,6 +43,9 @@ export const DELETE = async (req: Request, { params }: { params: { id: string } 
 
     return NextResponse.json({ data: deletedCategory }, { status: 200 });
   } catch (error: unknown) {
-    return NextResponse.json({ error: 'Delete failed', details: error }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Delete failed', details: error },
+      { status: 500 },
+    );
   }
-}
+};

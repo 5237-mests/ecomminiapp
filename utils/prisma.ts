@@ -22,7 +22,7 @@
 
 // export default prisma;
 
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from '@prisma/client';
 
 const PrismaClientSingleton = () => {
   return new PrismaClient();
@@ -38,7 +38,7 @@ const prisma = globalForPrisma.prisma ?? PrismaClientSingleton();
 
 export default prisma;
 
-if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
+if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
 
 // async function checkConnection() {
 //   try {

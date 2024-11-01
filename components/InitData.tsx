@@ -1,9 +1,9 @@
 // src/pages/init-data.tsx
-import useTelegramInitData from "@/hooks/useTelegramInitData";
+import useTelegramInitData from '@/hooks/useTelegramInitData';
 
 export default function InitData() {
   const initData = useTelegramInitData();
-  console.log("test",initData);
+  console.log('test', initData);
   return (
     <div>
       <h1>initData</h1>

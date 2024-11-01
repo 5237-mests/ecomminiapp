@@ -1,16 +1,16 @@
-"use client";
-import { useRouter } from "next/navigation";
-import data from "@/assets/data.json";
-import { category } from "@/types/types";
-import {  FaMinus, FaPlus } from "react-icons/fa";
-import Image from "next/image";
-import logo from "@/assets/fun shop.png";
-import { useCart } from "@/context/CartContext";
-import WebApp from "@twa-dev/sdk";
-import { useEffect, useState } from "react";
-import { useTheme } from "@/context/ThemeContext";
-import ThumbsUp from "@/assets/Thumbs Up.png";
-import CommentTag from "@/assets/10001.png";
+'use client';
+import { useRouter } from 'next/navigation';
+import data from '@/assets/data.json';
+import { category } from '@/types/types';
+import { FaMinus, FaPlus } from 'react-icons/fa';
+import Image from 'next/image';
+import logo from '@/assets/fun shop.png';
+import { useCart } from '@/context/CartContext';
+import WebApp from '@twa-dev/sdk';
+import { useEffect, useState } from 'react';
+import { useTheme } from '@/context/ThemeContext';
+import ThumbsUp from '@/assets/Thumbs Up.png';
+import CommentTag from '@/assets/10001.png';
 
 interface ProductsProps {
   params: {
@@ -19,30 +19,30 @@ interface ProductsProps {
 }
 
 const Page = ({ params }: ProductsProps) => {
-   const router = useRouter();
-   const back = () => {
-     router.back();
-   };
-   useEffect(() => {
-     WebApp.BackButton.show();
+  const router = useRouter();
+  const back = () => {
+    router.back();
+  };
+  useEffect(() => {
+    WebApp.BackButton.show();
 
-     const handleBackClick = () => {
-       back();
-       WebApp.BackButton.offClick(handleBackClick);
-     };
+    const handleBackClick = () => {
+      back();
+      WebApp.BackButton.offClick(handleBackClick);
+    };
 
-     WebApp.BackButton.onClick(handleBackClick);
+    WebApp.BackButton.onClick(handleBackClick);
 
-     return () => {
-       WebApp.BackButton.offClick(handleBackClick);
-     };
-   }, []);
+    return () => {
+      WebApp.BackButton.offClick(handleBackClick);
+    };
+  }, []);
   const { theme } = useTheme();
   const [likedProducts, setLikedProducts] = useState<{
     [key: number]: boolean;
   }>({});
   const [isAnimating, setIsAnimating] = useState<{ [key: number]: boolean }>(
-    {}
+    {},
   );
   const [likeCounts, setLikeCounts] = useState<{ [key: number]: number }>({});
   const { cartItems, addItem, removeItem } = useCart();
@@ -50,17 +50,17 @@ const Page = ({ params }: ProductsProps) => {
   const categories: category[] = data.categories;
   const products = data.products;
 
-  if (!categoryId || typeof categoryId !== "string") {
+  if (!categoryId || typeof categoryId !== 'string') {
     return <p>Loading...</p>;
   }
 
   const category = categories.find(
-    (cat) => cat.category_id === parseInt(categoryId)
+    (cat) => cat.category_id === parseInt(categoryId),
   );
   if (!category) return <p>Category not found</p>;
 
   const filteredProducts = products.filter(
-    (prod) => prod.category_id === parseInt(categoryId)
+    (prod) => prod.category_id === parseInt(categoryId),
   );
 
   const handleLikeClick = (productId: number) => {
@@ -89,17 +89,17 @@ const Page = ({ params }: ProductsProps) => {
     <div className="mb-20" style={{ backgroundColor: theme.secondaryBgColor }}>
       <div
         style={{
-          position: "fixed",
+          position: 'fixed',
           top: 0,
           left: 0,
-          backdropFilter: "blur(10px)",
-          backgroundColor: "rgba(255, 255, 255, 0.2)",
+          backdropFilter: 'blur(10px)',
+          backgroundColor: 'rgba(255, 255, 255, 0.2)',
           zIndex: 9999,
         }}
         className="flex z-10 w-full fixed p-4 gap-8 text-2xl font-bold left-0 mb-20 px-8"
       >
         <Image
-          onClick={() => router.push("/")}
+          onClick={() => router.push('/')}
           src={logo}
           alt={category.name}
           width="100"
@@ -148,7 +148,7 @@ const Page = ({ params }: ProductsProps) => {
                     <Image
                       src={
                         isAnimating[product.product_id]
-                          ? "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/People/Thumbs%20Up.webp"
+                          ? 'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/People/Thumbs%20Up.webp'
                           : ThumbsUp // Use your static image here
                       }
                       alt="Thumbs Up"
@@ -157,7 +157,12 @@ const Page = ({ params }: ProductsProps) => {
                     />
                   </div>
                 </span>
-                <Image src={CommentTag} alt="Comment Tag" width={25} height={25}/>
+                <Image
+                  src={CommentTag}
+                  alt="Comment Tag"
+                  width={25}
+                  height={25}
+                />
                 {/* <CommentTag className="text-teal-500" /> */}
               </span>
               <div>
@@ -210,7 +215,9 @@ const Page = ({ params }: ProductsProps) => {
                   Price: ${product.price}
                 </p>
               </div>
-              <h2 style={{ color: theme.textColor }} className="font-bold">{product.name}</h2>
+              <h2 style={{ color: theme.textColor }} className="font-bold">
+                {product.name}
+              </h2>
             </div>
           </div>
         ))}

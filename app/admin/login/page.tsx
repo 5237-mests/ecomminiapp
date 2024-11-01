@@ -1,13 +1,13 @@
 'use client';
-import React from "react";
-import logo from "@/assets/fun shop.png";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
+import React from 'react';
+import logo from '@/assets/fun shop.png';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 const Page = () => {
- const router = useRouter();
- const backgroundImageUrl =
-  "data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 10l3 3l6-6'/%3e%3c/svg%3e";
+  const router = useRouter();
+  const backgroundImageUrl =
+    "data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 10l3 3l6-6'/%3e%3c/svg%3e";
   return (
     <div>
       <div className="flex min-h-screen w-screen w-full items-center justify-center text-gray-600 bg-gray-50">
@@ -155,14 +155,14 @@ const Page = () => {
                       checked
                     />
                     <label className="inline-block" htmlFor="remember-me">
-                      {" "}
-                      Remember Me{" "}
+                      {' '}
+                      Remember Me{' '}
                     </label>
                   </div>
                 </div>
                 <div className="mb-4">
                   <button
-                    onClick={() => router.push("/admin")}
+                    onClick={() => router.push('/admin')}
                     className="grid w-full cursor-pointer select-none rounded-md border border-indigo-500 bg-indigo-500 py-2 px-5 text-center align-middle text-sm text-white shadow hover:border-indigo-600 hover:bg-indigo-600 hover:text-white focus:border-indigo-600 focus:bg-indigo-600 focus:text-white focus:shadow-none"
                     // type="submit"
                     type="button"

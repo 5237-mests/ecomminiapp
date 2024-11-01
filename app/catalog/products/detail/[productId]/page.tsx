@@ -1,14 +1,14 @@
-"use client";
-import { useRouter } from "next/navigation";
-import data from "@/assets/data.json";
-import { useFavorites } from "@/context/FavoriteContext"; // Import the useFavorites hook
-import { useCart } from "@/context/CartContext"; // Import the context
-import { FaHeart, FaMinus, FaPlus } from "react-icons/fa";
-import Image from "next/image";
-import WebApp from "@twa-dev/sdk";
-import logo from "@/assets/fun shop.png";
-import { useEffect } from "react";
-import { useTheme } from "@/context/ThemeContext";
+'use client';
+import { useRouter } from 'next/navigation';
+import data from '@/assets/data.json';
+import { useFavorites } from '@/context/FavoriteContext'; // Import the useFavorites hook
+import { useCart } from '@/context/CartContext'; // Import the context
+import { FaHeart, FaMinus, FaPlus } from 'react-icons/fa';
+import Image from 'next/image';
+import WebApp from '@twa-dev/sdk';
+import logo from '@/assets/fun shop.png';
+import { useEffect } from 'react';
+import { useTheme } from '@/context/ThemeContext';
 
 interface ProductProps {
   params: {
@@ -23,21 +23,21 @@ const Page = ({ params }: ProductProps) => {
   };
   useEffect(() => {
     WebApp.BackButton.show();
-  
+
     const handleBackClick = () => {
       back();
       WebApp.BackButton.offClick(handleBackClick);
     };
-  
+
     WebApp.BackButton.onClick(handleBackClick);
-  
+
     return () => {
       WebApp.BackButton.offClick(handleBackClick);
     };
   });
   const { theme } = useTheme();
   const { addFavorite, removeFavorite, isFavorite } = useFavorites();
-  const { cartItems, addItem, removeItem } = useCart(); 
+  const { cartItems, addItem, removeItem } = useCart();
 
   const { productId } = params;
   const products = data.products;
@@ -47,7 +47,7 @@ const Page = ({ params }: ProductProps) => {
   }
 
   const product = products.find(
-    (prod) => prod.product_id === parseInt(productId)
+    (prod) => prod.product_id === parseInt(productId),
   );
 
   if (!product) return <p>Product not found</p>;
@@ -63,24 +63,21 @@ const Page = ({ params }: ProductProps) => {
     }
   };
 
-
-
-
   return (
     <div>
       <div
         style={{
-          position: "fixed",
+          position: 'fixed',
           top: 0,
           left: 0,
-          backdropFilter: "blur(10px)",
-          backgroundColor: "rgba(255, 255, 255, 0.2)",
+          backdropFilter: 'blur(10px)',
+          backgroundColor: 'rgba(255, 255, 255, 0.2)',
           zIndex: 9999,
         }}
         className="flex z-10 w-full fixed p-4 justify-between text-2xl font-bold left-0 mb-16 px-8"
       >
         <Image
-          onClick={() => router.push("/")}
+          onClick={() => router.push('/')}
           src={logo}
           alt={product.name}
           width="100"
@@ -90,11 +87,10 @@ const Page = ({ params }: ProductProps) => {
         <FaHeart
           onClick={handleFavoriteToggle}
           className={`bg-white w-20 h-10 py-2 px-4 border rounded-3xl ${
-            favoriteStatus ? "text-sky-500" : "text-gray-500"
+            favoriteStatus ? 'text-sky-500' : 'text-gray-500'
           } `}
         />
       </div>
-     
 
       <div className="pt-20 p-4 w-full">
         <Image
@@ -109,7 +105,7 @@ const Page = ({ params }: ProductProps) => {
         <p className="text-gray-500">Description: {product.description}</p>
         <p className="text-sky-500">Price: ${product.price}</p>
         <p className="text-gray-500">
-          Availability: {product.available ? "In Stock" : "Out of Stock"}
+          Availability: {product.available ? 'In Stock' : 'Out of Stock'}
         </p>
         <div className="flex justify-between px-4 py-2 gap-4 bg-sky-500 fixed bottom-20 w-full left-0">
           <p className="text-white">${product.price}</p>

@@ -30,7 +30,13 @@ export interface Product {
   updatedAt?: string;
 }
 
-
+export interface CustomFile {
+  name: string;
+  type: string;
+  size: number;
+  lastModified: number;
+  file: File | ArrayBuffer | Blob | null;
+}
 export interface Products {
   id: number | null;
   name: string;
@@ -39,9 +45,9 @@ export interface Products {
   available: boolean;
   category_id: number;
   image?: string | null;
-  file?: any;
+  file?: CustomFile;
   createdAt?: string;
-};
+}
 
 export interface Comment {
   id: number;

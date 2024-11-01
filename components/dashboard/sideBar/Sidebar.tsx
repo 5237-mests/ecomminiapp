@@ -1,15 +1,15 @@
-"use client";
-import React, { useEffect, useState } from "react";
-import SidebarItems from "./SidebarItems";
-import { SidebarProfile } from "./sidbarProfil";
-import logo from "@/assets/fun shop.png";
+'use client';
+import React, { useEffect, useState } from 'react';
+import SidebarItems from './SidebarItems';
+import { SidebarProfile } from './sidbarProfil';
+import logo from '@/assets/fun shop.png';
 import {
   Dialog,
   DialogBackdrop,
   DialogPanel,
   DialogTitle,
-} from "@headlessui/react";
-import Image from "next/image";
+} from '@headlessui/react';
+import Image from 'next/image';
 
 interface ItemType {
   isMobileSidebarOpen: boolean;
@@ -32,7 +32,7 @@ const Sidebar = ({ isMobileSidebarOpen, onSidebarClose }: ItemType) => {
     return matches;
   };
 
-  const matches = useMediaQuery("(min-width: 768px)");
+  const matches = useMediaQuery('(min-width: 768px)');
   if (matches) {
     return (
       <>
@@ -57,7 +57,6 @@ const Sidebar = ({ isMobileSidebarOpen, onSidebarClose }: ItemType) => {
         </div>
       </>
     );
-
   }
 
   return (

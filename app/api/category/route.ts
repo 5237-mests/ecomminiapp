@@ -22,8 +22,8 @@ export const POST = async (req: Request) => {
     if (file) {
       const uploadResponse = await cloudinary.uploader.upload(
         `data:${file.type};base64,${Buffer.from(await file.arrayBuffer()).toString('base64')}`,
-        { upload_preset: 'erm5tqn2' }
-      )
+        { upload_preset: 'erm5tqn2' },
+      );
       imgUrl = uploadResponse.secure_url; // Get the image URL from Cloudinary
     }
 
@@ -33,7 +33,10 @@ export const POST = async (req: Request) => {
 
     return NextResponse.json({ data: category }, { status: 201 });
   } catch (error: unknown) {
-    return NextResponse.json({ error: 'Creation failed', details: error }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Creation failed', details: error },
+      { status: 500 },
+    );
   }
 };
 
@@ -43,7 +46,10 @@ export const GET = async () => {
     const categories = await prisma.category.findMany();
     return NextResponse.json({ data: categories }, { status: 200 });
   } catch (error: unknown) {
-    return NextResponse.json({ error: 'Fetch failed', details: error }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Fetch failed', details: error },
+      { status: 500 },
+    );
   }
 };
 
@@ -52,14 +58,20 @@ export const DELETE = async (req: Request) => {
   try {
     const body = await req.json();
     const { id } = body;
-    console.log('first', id)
+    console.log('first', id);
 
     await prisma.category.delete({
-      where: { id : parseInt(id) },
+      where: { id: parseInt(id) },
     });
 
-    return NextResponse.json({ message: 'Category deleted successfully' }, { status: 200 });
+    return NextResponse.json(
+      { message: 'Category deleted successfully' },
+      { status: 200 },
+    );
   } catch (error: unknown) {
-    return NextResponse.json({ error: 'Deletion failed', details: error }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Deletion failed', details: error },
+      { status: 500 },
+    );
   }
 };

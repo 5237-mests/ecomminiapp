@@ -45,7 +45,9 @@ export default function ProductsPage() {
     setNewProduct({ ...newProduct, file });
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     const { name, value } = e.target;
     setNewProduct({ ...newProduct, [name]: value });
   };
@@ -55,8 +57,14 @@ export default function ProductsPage() {
 
     const formData = new FormData();
     Object.keys(newProduct).forEach((key) => {
-      if (key !== 'file' && newProduct[key as keyof typeof newProduct] !== null) {
-        formData.append(key, newProduct[key as keyof typeof newProduct] as string);
+      if (
+        key !== 'file' &&
+        newProduct[key as keyof typeof newProduct] !== null
+      ) {
+        formData.append(
+          key,
+          newProduct[key as keyof typeof newProduct] as string,
+        );
       }
     });
 
@@ -90,31 +98,58 @@ export default function ProductsPage() {
 
       <form onSubmit={handleSubmit} className="mb-4">
         <div>
-          <input type="text" name="name" placeholder="Name" onChange={handleChange} required />
+          <input
+            type="text"
+            name="name"
+            placeholder="Name"
+            onChange={handleChange}
+            required
+          />
         </div>
         <br />
         <div>
-          <textarea name="description" placeholder="Description" onChange={handleChange} required />
+          <textarea
+            name="description"
+            placeholder="Description"
+            onChange={handleChange}
+            required
+          />
         </div>
         <div>
-          <input type="number" name="price" placeholder="Price" onChange={handleChange} required />
+          <input
+            type="number"
+            name="price"
+            placeholder="Price"
+            onChange={handleChange}
+            required
+          />
         </div>
         <div>
           <input
             type="checkbox"
             name="available"
-            onChange={(e) => setNewProduct({ ...newProduct, available: e.target.checked })}
+            onChange={(e) =>
+              setNewProduct({ ...newProduct, available: e.target.checked })
+            }
           />
         </div>
         <div>
-          <input type="text" name="category_id" placeholder="Category ID" onChange={handleChange} required />
+          <input
+            type="text"
+            name="category_id"
+            placeholder="Category ID"
+            onChange={handleChange}
+            required
+          />
         </div>
         <br />
         <div>
           <input type="file" name="file" onChange={handleFileChange} required />
         </div>
         <br />
-        <button type="submit" className="bg-blue-500 text-white px-4 py-2">Create Product</button>
+        <button type="submit" className="bg-blue-500 text-white px-4 py-2">
+          Create Product
+        </button>
       </form>
 
       <ul>
@@ -123,10 +158,16 @@ export default function ProductsPage() {
             <p>{product.name}</p>
             <p>{product.description}</p>
             <Image src={product.img} alt={product.name} width="100" />
-            <button onClick={() => fetchProductById(product.id)} className="bg-green-500 text-white px-4 py-2">
+            <button
+              onClick={() => fetchProductById(product.id)}
+              className="bg-green-500 text-white px-4 py-2"
+            >
               View
             </button>
-            <button onClick={() => handleDelete(product.id)} className="bg-red-500 text-white px-4 py-2">
+            <button
+              onClick={() => handleDelete(product.id)}
+              className="bg-red-500 text-white px-4 py-2"
+            >
               Delete
             </button>
           </li>
@@ -140,7 +181,11 @@ export default function ProductsPage() {
           <p>Description: {selectedProduct.description}</p>
           <p>Price: {selectedProduct.price}</p>
           <p>Available: {selectedProduct.available ? 'Yes' : 'No'}</p>
-          <Image src={selectedProduct.img} alt={selectedProduct.name} width="300" />
+          <Image
+            src={selectedProduct.img}
+            alt={selectedProduct.name}
+            width="300"
+          />
         </div>
       )}
     </div>

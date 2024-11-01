@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useCart } from "@/context/CartContext";
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { useCart } from '@/context/CartContext';
 
 import {
   FaHeart,
@@ -10,7 +10,7 @@ import {
   FaThLarge,
   FaShoppingCart,
   FaUser,
-} from "react-icons/fa"; // Importing icons
+} from 'react-icons/fa'; // Importing icons
 
 const Navbar: React.FC = () => {
   const pathname = usePathname(); // Get current path
@@ -24,9 +24,9 @@ const Navbar: React.FC = () => {
       <Link
         href="/favorites"
         className={
-          isActive("/favorites")
-            ? "text-sky-500 flex flex-col items-center rounded-md p-2 w-[60px] "
-            : "text-gray-500 flex flex-col items-center p-2 hover:bg-sky-100 hover:text-sky-500 rounded-md w-[60px]"
+          isActive('/favorites')
+            ? 'text-sky-500 flex flex-col items-center rounded-md p-2 w-[60px] '
+            : 'text-gray-500 flex flex-col items-center p-2 hover:bg-sky-100 hover:text-sky-500 rounded-md w-[60px]'
         }
       >
         <FaHeart className="text-2xl" />
@@ -36,9 +36,9 @@ const Navbar: React.FC = () => {
       <Link
         href="/search"
         className={
-          isActive("/search")
-            ? "text-sky-500 flex flex-col items-center rounded-md p-2 w-[60px]"
-            : "text-gray-500 flex flex-col items-center p-2 hover:bg-sky-100 hover:text-sky-500 rounded-md w-[60px]"
+          isActive('/search')
+            ? 'text-sky-500 flex flex-col items-center rounded-md p-2 w-[60px]'
+            : 'text-gray-500 flex flex-col items-center p-2 hover:bg-sky-100 hover:text-sky-500 rounded-md w-[60px]'
         }
       >
         <FaSearch className="text-2xl" />
@@ -48,9 +48,9 @@ const Navbar: React.FC = () => {
       <Link
         href="/catalog"
         className={
-          isActive("/catalog")
-            ? "text-sky-500 flex flex-col items-center rounded-md p-2 w-[60px]"
-            : "text-gray-500 flex flex-col items-center p-2 hover:bg-sky-100 hover:text-sky-500 rounded-md w-[60px]"
+          isActive('/catalog')
+            ? 'text-sky-500 flex flex-col items-center rounded-md p-2 w-[60px]'
+            : 'text-gray-500 flex flex-col items-center p-2 hover:bg-sky-100 hover:text-sky-500 rounded-md w-[60px]'
         }
       >
         <FaThLarge className="text-2xl" />
@@ -60,9 +60,9 @@ const Navbar: React.FC = () => {
       <Link
         href="/cart"
         className={
-          isActive("/cart")
-            ? "text-sky-500 flex flex-col items-center relative rounded-md p-2 w-[60px]"
-            : "text-gray-500 flex flex-col items-center relative p-2 hover:bg-sky-100 hover:text-sky-500 rounded-md w-[60px]"
+          isActive('/cart')
+            ? 'text-sky-500 flex flex-col items-center relative rounded-md p-2 w-[60px]'
+            : 'text-gray-500 flex flex-col items-center relative p-2 hover:bg-sky-100 hover:text-sky-500 rounded-md w-[60px]'
         }
       >
         <FaShoppingCart className="text-2xl" />
@@ -77,9 +77,9 @@ const Navbar: React.FC = () => {
       <Link
         href="/profile"
         className={
-          isActive("/profile")
-            ? "text-sky-500 flex flex-col items-center rounded-md p-2 w-[60px]"
-            : "text-gray-500 flex flex-col items-center p-2 hover:bg-sky-100 hover:text-sky-500 rounded-md w-[60px]"
+          isActive('/profile')
+            ? 'text-sky-500 flex flex-col items-center rounded-md p-2 w-[60px]'
+            : 'text-gray-500 flex flex-col items-center p-2 hover:bg-sky-100 hover:text-sky-500 rounded-md w-[60px]'
         }
       >
         <FaUser className="text-2xl" />

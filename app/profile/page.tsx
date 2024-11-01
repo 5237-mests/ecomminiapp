@@ -9,46 +9,47 @@ import {
   FaMoon,
   FaLanguage,
   FaExclamation,
-} from "react-icons/fa";
-import React, { useEffect, useState } from "react";
-import Link from "next/link";
-import Image from "next/image";
-import axios from "axios";
-import { retrieveLaunchParams } from "@telegram-apps/sdk";
-import { useRouter } from "next/navigation";
+} from 'react-icons/fa';
+import React, { useEffect, useState } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import axios from 'axios';
+import { retrieveLaunchParams } from '@telegram-apps/sdk';
+import { useRouter } from 'next/navigation';
 
 const Page = () => {
-     const router = useRouter();
-     const [photoUrl, setPhotoUrl] = useState<string | null>(null);
-     const [firstName, setFirstName] = useState<string | null>(null);
-   
-     useEffect(() => {
-       const { initData } = retrieveLaunchParams();
-       const userId = initData?.user?.id;
-       setFirstName(initData?.user?.firstName || null);
-   
-       axios.post('/api/get-profile-photo', { userId })
-         .then(response => {
-           setPhotoUrl(response.data.photoUrl);
-         })
-         .catch(error => {
-           console.error('Error fetching profile photo:', error);
-         });
-     }, []);
+  const router = useRouter();
+  const [photoUrl, setPhotoUrl] = useState<string | null>(null);
+  const [firstName, setFirstName] = useState<string | null>(null);
 
-     useEffect(() => {
-       const tg = window?.Telegram?.WebApp;
-       if (tg) {
-         if (!tg.BackButton.isVisible) {
-           tg.BackButton.show();
-         }
-         tg.BackButton.onClick(() => router.push("/"));
+  useEffect(() => {
+    const { initData } = retrieveLaunchParams();
+    const userId = initData?.user?.id;
+    setFirstName(initData?.user?.firstName || null);
 
-         return () => {
-           tg.BackButton.offClick(() => router.push("/"));
-         };
-       }
-     }, [router]);
+    axios
+      .post('/api/get-profile-photo', { userId })
+      .then((response) => {
+        setPhotoUrl(response.data.photoUrl);
+      })
+      .catch((error) => {
+        console.error('Error fetching profile photo:', error);
+      });
+  }, []);
+
+  useEffect(() => {
+    const tg = window?.Telegram?.WebApp;
+    if (tg) {
+      if (!tg.BackButton.isVisible) {
+        tg.BackButton.show();
+      }
+      tg.BackButton.onClick(() => router.push('/'));
+
+      return () => {
+        tg.BackButton.offClick(() => router.push('/'));
+      };
+    }
+  }, [router]);
 
   return (
     <div className="mt-10 mb-20">
@@ -59,13 +60,20 @@ const Page = () => {
       {/* User Profile Card */}
       <div className="mx-4 mb-3 flex items-center justify-between bg-white shadow-md rounded-xl p-4 mt-20">
         <span className="flex items-center space-x-2">
-          { photoUrl?<Image src={photoUrl || 'https://via.placeholder.com/150'} alt="Profile Photo" width={32} height={32} className="rounded-full" />
-          : <FaUser className="text-2xl" />}
+          {photoUrl ? (
+            <Image
+              src={photoUrl || 'https://via.placeholder.com/150'}
+              alt="Profile Photo"
+              width={32}
+              height={32}
+              className="rounded-full"
+            />
+          ) : (
+            <FaUser className="text-2xl" />
+          )}
           <span>
             <p>{firstName}</p>
-            <h2>
-              Your Profile
-            </h2>
+            <h2>Your Profile</h2>
           </span>
         </span>
         <Link href="/user">

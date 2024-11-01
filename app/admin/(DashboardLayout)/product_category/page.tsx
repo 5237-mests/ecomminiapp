@@ -1,7 +1,7 @@
-"use client";
-import { useState, useEffect } from "react";
-import axios from "axios";
-import Image from "next/image";
+'use client';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import Image from 'next/image';
 
 interface Category {
   id: number;
@@ -25,28 +25,28 @@ export default function CategoriesAndProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [newProduct, setNewProduct] = useState({
     id: null as number | null,
-    name: "",
-    description: "",
+    name: '',
+    description: '',
     price: 0,
     available: false,
-    category_id: "",
+    category_id: '',
     file: null as File | null,
   });
   const [newCategory, setNewCategory] = useState({
     id: null as number | null,
-    name: "",
-    description: "",
+    name: '',
+    description: '',
     img: null as File | null,
   });
 
   const fetchCategories = async () => {
-    const res = await fetch("/api/category");
+    const res = await fetch('/api/category');
     const data = await res.json();
     setCategories(data.data);
   };
 
   const fetchProducts = async () => {
-    const res = await fetch("/api/product");
+    const res = await fetch('/api/product');
     const data = await res.json();
     setProducts(data);
   };
@@ -58,7 +58,7 @@ export default function CategoriesAndProductsPage() {
 
   // Handle Category Input Change
   const handleCategoryChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
     setNewCategory({ ...newCategory, [name]: value });
@@ -73,16 +73,16 @@ export default function CategoriesAndProductsPage() {
   const handleCategorySubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append("name", newCategory.name);
-    formData.append("description", newCategory.description);
+    formData.append('name', newCategory.name);
+    formData.append('description', newCategory.description);
     if (newCategory.img) {
-      formData.append("img", newCategory.img);
+      formData.append('img', newCategory.img);
     }
 
     const url = newCategory.id
       ? `/api/category/${newCategory.id}`
-      : "/api/category";
-    const method = newCategory.id ? "PUT" : "POST";
+      : '/api/category';
+    const method = newCategory.id ? 'PUT' : 'POST';
 
     const res = await fetch(url, {
       method,
@@ -91,7 +91,7 @@ export default function CategoriesAndProductsPage() {
 
     if (res.ok) {
       fetchCategories();
-      setNewCategory({ id: null, name: "", description: "", img: null });
+      setNewCategory({ id: null, name: '', description: '', img: null });
     }
   };
 
@@ -99,12 +99,12 @@ export default function CategoriesAndProductsPage() {
   const handleProductChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
+    >,
   ) => {
     const { name, value } = e.target;
     setNewProduct({
       ...newProduct,
-      [name]: name === "price" ? parseFloat(value) : value,
+      [name]: name === 'price' ? parseFloat(value) : value,
     });
   };
 
@@ -121,19 +121,19 @@ export default function CategoriesAndProductsPage() {
     const formData = new FormData();
     Object.keys(newProduct).forEach((key) => {
       const value = newProduct[key as keyof typeof newProduct];
-      if (key !== "file" && value !== null) {
+      if (key !== 'file' && value !== null) {
         formData.append(key, String(value));
       }
     });
 
     if (newProduct.file) {
-      formData.append("file", newProduct.file);
+      formData.append('file', newProduct.file);
     }
 
     const url = newProduct.id
       ? `/api/product/${newProduct.id}`
-      : "/api/product";
-    const method = newProduct.id ? "PUT" : "POST";
+      : '/api/product';
+    const method = newProduct.id ? 'PUT' : 'POST';
 
     const res = await fetch(url, {
       method,
@@ -144,11 +144,11 @@ export default function CategoriesAndProductsPage() {
       fetchProducts();
       setNewProduct({
         id: null,
-        name: "",
-        description: "",
+        name: '',
+        description: '',
         price: 0,
         available: false,
-        category_id: "",
+        category_id: '',
         file: null,
       });
     }
@@ -156,10 +156,10 @@ export default function CategoriesAndProductsPage() {
 
   const handleDeleteCategory = async (id: number) => {
     await fetch(`/api/category`, {
-      method: "DELETE",
+      method: 'DELETE',
       body: JSON.stringify({ id }),
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
     });
     fetchCategories();
@@ -228,7 +228,7 @@ export default function CategoriesAndProductsPage() {
           </div>
           <div>
             <button type="submit" className="bg-blue-500 text-white px-4 py-2">
-              {newCategory.id ? "Update Category" : "Create Category"}
+              {newCategory.id ? 'Update Category' : 'Create Category'}
             </button>
           </div>
         </form>
@@ -329,7 +329,7 @@ export default function CategoriesAndProductsPage() {
           </div>
           <div>
             <button type="submit" className="bg-green-500 text-white">
-              {newProduct.id ? "Update Product" : "Create Product"}
+              {newProduct.id ? 'Update Product' : 'Create Product'}
             </button>
           </div>
         </form>

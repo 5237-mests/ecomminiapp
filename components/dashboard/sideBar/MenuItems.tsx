@@ -7,48 +7,48 @@ import {
   IconUserCheck,
   IconTags,
   IconPackage,
-} from "@tabler/icons-react";
+} from '@tabler/icons-react';
 
 const Menuitems = [
   {
-    title: "Dashboard",
+    title: 'Dashboard',
     icon: IconHome,
-    href: "/admin",
+    href: '/admin',
   },
   {
-    title: "Orders",
+    title: 'Orders',
     icon: IconShoppingCart,
-    href: "/admin/buttons",
+    href: '/admin/buttons',
   },
   {
-    title: "Customers",
+    title: 'Customers',
     icon: IconUsers,
-    href: "/admin/forms",
+    href: '/admin/forms',
   },
   {
-    title: "Employees",
+    title: 'Employees',
     icon: IconUserCheck,
-    href: "/admin/alerts",
+    href: '/admin/alerts',
   },
   {
-    title: "Order Status",
+    title: 'Order Status',
     icon: IconTimeline,
-    href: "/admin/ratings",
+    href: '/admin/ratings',
   },
   {
-    title: "Images",
+    title: 'Images',
     icon: IconPhoto,
-    href: "/admin/images",
+    href: '/admin/images',
   },
   {
-    title: "Product Categories",
+    title: 'Product Categories',
     icon: IconTags,
-    href: "/admin/product_category",
+    href: '/admin/product_category',
   },
   {
-    title: "Products",
+    title: 'Products',
     icon: IconPackage,
-    href: "/admin/product",
+    href: '/admin/product',
   },
 ];
 

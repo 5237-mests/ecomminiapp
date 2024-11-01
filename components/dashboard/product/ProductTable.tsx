@@ -1,9 +1,9 @@
-import { Link } from "lucide-react";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
-import React, { Suspense } from "react";
-import { BeatLoader } from "react-spinners";
-import { Product } from "@/types/types";
+import { Link } from 'lucide-react';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import React, { Suspense } from 'react';
+import { BeatLoader } from 'react-spinners';
+import { Product } from '@/types/types';
 
 interface TableProps {
   filteredData: Product[];
@@ -98,9 +98,9 @@ const ProductTable: React.FC<TableProps> = ({
                           {availableItemLoading === product.product_id ? (
                             <BeatLoader color="#14eca5" size={8} />
                           ) : product.available ? (
-                            "Available"
+                            'Available'
                           ) : (
-                            "Unavailable"
+                            'Unavailable'
                           )}
                         </span>
                       </label>

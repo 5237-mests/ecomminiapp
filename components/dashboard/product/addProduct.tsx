@@ -1,5 +1,5 @@
-import Image from "next/image";
-import React, { useState } from "react";
+import Image from 'next/image';
+import React, { useState } from 'react';
 
 interface Category {
   id: number;
@@ -29,26 +29,25 @@ const AddProduct: React.FC<AddProductProps> = ({
   categories,
   fetchProducts,
 }) => {
-  const [submitStatus, setSubmitStatus] = useState<string>("Add Product");
+  const [submitStatus, setSubmitStatus] = useState<string>('Add Product');
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [newProduct, setNewProduct] = useState<Product>({
     id: null,
-    name: "",
-    description: "",
+    name: '',
+    description: '',
     price: 0,
     available: false,
-    category_id: "",
+    category_id: '',
     file: null,
   });
 
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
     setNewProduct((prevProduct) => ({
       ...prevProduct,
       [name]: value,
-
     }));
   };
 
@@ -75,32 +74,32 @@ const AddProduct: React.FC<AddProductProps> = ({
   const fileInputRef = React.createRef<HTMLInputElement>();
   const handleClick = () => {
     fileInputRef.current?.click();
-    console.log("clicked", fileInputRef.current?.files);
+    console.log('clicked', fileInputRef.current?.files);
   };
 
   const handleProductSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (newProduct.price < 0) {
-      alert("Price cannot be negative.");
+      alert('Price cannot be negative.');
       return;
     }
     setIsSubmitting(true);
-    setSubmitStatus("Submitting...");
+    setSubmitStatus('Submitting...');
 
     const formData = new FormData();
     Object.keys(newProduct).forEach((key) => {
       const value = newProduct[key as keyof Product];
-      if (key !== "file" && value !== null) {
+      if (key !== 'file' && value !== null) {
         formData.append(key, String(value));
       }
     });
 
     if (newProduct.file) {
-      formData.append("file", newProduct.file);
+      formData.append('file', newProduct.file);
     }
 
-    const url = "/api/product";
-    const method = "POST";
+    const url = '/api/product';
+    const method = 'POST';
 
     try {
       const res = await fetch(url, {
@@ -109,7 +108,7 @@ const AddProduct: React.FC<AddProductProps> = ({
       });
 
       if (res.ok) {
-        setSubmitStatus("Product Added Successfully");
+        setSubmitStatus('Product Added Successfully');
         setTimeout(() => {
           setIsModalOpen(false);
           resetForm();
@@ -137,14 +136,14 @@ const AddProduct: React.FC<AddProductProps> = ({
   const resetForm = () => {
     setNewProduct({
       id: null,
-      name: "",
-      description: "",
+      name: '',
+      description: '',
       price: 0,
       available: false,
-      category_id: "",
+      category_id: '',
       file: null,
     });
-    setSubmitStatus("Add Product");
+    setSubmitStatus('Add Product');
   };
 
   const toggleModal = () => {
@@ -243,7 +242,11 @@ const AddProduct: React.FC<AddProductProps> = ({
                     {newProduct.file ? (
                       <div className="w-42 h-full">
                         <Image
-                          src={newProduct.file ? URL.createObjectURL(newProduct.file) : ""}
+                          src={
+                            newProduct.file
+                              ? URL.createObjectURL(newProduct.file)
+                              : ''
+                          }
                           alt="Preview"
                           width={200}
                           height={200}
@@ -251,7 +254,7 @@ const AddProduct: React.FC<AddProductProps> = ({
                         />
                       </div>
                     ) : (
-                      ""
+                      ''
                     )}
                     <div className="flex flex-col items-center justify-center pt-5 pb-6">
                       <svg
@@ -270,7 +273,7 @@ const AddProduct: React.FC<AddProductProps> = ({
                         />
                       </svg>
                       <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                        <span className="font-semibold">Click to upload</span>{" "}
+                        <span className="font-semibold">Click to upload</span>{' '}
                         or drag and drop
                       </p>
                       <p className="text-xs text-gray-500 dark:text-gray-400">
@@ -293,8 +296,8 @@ const AddProduct: React.FC<AddProductProps> = ({
                   disabled={isSubmitting}
                   className={`w-full p-2 text-white rounded-lg ${
                     isSubmitting
-                      ? "bg-gray-400"
-                      : "bg-blue-600 hover:bg-blue-500"
+                      ? 'bg-gray-400'
+                      : 'bg-blue-600 hover:bg-blue-500'
                   }`}
                 >
                   {submitStatus}

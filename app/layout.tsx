@@ -1,12 +1,12 @@
-"use client";
-import "./globals.css";
-import { ThemeProvider } from "@/context/ThemeContext";
-import Footer from "@/components/Footer";
+'use client';
+import './globals.css';
+import { ThemeProvider } from '@/context/ThemeContext';
+import Footer from '@/components/Footer';
 // import { Providers } from "./providers";
-import { CartProvider } from "../context/CartContext";
-import { FavoritesProvider } from "@/context/FavoriteContext";
-import Script from "next/script";
-import { usePathname } from "next/navigation";
+import { CartProvider } from '../context/CartContext';
+import { FavoritesProvider } from '@/context/FavoriteContext';
+import Script from 'next/script';
+import { usePathname } from 'next/navigation';
 // import useTelegram from "@/hooks/useTelegram";
 
 interface RootLayoutProps {
@@ -14,7 +14,7 @@ interface RootLayoutProps {
 }
 export default function RootLayout({ children }: RootLayoutProps) {
   const pathname = usePathname();
-  const isAdminRoute = pathname.startsWith("/admin");
+  const isAdminRoute = pathname.startsWith('/admin');
   return (
     <>
       <html lang="en" suppressHydrationWarning>

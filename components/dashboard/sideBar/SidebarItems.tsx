@@ -1,16 +1,14 @@
 // SidebarItems.tsx
-import React from "react";
-import Menuitems from "./MenuItems";
-import { usePathname } from "next/navigation";
-import NavItem from "./NavItem";
+import React from 'react';
+import Menuitems from './MenuItems';
+import { usePathname } from 'next/navigation';
+import NavItem from './NavItem';
 
 interface SidebarItemsProps {
   toggleMobileSidebar: (event: MouseEvent | null) => void;
 }
 
-const SidebarItems: React.FC<SidebarItemsProps> = ({
-  toggleMobileSidebar,
-}) => {
+const SidebarItems: React.FC<SidebarItemsProps> = ({ toggleMobileSidebar }) => {
   const pathname = usePathname();
   const pathDirect = pathname;
 
@@ -22,7 +20,7 @@ const SidebarItems: React.FC<SidebarItemsProps> = ({
 
   return (
     <div>
-      <section  className="">
+      <section className="">
         {Menuitems.map((item, index) => (
           <NavItem
             item={item}

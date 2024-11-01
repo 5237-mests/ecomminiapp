@@ -2,9 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import crypto from 'crypto';
 import prisma from '@/utils/prisma';
 
-
 export async function POST(request: NextRequest) {
-  const { initDataRaw } : { initDataRaw: string } = await request.json();
+  const { initDataRaw }: { initDataRaw: string } = await request.json();
 
   const BOT_TOKEN = process.env.BOT_TOKEN;
   if (!BOT_TOKEN) {
@@ -17,7 +16,7 @@ export async function POST(request: NextRequest) {
   if (!hash) {
     return NextResponse.json({ message: 'Missing hash' }, { status: 400 });
   }
- 
+
   // delete hash from init_data
   init_data.delete('hash');
 
@@ -67,18 +66,22 @@ export async function POST(request: NextRequest) {
         user['tg_id'] = user['id'];
         delete user['id'];
         delete user['allows_write_to_pm'];
-        user['photo_url'] = `https://api.telegram.org/file/bot${BOT_TOKEN}/${user['photo_url']}`
+        user['photo_url'] =
+          `https://api.telegram.org/file/bot${BOT_TOKEN}/${user['photo_url']}`;
 
         // Store or update initData in your database
         await prisma.user.upsert({
           where: { tg_id: user.tg_id },
           create: user,
-          update: user
+          update: user,
         });
 
         return NextResponse.json({ message: 'Data is valid', user });
       } catch (error) {
-        return NextResponse.json({ message: 'Invalid user' + error }, { status: 400 });
+        return NextResponse.json(
+          { message: 'Invalid user' + error },
+          { status: 400 },
+        );
       }
     }
   } else {

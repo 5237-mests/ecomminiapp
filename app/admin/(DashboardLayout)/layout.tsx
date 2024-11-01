@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
-import Header from "@/components/dashboard/header/Header";
-import Sidebar from "@/components/dashboard/sideBar/Sidebar";
+import React, { useState } from 'react';
+import Header from '@/components/dashboard/header/Header';
+import Sidebar from '@/components/dashboard/sideBar/Sidebar';
 
 export default function RootLayout({
   children,

@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import React, { useState } from 'react';
 
 interface Category {
   name: string;
@@ -12,17 +12,17 @@ interface Category {
 
 const AddCategory: React.FC = () => {
   const router = useRouter();
-  const [submitStatus, setSubmitStatus] = useState<string>("Add Category");
+  const [submitStatus, setSubmitStatus] = useState<string>('Add Category');
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [newCategory, setNewCategory] = useState<Category>({
-    name: "",
-    description: "",
+    name: '',
+    description: '',
     img: null,
   });
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
     setNewCategory((prevCategory) => ({
@@ -49,22 +49,22 @@ const AddCategory: React.FC = () => {
   const handleCategorySubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    setSubmitStatus("Submitting...");
+    setSubmitStatus('Submitting...');
 
     const formData = new FormData();
     Object.keys(newCategory).forEach((key) => {
       const value = newCategory[key as keyof Category];
-      if (key !== "img" && value !== null) {
+      if (key !== 'img' && value !== null) {
         formData.append(key, String(value));
       }
     });
 
     if (newCategory.img) {
-      formData.append("img", newCategory.img);
+      formData.append('img', newCategory.img);
     }
 
-    const url = "/api/category"; // Adjust the URL as necessary
-    const method = "POST";
+    const url = '/api/category'; // Adjust the URL as necessary
+    const method = 'POST';
 
     try {
       const res = await fetch(url, {
@@ -73,16 +73,16 @@ const AddCategory: React.FC = () => {
       });
 
       if (res.ok) {
-       resetForm();
-       setSubmitStatus("Category Added Successfully");
-       setTimeout(() => {
-          router.push("/admin/product"); 
+        resetForm();
+        setSubmitStatus('Category Added Successfully');
+        setTimeout(() => {
+          router.push('/admin/product');
         }, 2000);
       } else {
         const errorMessage = await res.text();
         setSubmitStatus(`Failed to Add Category: ${errorMessage}`);
       }
-    } catch (error ) {
+    } catch (error) {
       setSubmitStatus(`Failed to Add Category: ${(error as Error).message}`);
     } finally {
       setIsSubmitting(false);
@@ -91,12 +91,12 @@ const AddCategory: React.FC = () => {
 
   const resetForm = () => {
     setNewCategory({
-      name: "",
-      description: "",
+      name: '',
+      description: '',
       img: null,
     });
     setImagePreview(null);
-    setSubmitStatus("Add Category");
+    setSubmitStatus('Add Category');
   };
 
   return (
@@ -162,7 +162,7 @@ const AddCategory: React.FC = () => {
             type="submit"
             disabled={isSubmitting}
             className={`w-full p-2 text-white rounded-lg ${
-              isSubmitting ? "bg-gray-400" : "bg-blue-600 hover:bg-blue-500"
+              isSubmitting ? 'bg-gray-400' : 'bg-blue-600 hover:bg-blue-500'
             }`}
           >
             {submitStatus}

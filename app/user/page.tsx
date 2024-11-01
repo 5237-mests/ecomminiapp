@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import WebApp from "@twa-dev/sdk";
-import { useState, useEffect } from "react";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
+import WebApp from '@twa-dev/sdk';
+import { useState, useEffect } from 'react';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 // import InitData from "@/components/InitData";
 // import { initData } from "@telegram-apps/sdk-react";
 
@@ -18,30 +18,30 @@ interface UserData {
 
 export default function Page() {
   const [userData, setUserData] = useState<UserData | null>(null);
-  const [photo, setPhoto] = useState<string | null>("");
+  const [photo, setPhoto] = useState<string | null>('');
   const [allUser, setAllUser] = useState([{} as UserData]);
 
   const router = useRouter();
   const back = () => {
     router.back();
   };
-  
+
   useEffect(() => {
     if (WebApp.initDataUnsafe.user) {
       setPhoto(WebApp.initDataUnsafe?.user?.photo_url as string);
-      console.log("effect", WebApp.initDataUnsafe.user.username);
+      console.log('effect', WebApp.initDataUnsafe.user.username);
       setUserData(WebApp.initDataUnsafe.user as UserData);
     }
 
     WebApp.BackButton.show();
-  
+
     const handleBackClick = () => {
       back();
       WebApp.BackButton.offClick(handleBackClick);
     };
-  
+
     WebApp.BackButton.onClick(handleBackClick);
-  
+
     return () => {
       WebApp.BackButton.offClick(handleBackClick);
     };
@@ -51,24 +51,24 @@ export default function Page() {
   useEffect(() => {
     const getAllUser = async () => {
       try {
-        const response = await fetch("/api/user");
+        const response = await fetch('/api/user');
         const data = await response.json();
         setAllUser(data);
       } catch (error) {
-        console.log("Error:", error);
+        console.log('Error:', error);
       }
     };
     getAllUser();
-  }, [])
+  }, []);
 
   // delete user
   const deleteUser = async (id: number) => {
     try {
       await fetch(`/api/user?user_id=${id}`, {
-        method: "DELETE",
+        method: 'DELETE',
       });
     } catch (error) {
-      console.log("Error:", error);
+      console.log('Error:', error);
     }
 
     const updatedUser = allUser.filter((user: UserData) => user.id !== id);
@@ -103,7 +103,15 @@ export default function Page() {
         <h1 className="text-xl font-bold">All Users</h1>
         <ul>
           {allUser.map((user: UserData) => (
-            <li key={user.id}>{user.username} - {user.first_name} <button className="text-red-500" onClick={() => deleteUser(user.id)}>Delete</button></li>
+            <li key={user.id}>
+              {user.username} - {user.first_name}{' '}
+              <button
+                className="text-red-500"
+                onClick={() => deleteUser(user.id)}
+              >
+                Delete
+              </button>
+            </li>
           ))}
         </ul>
       </div>

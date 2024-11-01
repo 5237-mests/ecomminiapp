@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { TelegramWebApps } from "telegram-webapps-types";
+import { useEffect, useState } from 'react';
+import { TelegramWebApps } from 'telegram-webapps-types';
 
 /**
  * Hook to get the initial data from the Telegram Web Apps API already parsed.
@@ -12,7 +12,7 @@ function useTelegramInitData() {
 
   useEffect(() => {
     const firstLayerInitData = Object.fromEntries(
-      new URLSearchParams(window.Telegram.WebApp.initDataUnsafe)
+      new URLSearchParams(window.Telegram.WebApp.initDataUnsafe),
     );
 
     const initData: Record<string, string> = {};
@@ -35,6 +35,7 @@ export default useTelegramInitData;
 
 declare global {
   interface Window {
+    /* eslint-disable-next-line */
     Telegram: any;
   }
 }

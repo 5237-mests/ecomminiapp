@@ -11,7 +11,10 @@ type CategoryData = {
   file?: File;
 };
 
-export const PUT = async (req: Request, { params }: { params: { id: string } }) => {
+export const PUT = async (
+  req: Request,
+  { params }: { params: { id: string } },
+) => {
   try {
     const id = parseInt(params.id); // Parse the category ID from the URL params
     const formData = await req.formData(); // Get form data from the request
@@ -22,7 +25,10 @@ export const PUT = async (req: Request, { params }: { params: { id: string } }) 
     });
 
     if (!existingCategory) {
-      return NextResponse.json({ error: 'Category not found' }, { status: 404 });
+      return NextResponse.json(
+        { error: 'Category not found' },
+        { status: 404 },
+      );
     }
 
     // Type assertion for formData entries
@@ -38,10 +44,10 @@ export const PUT = async (req: Request, { params }: { params: { id: string } }) 
     if (file) {
       // Convert the file to a base64 string and upload it to Cloudinary
       const uploadResponse = await cloudinary.uploader.upload(
-        `data:${file.type};base64,${Buffer.from(await file.arrayBuffer()).toString('base64')}`, 
+        `data:${file.type};base64,${Buffer.from(await file.arrayBuffer()).toString('base64')}`,
         {
           upload_preset: 'erm5tqn2', // Your Cloudinary preset
-        }
+        },
       );
       // Set the image URL in the category data
       productCategory.img = uploadResponse.secure_url;
@@ -60,6 +66,9 @@ export const PUT = async (req: Request, { params }: { params: { id: string } }) 
     return NextResponse.json({ data: updatedCategory }, { status: 200 });
   } catch (error: unknown) {
     // Handle errors and return a 500 response with the error message
-    return NextResponse.json({ error: 'Update failed', details: error }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Update failed', details: error },
+      { status: 500 },
+    );
   }
 };

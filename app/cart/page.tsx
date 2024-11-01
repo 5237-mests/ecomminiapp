@@ -1,13 +1,18 @@
-"use client";
-import { FaShoppingCart, FaPlus, FaMinus, FaHeart, FaRegHeart } from "react-icons/fa";
-import Link from "next/link";
-import Image from "next/image";
-import { useCart } from "@/context/CartContext";
-import data from "@/assets/data.json";
-import { useFavorites } from "@/context/FavoriteContext";
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
-
+'use client';
+import {
+  FaShoppingCart,
+  FaPlus,
+  FaMinus,
+  FaHeart,
+  FaRegHeart,
+} from 'react-icons/fa';
+import Link from 'next/link';
+import Image from 'next/image';
+import { useCart } from '@/context/CartContext';
+import data from '@/assets/data.json';
+import { useFavorites } from '@/context/FavoriteContext';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 const Page = () => {
   const router = useRouter();
@@ -17,13 +22,13 @@ const Page = () => {
       if (!tg.BackButton.isVisible) {
         tg.BackButton.show();
       }
-      tg.BackButton.onClick(() => router.push("/"));
+      tg.BackButton.onClick(() => router.push('/'));
 
       return () => {
-        tg.BackButton.offClick(() => router.push("/"));
+        tg.BackButton.offClick(() => router.push('/'));
       };
     }
-  }, [router]); 
+  }, [router]);
 
   const { cartItems, addItem, removeItem, clearCart } = useCart();
   const { isFavorite, addFavorite, removeFavorite } = useFavorites();
@@ -31,14 +36,14 @@ const Page = () => {
 
   // Get only the products that are in the cart
   const cartProductItems = products.filter(
-    (product) => cartItems[product.product_id]
+    (product) => cartItems[product.product_id],
   );
 
   // Calculate total price of the cart
   const totalPrice = cartProductItems.reduce(
     (total, product) =>
       total + product.price * (cartItems[product.product_id] || 0),
-    0
+    0,
   );
   return (
     <div className="mb-20">

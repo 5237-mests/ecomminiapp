@@ -1,18 +1,18 @@
-"use client";
-import React, { useState, useEffect, useCallback } from "react";
-import { useDropzone } from "react-dropzone";
-import { formatDistanceToNow } from "date-fns";
-import { Product, Comment } from "@/types/types";
+'use client';
+import React, { useState, useEffect, useCallback } from 'react';
+import { useDropzone } from 'react-dropzone';
+import { formatDistanceToNow } from 'date-fns';
+import { Product, Comment } from '@/types/types';
 import {
   fetchProduct,
   handleDeleteDetailImg,
   handleDeleteProduct,
   handleUploadProductDetailImg,
-} from "@/controller/controller";
-import Loading from "@/components/Loading/page";
-import Image from "next/image";
-import { IconEdit, IconPlus, IconTrash } from "@tabler/icons-react";
-import { useRouter } from "next/navigation";
+} from '@/controller/controller';
+import Loading from '@/components/Loading/page';
+import Image from 'next/image';
+import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react';
+import { useRouter } from 'next/navigation';
 
 interface Props {
   params: {
@@ -41,8 +41,8 @@ const Page = ({ params }: Props) => {
         setProduct(productData);
         setDetailImages(productData.detail_img);
       } catch (error) {
-        setError("Failed to load product details.");
-        throw new Error("Failed to load product details." + error);
+        setError('Failed to load product details.');
+        throw new Error('Failed to load product details.' + error);
       } finally {
         setLoading(false);
       }
@@ -50,13 +50,13 @@ const Page = ({ params }: Props) => {
     const getProductComments = async () => {
       try {
         const productComments = await fetch(
-          `/api/product/comments/${productId}`
+          `/api/product/comments/${productId}`,
         );
         const data = await productComments.json();
         setComments(data.data);
       } catch (error) {
-        setError("Failed to load product comments.");
-        throw new Error("Failed to load product comments." + error);
+        setError('Failed to load product comments.');
+        throw new Error('Failed to load product comments.' + error);
       } finally {
         setRender(!render);
       }
@@ -79,7 +79,7 @@ const Page = ({ params }: Props) => {
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
-    accept: { "image/*": [".jpg", ".png", ".jpeg"] },
+    accept: { 'image/*': ['.jpg', '.png', '.jpeg'] },
   });
 
   if (loading) return <Loading />;
@@ -89,7 +89,7 @@ const Page = ({ params }: Props) => {
   const handleDelete = async () => {
     const status = await handleDeleteProduct(productId);
     if (status) {
-      setTimeout(() => router.push("/admin/product"), 3000);
+      setTimeout(() => router.push('/admin/product'), 3000);
     }
   };
 
@@ -98,7 +98,7 @@ const Page = ({ params }: Props) => {
     const status = await handleDeleteDetailImg(imageUrl, productId);
     if (status) {
       setDetailImages((prevImages) =>
-        prevImages.filter((img) => img !== imageUrl)
+        prevImages.filter((img) => img !== imageUrl),
       );
     }
     setDeleteLoading(false);
@@ -116,8 +116,8 @@ const Page = ({ params }: Props) => {
         setRender(!render);
       }
     } catch (err) {
-      setError("Failed to upload image.");
-      throw new Error("Failed to upload image." + err);
+      setError('Failed to upload image.');
+      throw new Error('Failed to upload image.' + err);
     } finally {
       setUploadLoading(false);
     }
@@ -125,7 +125,7 @@ const Page = ({ params }: Props) => {
 
   function formatDate(dateString: string) {
     const date = new Date(dateString);
-    return date.toLocaleDateString() + " " + date.toLocaleTimeString(); // Formats date as "MM/DD/YYYY HH:MM:SS AM/PM"
+    return date.toLocaleDateString() + ' ' + date.toLocaleTimeString(); // Formats date as "MM/DD/YYYY HH:MM:SS AM/PM"
   }
 
   return (
@@ -177,10 +177,10 @@ const Page = ({ params }: Props) => {
                   {...getRootProps()}
                   className={`relative ${
                     imagePreview
-                      ? "cursor-not-allowed h-[calc(100% - 0.5rem)]"
-                      : "cursor-pointer h-full"
+                      ? 'cursor-not-allowed h-[calc(100% - 0.5rem)]'
+                      : 'cursor-pointer h-full'
                   } flex items-center justify-center border-2 border-dashed border-gray-400 rounded-lg w-full  hover:bg-gray-100`}
-                  style={{ pointerEvents: imagePreview ? "none" : "auto" }}
+                  style={{ pointerEvents: imagePreview ? 'none' : 'auto' }}
                 >
                   <input {...getInputProps()} disabled={!!imagePreview} />
                   {isDragActive ? (
@@ -210,7 +210,7 @@ const Page = ({ params }: Props) => {
                           <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white "></div>
                         </div>
                       ) : (
-                        "Add Image"
+                        'Add Image'
                       )}
                     </button>
                     <button
@@ -256,18 +256,18 @@ const Page = ({ params }: Props) => {
             <p className="font-semibold text-gray-700">Availability:</p>
             <p
               className={`font-medium ${
-                product.available ? "text-green-500" : "text-red-500"
+                product.available ? 'text-green-500' : 'text-red-500'
               }`}
             >
-              {product.available ? "Available" : "Not Available"}
+              {product.available ? 'Available' : 'Not Available'}
             </p>
             <p className="font-semibold text-gray-700">Created at</p>
             <p className="text-gray-600">
-              {formatDate(product.createdAt ?? "")}
+              {formatDate(product.createdAt ?? '')}
             </p>
             <p className="font-semibold text-gray-700">Updated at</p>
             <p className="text-gray-600">
-              {formatDate(product.updatedAt ?? "")}
+              {formatDate(product.updatedAt ?? '')}
             </p>
           </div>
           <div className="pt-4 border-t border-gray-200">

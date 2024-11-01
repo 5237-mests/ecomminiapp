@@ -1,20 +1,20 @@
-"use client";
-import { useState, useEffect } from "react";
-import React from "react";
-import { IconSearch } from "@tabler/icons-react";
-import AddProduct from "@/components/dashboard/product/addProduct";
-import { useRouter } from "next/navigation";
-import { Product, Category } from "@/types/types";
-import CatalogList from "@/components/dashboard/product/CatalogList";
-import ProductTable from "@/components/dashboard/product/ProductTable";
-import Loading from "@/components/Loading/page";
+'use client';
+import { useState, useEffect } from 'react';
+import React from 'react';
+import { IconSearch } from '@tabler/icons-react';
+import AddProduct from '@/components/dashboard/product/addProduct';
+import { useRouter } from 'next/navigation';
+import { Product, Category } from '@/types/types';
+import CatalogList from '@/components/dashboard/product/CatalogList';
+import ProductTable from '@/components/dashboard/product/ProductTable';
+import Loading from '@/components/Loading/page';
 
 export default function ProductsPage() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
   const [filteredProducts, setFilteredProducts] = useState<Product[]>(products);
   const [activeCategory, setActiveCategory] = useState<number | null>(null);
   const [availableItems, setAvailableItems] = useState<Product[]>(products);
@@ -29,7 +29,7 @@ export default function ProductsPage() {
     setIsLoading(true);
     fetchCategories();
     fetchProducts();
-  }, [ ]);
+  }, []);
 
   useEffect(() => {
     // Set initial filtered products to all products when the component mounts
@@ -41,23 +41,23 @@ export default function ProductsPage() {
 
   const fetchCategories = async () => {
     try {
-      const res = await fetch("/api/category");
+      const res = await fetch('/api/category');
       const data = await res.json();
       setCategories(data.data);
     } catch (error) {
-      console.error("Error fetching categories:", error);
+      console.error('Error fetching categories:', error);
     }
   };
 
   const fetchProducts = async () => {
     try {
-      const res = await fetch("/api/product");
+      const res = await fetch('/api/product');
       const data = await res.json();
       setProducts(data.data);
-      console.log("products", data);
+      console.log('products', data);
       // setStatus(data.available);
     } catch (error) {
-      console.error("Error fetching products:", error);
+      console.error('Error fetching products:', error);
     }
     setIsLoading(false);
   };
@@ -66,10 +66,10 @@ export default function ProductsPage() {
     const newAvailability = !product.available;
 
     const formData = new FormData();
-    formData.append("available", newAvailability.toString());
+    formData.append('available', newAvailability.toString());
 
     const res = await fetch(`/api/product/${product.product_id}`, {
-      method: "PUT",
+      method: 'PUT',
       body: formData,
     });
 
@@ -93,11 +93,11 @@ export default function ProductsPage() {
   // filter product by categories
   const filterProductsByCategory = (categoryId: number) => {
     const filteredProducts = products.filter(
-      (product) => product.category_id === categoryId
+      (product) => product.category_id === categoryId,
     );
     setFilteredProducts(filteredProducts);
     const availableProducts = filteredProducts.filter(
-      (product) => product.available
+      (product) => product.available,
     );
     setAvailableItems(availableProducts);
     setActiveCategory(categoryId);
@@ -106,7 +106,7 @@ export default function ProductsPage() {
   // Filter search products
   const filteredData = filteredProducts
     .filter((product) =>
-      product.name.toLowerCase().includes(searchTerm.toLowerCase())
+      product.name.toLowerCase().includes(searchTerm.toLowerCase()),
     )
     .sort((a, b) => {
       return a.available === b.available ? 0 : a.available ? -1 : 1;
@@ -135,11 +135,12 @@ export default function ProductsPage() {
                 onClick={() => showAllProducts()}
                 className={`w-24 text-sm text-gray-600 pb-1  bg-gray-100 hover:bg-gray-200 rounded-md ${
                   activeCategory === null
-                    ? "border-b-2 border-blue-500 pb-1"
-                    : ""
+                    ? 'border-b-2 border-blue-500 pb-1'
+                    : ''
                 }`}
               >
-                <span>All </span><span className="hidden sm:inline"> Products</span>
+                <span>All </span>
+                <span className="hidden sm:inline"> Products</span>
               </button>
               {categories?.map((category) => (
                 <CatalogList
@@ -150,7 +151,7 @@ export default function ProductsPage() {
                 />
               ))}
               <button
-                onClick={() => router.push("/admin/product/category")}
+                onClick={() => router.push('/admin/product/category')}
                 className="hidden sm:inline ml-auto absolute right-0 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
               >
                 Add Category
@@ -164,14 +165,14 @@ export default function ProductsPage() {
                 All <span className="text-gray-400"> {products?.length}</span>
               </p>
               <p className="text-blue-500 bg-white rounded-lg py-1 px-3 shadow-md">
-                Item{" "}
+                Item{' '}
                 <span className="text-gray-400">
-                  {" "}
+                  {' '}
                   {filteredProducts.length}
                 </span>
               </p>
               <p className="text-blue-500 bg-white rounded-lg py-1 px-3 shadow-md">
-                On Service{" "}
+                On Service{' '}
                 <span className="text-gray-400"> {availableItems.length}</span>
               </p>
             </div>
@@ -195,7 +196,6 @@ export default function ProductsPage() {
             updateProductAvailability={updateProductAvailability}
             availableItemLoading={availableItemLoading}
           />
-          
 
           <div className="mt-6 text-center">
             <button className="text-blue-500">Load More</button>
