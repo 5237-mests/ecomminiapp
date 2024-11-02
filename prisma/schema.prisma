@@ -50,6 +50,21 @@ enum Role {
   delivery
 }
 
+// Admin model
+model Admin {
+  id           String   @default(cuid()) @id
+  email        String?   @unique
+  first_name   String
+  last_name    String?
+  username     String  @unique
+  role         Role     @default(superadmin)
+  phone_number String?
+  photo_url    String?
+  password     String
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+}
+
 // Category model
 model Category {
   id           Int      @id @default(autoincrement())
@@ -96,17 +111,6 @@ model Product {
   productlikes ProductLike[]
 }
 
-// Comment model
-// model Comment {
-//   comment_id   String   @id @default(cuid())
-//   content      String
-//   user_id      String
-//   product_id   String
-//   createdAt    DateTime @default(now()) @map("created_at")
-
-//   // Foreign key relation to Product
-//   product      Product  @relation(fields: [product_id], references: [product_id], onDelete: Cascade)
-// }
 model Comment {
   id           Int      @id @default(autoincrement())
   content      String
