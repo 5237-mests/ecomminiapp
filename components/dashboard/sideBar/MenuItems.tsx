@@ -28,7 +28,7 @@ const Menuitems = [
   {
     title: 'Employees',
     icon: IconUserCheck,
-    href: '/admin/alerts',
+    href: '/admin/employee',
   },
   {
     title: 'Order Status',
