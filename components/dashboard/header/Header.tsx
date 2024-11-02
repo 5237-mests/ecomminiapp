@@ -11,9 +11,28 @@ interface ItemType {
   toggleMobileSidebar: (event: React.MouseEvent<HTMLElement>) => void;
 }
 
+//logout
+
 const Header = ({ toggleMobileSidebar }: ItemType) => {
   const [isShowLogOut, setIsShowLogout] = React.useState(false);
   const router = useRouter();
+
+  const logout = async () => {
+    const response = await fetch('/api/admin/logout', {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    });
+    const data = await response.json();
+    if (data.error) {
+      console.error(data.error);
+    } else {
+      router.push('/admin/login');
+    }
+  };
+
   return (
     <div>
       <section className="fixed top-0 z-50 bg-blue-400 sm:h-20 h-16 flex justify-between px-8 items-center w-full shadow-lg">
@@ -51,7 +70,7 @@ const Header = ({ toggleMobileSidebar }: ItemType) => {
         <div className="flex items-center gap-4">
           {isShowLogOut && (
             <button
-              onClick={() => router.push('/admin/login')}
+              onClick={logout}
               className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
             >
               🔓 Logout
