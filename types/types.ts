@@ -14,14 +14,14 @@ export interface category {
 }
 
 export interface Product {
-  product_id: number;
+  product_id: number | null;
   name: string;
   description: string;
   price: number;
   likes: number;
   comments: Comment[];
   available: boolean;
-  category_id: number;
+  category_id: string | number;
   category: {
     name: string;
   };
