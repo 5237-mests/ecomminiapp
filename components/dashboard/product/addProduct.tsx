@@ -74,7 +74,6 @@ const AddProduct: React.FC<AddProductProps> = ({
   const fileInputRef = React.createRef<HTMLInputElement>();
   const handleClick = () => {
     fileInputRef.current?.click();
-    console.log('clicked', fileInputRef.current?.files);
   };
 
   const handleProductSubmit = async (e: React.FormEvent) => {
@@ -119,7 +118,7 @@ const AddProduct: React.FC<AddProductProps> = ({
         setSubmitStatus(`Failed to Add Product: ${errorMessage}`);
       }
     } catch (error) {
-      setSubmitStatus(`Failed to Add Product: ${(error as Error).message}`);
+      setSubmitStatus(`Failed: ${(error as Error).message}`);
     } finally {
       setIsSubmitting(false);
     }
