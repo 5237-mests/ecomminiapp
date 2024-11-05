@@ -24,6 +24,6 @@ export async function POST(request: Request) {
   }
 
   // Create a session after successful login
-  await createSession(admin.id);
-  return NextResponse.json({ data: admin }, { status: 200 });
+  const session = await createSession(admin.id, admin.role);
+  return NextResponse.json({ data: session }, { status: 200 });
 }

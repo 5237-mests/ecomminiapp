@@ -1,12 +1,17 @@
 import cloudinary from '@/lib/cloudinary';
 import { NextResponse } from 'next/server';
 import prisma from '@/utils/prisma';
+import { getSession } from '@/app/lib/session';
 
 // // Get all products
 export const GET = async () => {
   try {
     // const userId = req.headers.get('user-id'); // Retrieve user ID from request headers or session
-    const user_id = 'cm2w8sjta00009lg4w2152lwo';
+    const session = await getSession();
+    // if no session return error
+    if (!session) {
+      return NextResponse.json({ error: 'Session not found' }, { status: 401 });
+    }
     // Fetch all products
     const products = await prisma.product.findMany({
       include: {
@@ -19,7 +24,7 @@ export const GET = async () => {
 
     // Retrieve all product likes for the current user in one query
     const userLikes = await prisma.productLike.findMany({
-      where: { user_id },
+      where: { user_id: session.userId as string },
       select: { product_id: true },
     });
 
