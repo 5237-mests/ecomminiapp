@@ -14,6 +14,6 @@ export async function POST(request: Request) {
   });
 
   // create session
-  await createSession(admin.id);
+  await createSession(admin.id, admin.role);
   return NextResponse.json({ data: admin }, { status: 201 });
 }
