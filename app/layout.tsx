@@ -19,6 +19,9 @@ export default function RootLayout({ children }: RootLayoutProps) {
     <>
       <html lang="en" suppressHydrationWarning>
         <head>
+          <link rel="icon" href="/android-chrome-192x192.png" />
+          <link rel="icon" href="/favicon.ico" />
+          <title>FUN SHOP</title>
           <Script
             src="https://telegram.org/js/telegram-web-app.js"
             strategy="beforeInteractive"

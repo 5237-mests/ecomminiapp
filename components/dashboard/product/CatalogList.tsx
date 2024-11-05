@@ -18,7 +18,7 @@ const CatalogList: React.FC<CatalogListProps> = ({
       <button
         key={category.id}
         onClick={() => filterProductsByCategory(category.id)}
-        className={`text-sm text-gray-600 pb-1  bg-gray-100 hover:bg-gray-200 rounded-md items-center flex justify-center ${
+        className={`text-sm sm:text-gray-600 font-medium text-gray-900 pb-1 bg-violet-300  sm:bg-gray-100 hover:bg-gray-200 rounded-md items-center flex justify-center ${
           activeCategory === category.id ? 'border-b-2 border-blue-500' : ''
         }`}
       >

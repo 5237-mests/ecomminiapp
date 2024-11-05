@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { formatDistanceToNow } from 'date-fns';
-import { Product, Comment } from '@/types/types';
+import { Product, Comment, Category } from '@/types/types';
 import {
   fetchProduct,
   handleDeleteDetailImg,
@@ -13,6 +13,8 @@ import Loading from '@/components/Loading/page';
 import Image from 'next/image';
 import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react';
 import { useRouter } from 'next/navigation';
+import EditProduct from '@/components/dashboard/product/EditProduct';
+import DeleteConfirm from '@/components/dashboard/product/DeleteConfirm';
 
 interface Props {
   params: {
@@ -32,6 +34,10 @@ const Page = ({ params }: Props) => {
   const [imgFile, setImgFile] = useState<File | null>(null);
   const [comments, setComments] = useState([{} as Comment]);
   const [render, setRender] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [deleteConfirm, setDeleteConfirm] = useState(false);
+
   const router = useRouter();
 
   useEffect(() => {
@@ -58,13 +64,29 @@ const Page = ({ params }: Props) => {
         setError('Failed to load product comments.');
         throw new Error('Failed to load product comments.' + error);
       } finally {
-        setRender(!render);
+        // setRender(!render);
       }
     };
     getProduct();
     getProductComments();
-  }, [productId]);
+    fetchCategories();
+  }, [render]);
 
+  const hadleEdit = () => {
+    setIsModalOpen(true);
+
+    // setRender(!render);
+  };
+
+  const fetchCategories = async () => {
+    try {
+      const res = await fetch('/api/category');
+      const data = await res.json();
+      setCategories(data.data);
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+    }
+  };
   //sort comments asc
   comments?.sort((a, b) => {
     return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
@@ -129,8 +151,29 @@ const Page = ({ params }: Props) => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 p-8">
-      <h1 className="text-3xl font-bold text-gray-800 mb-6">Product Details</h1>
+    <div className="min-h-screen bg-gray-100  p-8">
+      <div className="sm:flex justify-between">
+        <h1 className="text-3xl font-bold text-gray-800 mb-6">
+          Product Details
+        </h1>
+        <div className="flex justify-between space-x-4 mt-4">
+          <button
+            onClick={hadleEdit}
+            className="flex items-center space-x-2 px-4 py-2 bg-blue-400 text-white font-semibold rounded-lg shadow hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+          >
+            <IconEdit size={18} />
+            <span className="hidden sm:block">Edit</span>
+          </button>
+
+          <button
+            onClick={() => setDeleteConfirm(true)}
+            className="flex items-center space-x-2 px-4 py-2 bg-orange-400 text-white font-semibold rounded-lg shadow hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-orange-500"
+          >
+            <IconTrash size={18} />
+            <span className="hidden sm:block">Delete</span>
+          </button>
+        </div>
+      </div>
       <section className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start mb-8 ">
         <div className="w-full space-y-4 rounded-lg p-4">
           <div className="flex items-center justify-center">
@@ -140,7 +183,7 @@ const Page = ({ params }: Props) => {
               width={500}
               height={500}
               priority
-              className="rounded-lg w-auto shadow-lg h-[500px]"
+              className="rounded-lg w-full shadow-lg h-auto"
             />
           </div>
           <div className="grid grid-cols-3 gap-4">
@@ -210,7 +253,7 @@ const Page = ({ params }: Props) => {
                           <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white "></div>
                         </div>
                       ) : (
-                        'Add Image'
+                        'Add'
                       )}
                     </button>
                     <button
@@ -223,21 +266,6 @@ const Page = ({ params }: Props) => {
                 )}
               </div>
             )}
-          </div>
-          <div className="flex space-x-4 mt-4">
-            <button className="flex items-center space-x-2 px-4 py-2 bg-green-600 text-white font-semibold rounded-lg shadow hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500">
-              <IconEdit size={18} />
-              <span>Edit</span>
-            </button>
-
-            <button
-              onClick={handleDelete}
-              className="flex items-center space-x-2 px-4 py-2 bg-orange-600 text-white font-semibold rounded-lg shadow hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-orange-500"
-            >
-              <IconTrash size={18} />
-              <span>Delete</span>
-            </button>
-            {/* {deleteLoading && <p>Deleting product...</p>} */}
           </div>
         </div>
 
@@ -296,6 +324,26 @@ const Page = ({ params }: Props) => {
           </div>
         </div>
       </section>
+      {isModalOpen && (
+        <EditProduct
+          categories={categories}
+          // product_id={productId}
+          isModalOpen={isModalOpen}
+          setIsModalOpen={setIsModalOpen}
+          fetchProducts={() => setRender(!render)} // assuming fetchProduct is a function that fetches products
+          productToEdit={{
+            ...product,
+            category_id: String(product.category_id),
+            // img: new File([product.img], 'image.jpg', { type: 'image/jpeg' }),
+          }}
+        />
+      )}
+      {deleteConfirm && (
+        <DeleteConfirm
+          setDeleteConfirm={setDeleteConfirm}
+          handleDelete={() => handleDelete()}
+        />
+      )}
     </div>
   );
 };

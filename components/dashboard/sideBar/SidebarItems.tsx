@@ -30,6 +30,8 @@ const SidebarItems: React.FC<SidebarItemsProps> = ({ toggleMobileSidebar }) => {
           />
         ))}
       </section>
+
+      <div className="h-32"></div>
     </div>
   );
 };

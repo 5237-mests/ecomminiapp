@@ -1,51 +1,74 @@
+// import Image from 'next/image';
+import React, { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
-import React, { useState } from 'react';
+import { Category, Product } from '@/types/types';
+import { useDropzone } from 'react-dropzone';
 
-interface Category {
-  id: number;
-  name: string;
-}
-
-interface Product {
-  id: number | null;
-  name: string;
-  description: string;
-  price: number;
-  available: boolean;
-  category_id: string;
-  file: File | null;
-}
-
-interface AddProductProps {
+interface EditProductProps {
   isModalOpen: boolean;
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   categories: Category[];
   fetchProducts: () => void;
+  productToEdit: Product | null;
 }
 
-const AddProduct: React.FC<AddProductProps> = ({
+const EditProduct: React.FC<EditProductProps> = ({
   isModalOpen,
-  setIsModalOpen,
   categories,
   fetchProducts,
+  setIsModalOpen,
+  productToEdit,
 }) => {
-  const [submitStatus, setSubmitStatus] = useState<string>('Add Product');
+  const [submitStatus, setSubmitStatus] = useState<string>('Update Product');
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const [newProduct, setNewProduct] = useState<Product>({
-    id: null,
+  const defaultProduct: Product = {
+    product_id: null,
     name: '',
     description: '',
     price: 0,
+    likes: 0,
+    comments: [],
     available: false,
     category_id: '',
-    file: null,
+    category: { name: '' },
+    img: '',
+    createdAt: undefined,
+    updatedAt: undefined,
+  };
+
+  const [updatedProduct, setUpdatedProduct] = useState<Product>({
+    ...defaultProduct,
+    product_id: null,
+    name: '',
+    description: '',
+    price: 0,
+    category_id: '',
+    available: false,
+    img: '',
   });
+
+  useEffect(() => {
+    if (productToEdit) {
+      setUpdatedProduct({
+        product_id: productToEdit.product_id,
+        name: productToEdit.name,
+        description: productToEdit.description,
+        price: productToEdit.price,
+        category_id: productToEdit.category_id,
+        available: productToEdit.available,
+        img: productToEdit.img,
+        likes: productToEdit.likes,
+        comments: productToEdit.comments,
+        category: productToEdit.category,
+      });
+    }
+  }, [productToEdit]);
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
-    setNewProduct((prevProduct) => ({
+    setUpdatedProduct((prevProduct) => ({
       ...prevProduct,
       [name]: value,
     }));
@@ -53,103 +76,76 @@ const AddProduct: React.FC<AddProductProps> = ({
 
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setNewProduct((prevProduct) => ({
+    setUpdatedProduct((prevProduct) => ({
       ...prevProduct,
       [name]: value,
     }));
   };
 
-  const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault();
-    const files = e.dataTransfer.files;
-    if (files && files.length > 0) {
-      setNewProduct((prev) => ({ ...prev, file: files[0] }));
-    }
-  };
-
-  const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault();
-  };
-
-  const fileInputRef = React.createRef<HTMLInputElement>();
-  const handleClick = () => {
-    fileInputRef.current?.click();
-    console.log('clicked', fileInputRef.current?.files);
-  };
-
   const handleProductSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (newProduct.price < 0) {
+    if (updatedProduct?.price < 0) {
       alert('Price cannot be negative.');
       return;
     }
     setIsSubmitting(true);
     setSubmitStatus('Submitting...');
 
-    const formData = new FormData();
-    Object.keys(newProduct).forEach((key) => {
-      const value = newProduct[key as keyof Product];
-      if (key !== 'file' && value !== null) {
-        formData.append(key, String(value));
-      }
-    });
-
-    if (newProduct.file) {
-      formData.append('file', newProduct.file);
-    }
-
-    const url = '/api/product';
-    const method = 'POST';
-
     try {
-      const res = await fetch(url, {
-        method,
-        body: formData,
-      });
+      const formData = new FormData();
+      formData.append('name', updatedProduct.name);
+      formData.append('price', updatedProduct.price.toString());
+      formData.append('category_id', updatedProduct.category_id.toString());
+      formData.append('available', updatedProduct.available.toString());
+      formData.append('description', updatedProduct.description);
 
-      if (res.ok) {
-        setSubmitStatus('Product Added Successfully');
-        setTimeout(() => {
-          setIsModalOpen(false);
-          resetForm();
-          fetchProducts();
-        }, 2000);
+      // Add the image file if present
+      if (updatedProduct.img) {
+        formData.append('img', updatedProduct.img);
+      }
+
+      const response = await fetch(
+        `/api/product/${updatedProduct.product_id}`,
+        {
+          method: 'PUT',
+          body: formData,
+        },
+      );
+
+      if (response.ok) {
+        alert('Product updated successfully!');
+        fetchProducts(); // Refresh product list
+        setIsModalOpen(false); // Close modal on success
       } else {
-        const errorMessage = await res.text();
-        setSubmitStatus(`Failed to Add Product: ${errorMessage}`);
+        const responseData = await response.json();
+        alert(`Failed to update product: ${responseData.error}`);
       }
     } catch (error) {
-      setSubmitStatus(`Failed to Add Product: ${(error as Error).message}`);
+      console.error('Error updating product:', error);
+      alert('An error occurred while updating the product.');
     } finally {
       setIsSubmitting(false);
+      setSubmitStatus('Update Product');
     }
-  };
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0] || null;
-    setNewProduct((prevProduct) => ({
-      ...prevProduct,
-      file,
-    }));
-  };
-
-  const resetForm = () => {
-    setNewProduct({
-      id: null,
-      name: '',
-      description: '',
-      price: 0,
-      available: false,
-      category_id: '',
-      file: null,
-    });
-    setSubmitStatus('Add Product');
   };
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
   };
 
+  const onDrop = useCallback((acceptedFiles: File[]) => {
+    if (acceptedFiles.length > 0) {
+      setUpdatedProduct((prevProduct) => ({
+        ...prevProduct,
+        img: URL.createObjectURL(acceptedFiles[0]),
+      }));
+    }
+  }, []);
+
+  const { getRootProps, getInputProps } = useDropzone({
+    onDrop,
+    accept: { 'image/*': ['.jpg', '.png', '.jpeg'] },
+  });
   return (
     <div className=" overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
       {isModalOpen && (
@@ -157,7 +153,7 @@ const AddProduct: React.FC<AddProductProps> = ({
           <div className="relative w-full max-w-md bg-white rounded-lg shadow dark:bg-gray-900">
             <div className="flex items-center justify-between p-5 border-b rounded-t dark:border-gray-700">
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                Create New Product
+                Edit Product
               </h3>
               <button
                 type="button"
@@ -176,7 +172,7 @@ const AddProduct: React.FC<AddProductProps> = ({
                   <input
                     type="text"
                     name="name"
-                    value={newProduct.name}
+                    value={updatedProduct.name}
                     onChange={handleInputChange}
                     className="w-full p-2 bg-gray-200 rounded-lg dark:bg-gray-700 dark:text-white"
                     required
@@ -189,7 +185,7 @@ const AddProduct: React.FC<AddProductProps> = ({
                   <input
                     type="number"
                     name="price"
-                    value={newProduct.price}
+                    value={updatedProduct.price}
                     onChange={handleInputChange}
                     className="w-full p-2 bg-gray-200 rounded-lg dark:bg-gray-700 dark:text-white"
                     required
@@ -201,7 +197,7 @@ const AddProduct: React.FC<AddProductProps> = ({
                   </label>
                   <select
                     name="category_id"
-                    value={newProduct.category_id}
+                    value={updatedProduct.category_id}
                     onChange={handleSelectChange}
                     className="w-full p-2 bg-gray-200 rounded-lg dark:bg-gray-700 dark:text-white"
                     required
@@ -222,7 +218,7 @@ const AddProduct: React.FC<AddProductProps> = ({
                   </label>
                   <textarea
                     name="description"
-                    value={newProduct.description}
+                    value={updatedProduct.description}
                     onChange={handleInputChange}
                     rows={3}
                     className="w-full p-2 bg-gray-200 rounded-lg dark:bg-gray-700 dark:text-white"
@@ -235,24 +231,20 @@ const AddProduct: React.FC<AddProductProps> = ({
                   </label>
                   <div
                     className="flex gap-4 items-center justify-center w-full h-24 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-200 dark:bg-gray-800 dark:border-gray-600 hover:bg-gray-300 dark:hover:bg-gray-700"
-                    onDrop={handleDrop}
-                    onDragOver={handleDragOver}
-                    onClick={handleClick}
+                    {...getRootProps()}
                   >
-                    {newProduct.file ? (
-                      <div className="w-42 h-full">
-                        <Image
-                          src={
-                            newProduct.file
-                              ? URL.createObjectURL(newProduct.file)
-                              : ''
-                          }
-                          alt="Preview"
-                          width={200}
-                          height={200}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
+                    {updatedProduct.img ? (
+                      <>
+                        <div className="w-42 h-full">
+                          <Image
+                            src={updatedProduct.img}
+                            alt="Preview"
+                            width={200}
+                            height={200}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                      </>
                     ) : (
                       ''
                     )}
@@ -281,11 +273,9 @@ const AddProduct: React.FC<AddProductProps> = ({
                       </p>
                     </div>
                     <input
-                      type="file"
-                      ref={fileInputRef}
-                      onChange={handleFileChange}
-                      className="hidden"
-                      accept="image/*"
+                      {...getInputProps()}
+                      // disabled={!!imagePreview}
+                      disabled={false}
                     />
                   </div>
                 </div>
@@ -311,4 +301,4 @@ const AddProduct: React.FC<AddProductProps> = ({
   );
 };
 
-export default AddProduct;
+export default EditProduct;
