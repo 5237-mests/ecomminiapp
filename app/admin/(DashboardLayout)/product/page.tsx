@@ -105,7 +105,7 @@ export default function ProductsPage() {
 
   // Filter search products
   const filteredData = filteredProducts
-    .filter((product) =>
+    ?.filter((product) =>
       product.name.toLowerCase().includes(searchTerm.toLowerCase()),
     )
     .sort((a, b) => {
@@ -122,9 +122,10 @@ export default function ProductsPage() {
             <h1 className="text-2xl font-bold text-gray-800">Products</h1>
             <button
               onClick={toggleModal}
-              className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+              className="bg-blue-500 text-white sm:px-4 sm:py-2 px-2 py-1 rounded-md hover:bg-blue-600"
             >
-              Add Products
+              <span>Add </span>
+              <span className="hidden sm:inline"> Product</span>
             </button>
           </header>
 
@@ -133,13 +134,13 @@ export default function ProductsPage() {
             <div className="flex gap-4 border-b w-full relative  overflow-x-auto">
               <button
                 onClick={() => showAllProducts()}
-                className={`w-24 text-sm text-gray-600 pb-1  bg-gray-100 hover:bg-gray-200 rounded-md ${
+                className={`w-24 text-sm sm:text-gray-600 text-gray-900 font-medium pb-1 sm:bg-gray-100 hover:bg-gray-200 bg-violet-300 rounded-md ${
                   activeCategory === null
                     ? 'border-b-2 border-blue-500 pb-1'
                     : ''
                 }`}
               >
-                <span>All </span>
+                <span className="px-4 sm:px-1">All </span>
                 <span className="hidden sm:inline"> Products</span>
               </button>
               {categories?.map((category) => (

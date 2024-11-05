@@ -14,6 +14,7 @@ import Image from 'next/image';
 import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react';
 import { useRouter } from 'next/navigation';
 import EditProduct from '@/components/dashboard/product/EditProduct';
+import DeleteConfirm from '@/components/dashboard/product/DeleteConfirm';
 
 interface Props {
   params: {
@@ -35,6 +36,7 @@ const Page = ({ params }: Props) => {
   const [render, setRender] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [deleteConfirm, setDeleteConfirm] = useState(false);
 
   const router = useRouter();
 
@@ -150,27 +152,26 @@ const Page = ({ params }: Props) => {
 
   return (
     <div className="min-h-screen bg-gray-100  p-8">
-      <div className="flex justify-between">
+      <div className="sm:flex justify-between">
         <h1 className="text-3xl font-bold text-gray-800 mb-6">
           Product Details
         </h1>
-        <div className="flex space-x-4 mt-4">
+        <div className="flex justify-between space-x-4 mt-4">
           <button
             onClick={hadleEdit}
-            className="flex items-center space-x-2 px-4 py-2 bg-green-600 text-white font-semibold rounded-lg shadow hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+            className="flex items-center space-x-2 px-4 py-2 bg-blue-400 text-white font-semibold rounded-lg shadow hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500"
           >
             <IconEdit size={18} />
-            <span>Edit</span>
+            <span className="hidden sm:block">Edit</span>
           </button>
 
           <button
-            onClick={handleDelete}
-            className="flex items-center space-x-2 px-4 py-2 bg-orange-600 text-white font-semibold rounded-lg shadow hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-orange-500"
+            onClick={() => setDeleteConfirm(true)}
+            className="flex items-center space-x-2 px-4 py-2 bg-orange-400 text-white font-semibold rounded-lg shadow hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-orange-500"
           >
             <IconTrash size={18} />
-            <span>Delete</span>
+            <span className="hidden sm:block">Delete</span>
           </button>
-          {/* {deleteLoading && <p>Deleting product...</p>} */}
         </div>
       </div>
       <section className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start mb-8 ">
@@ -182,7 +183,7 @@ const Page = ({ params }: Props) => {
               width={500}
               height={500}
               priority
-              className="rounded-lg w-auto shadow-lg h-[500px]"
+              className="rounded-lg w-full shadow-lg h-auto"
             />
           </div>
           <div className="grid grid-cols-3 gap-4">
@@ -333,8 +334,14 @@ const Page = ({ params }: Props) => {
           productToEdit={{
             ...product,
             category_id: String(product.category_id),
-            img: new File([product.img], 'image.jpg', { type: 'image/jpeg' }),
+            // img: new File([product.img], 'image.jpg', { type: 'image/jpeg' }),
           }}
+        />
+      )}
+      {deleteConfirm && (
+        <DeleteConfirm
+          setDeleteConfirm={setDeleteConfirm}
+          handleDelete={() => handleDelete()}
         />
       )}
     </div>

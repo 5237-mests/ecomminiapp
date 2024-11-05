@@ -1,20 +1,22 @@
 import Image from 'next/image';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
+import { useDropzone } from 'react-dropzone';
+import { Product } from '@/types/types';
 
 interface Category {
   id: number;
   name: string;
 }
 
-interface Product {
-  product_id: number | null;
-  name: string;
-  description: string;
-  price: number;
-  available: boolean;
-  category_id: string;
-  img: File | null;
-}
+// interface Product {
+//   product_id: number | null;
+//   name: string;
+//   description: string;
+//   price: number;
+//   available: boolean;
+//   category_id: string;
+//   img: File | null;
+// }
 
 interface AddProductProps {
   isModalOpen: boolean;
@@ -31,14 +33,30 @@ const AddProduct: React.FC<AddProductProps> = ({
 }) => {
   const [submitStatus, setSubmitStatus] = useState<string>('Add Product');
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const [newProduct, setNewProduct] = useState<Product>({
+  // const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const defaultProduct: Product = {
     product_id: null,
     name: '',
     description: '',
     price: 0,
+    likes: 0,
+    comments: [],
     available: false,
     category_id: '',
-    img: null,
+    category: { name: '' },
+    img: '',
+    createdAt: undefined,
+    updatedAt: undefined,
+  };
+
+  const [newProduct, setNewProduct] = useState<Product>({
+    ...defaultProduct,
+    product_id: null,
+    name: '',
+    description: '',
+    price: 0,
+    category_id: '',
+    img: '',
   });
 
   const handleInputChange = (
@@ -60,23 +78,23 @@ const AddProduct: React.FC<AddProductProps> = ({
   };
   // change img string type to File type
 
-  const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault();
-    const files = e.dataTransfer.files;
-    if (files && files.length > 0) {
-      setNewProduct((prev) => ({ ...prev, img: files[0] }));
-    }
-  };
+  // const handleDrop = (e: React.DragEvent) => {
+  //   e.preventDefault();
+  //   const files = e.dataTransfer.files;
+  //   if (files && files.length > 0) {
+  //     setNewProduct((prev) => ({ ...prev, img: files[0] }));
+  //   }
+  // };
 
-  const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault();
-  };
+  // const handleDragOver = (e: React.DragEvent) => {
+  //   e.preventDefault();
+  // };
 
-  const fileInputRef = React.createRef<HTMLInputElement>();
-  const handleClick = () => {
-    fileInputRef.current?.click();
-    console.log('clicked', fileInputRef.current?.files);
-  };
+  // const fileInputRef = React.createRef<HTMLInputElement>();
+  // const handleClick = () => {
+  //   fileInputRef.current?.click();
+  //   console.log('clicked', fileInputRef.current?.files);
+  // };
 
   const handleProductSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -88,12 +106,11 @@ const AddProduct: React.FC<AddProductProps> = ({
     setSubmitStatus('Submitting...');
 
     const formData = new FormData();
-    Object.keys(newProduct).forEach((key) => {
-      const value = newProduct[key as keyof Product];
-      if (key !== 'img' && value !== null) {
-        formData.append(key, String(value));
-      }
-    });
+    formData.append('name', newProduct.name);
+    formData.append('price', newProduct.price.toString());
+    formData.append('category_id', newProduct.category_id.toString());
+    formData.append('available', false.toString());
+    formData.append('description', newProduct.description);
 
     if (newProduct.img) {
       formData.append('img', newProduct.img);
@@ -126,14 +143,6 @@ const AddProduct: React.FC<AddProductProps> = ({
     }
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const img = e.target.files?.[0] || null;
-    setNewProduct((prevProduct) => ({
-      ...prevProduct,
-      img,
-    }));
-  };
-
   const resetForm = () => {
     setNewProduct({
       product_id: null,
@@ -142,7 +151,12 @@ const AddProduct: React.FC<AddProductProps> = ({
       price: 0,
       available: false,
       category_id: '',
-      img: null,
+      img: '',
+      category: { name: '' },
+      likes: 0,
+      comments: [],
+      createdAt: undefined,
+      updatedAt: undefined,
     });
     setSubmitStatus('Add Product');
   };
@@ -150,6 +164,20 @@ const AddProduct: React.FC<AddProductProps> = ({
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
   };
+
+  const onDrop = useCallback((acceptedFiles: File[]) => {
+    if (acceptedFiles.length > 0) {
+      setNewProduct((prevProduct) => ({
+        ...prevProduct,
+        img: URL.createObjectURL(acceptedFiles[0]),
+      }));
+    }
+  }, []);
+
+  const { getRootProps, getInputProps } = useDropzone({
+    onDrop,
+    accept: { 'image/*': ['.jpg', '.png', '.jpeg'] },
+  });
 
   return (
     <div className=" overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
@@ -236,24 +264,20 @@ const AddProduct: React.FC<AddProductProps> = ({
                   </label>
                   <div
                     className="flex gap-4 items-center justify-center w-full h-24 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-200 dark:bg-gray-800 dark:border-gray-600 hover:bg-gray-300 dark:hover:bg-gray-700"
-                    onDrop={handleDrop}
-                    onDragOver={handleDragOver}
-                    onClick={handleClick}
+                    {...getRootProps()}
                   >
                     {newProduct.img ? (
-                      <div className="w-42 h-full">
-                        <Image
-                          src={
-                            newProduct.img
-                              ? URL.createObjectURL(newProduct.img)
-                              : ''
-                          }
-                          alt="Preview"
-                          width={200}
-                          height={200}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
+                      <>
+                        <div className="w-42 h-full">
+                          <Image
+                            src={newProduct.img}
+                            alt="Preview"
+                            width={200}
+                            height={200}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                      </>
                     ) : (
                       ''
                     )}
@@ -282,11 +306,9 @@ const AddProduct: React.FC<AddProductProps> = ({
                       </p>
                     </div>
                     <input
-                      type="file"
-                      ref={fileInputRef}
-                      onChange={handleFileChange}
-                      className="hidden"
-                      accept="image/*"
+                      {...getInputProps()}
+                      // disabled={!!imagePreview}
+                      disabled={false}
                     />
                   </div>
                 </div>
