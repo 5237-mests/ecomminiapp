@@ -9,7 +9,7 @@ const Page = () => {
   const [state, action] = useFormState(signin, undefined);
 
   const backgroundImageUrl =
-    "data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 10l3 3l6-6'/%3e%3c/svg%3e";
+    "data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' strokeWidth='2' d='M6 10l3 3l6-6'/%3e%3c/svg%3e";
 
   return (
     <div>
@@ -33,7 +33,7 @@ const Page = () => {
                   <rect x="0" y="0" width="100%" height="100%" fill="none" />
                   <path
                     d="M11 6a5 5 0 01-5 5 5 5 0 01-5-5 5 5 0 015-5 5 5 0 015 5"
-                    stroke-width="1"
+                    strokeWidth="1"
                     stroke="none"
                     fill="currentColor"
                   />
@@ -65,7 +65,7 @@ const Page = () => {
                   <rect x="0" y="0" width="100%" height="100%" fill="none" />
                   <path
                     d="M11 6a5 5 0 01-5 5 5 5 0 01-5-5 5 5 0 015-5 5 5 0 015 5"
-                    stroke-width="1"
+                    strokeWidth={1}
                     stroke="none"
                     fill="currentColor"
                   />
@@ -165,7 +165,7 @@ const Page = () => {
                       style={{
                         backgroundImage: `url("${backgroundImageUrl}")`,
                       }}
-                      checked
+                      defaultChecked
                     />
                     <label className="inline-block" htmlFor="remember-me">
                       {' '}
