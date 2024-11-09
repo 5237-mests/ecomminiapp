@@ -10,6 +10,7 @@ export async function POST(request: Request) {
       first_name: body.name,
       username: body.email,
       password: body.password,
+      role: body.role,
     },
   });
 

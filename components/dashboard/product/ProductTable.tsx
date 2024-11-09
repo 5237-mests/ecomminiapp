@@ -56,7 +56,7 @@ const ProductTable: React.FC<TableProps> = ({
             }
           >
             <tbody>
-              {filteredData.length === 0 ? (
+              {filteredData?.length === 0 ? (
                 <tr>
                   <td
                     colSpan={6}
@@ -66,9 +66,12 @@ const ProductTable: React.FC<TableProps> = ({
                   </td>
                 </tr>
               ) : (
-                filteredData.map((product) => (
-                  <tr key={product.product_id} className="border-t">
-                    <td className="py-2 px-4 flex items-center">
+                filteredData?.map((product) => (
+                  <tr
+                    key={product.product_id}
+                    className="border-t hover:bg-blue-50"
+                  >
+                    <td className="py-2 px-4 flex items-center ">
                       <Image
                         src={product.img}
                         alt="Product Image"
@@ -106,7 +109,7 @@ const ProductTable: React.FC<TableProps> = ({
                       </label>
                     </td>
                     <td className="py-2 px-4">{product.likes}</td>
-                    <td className="py-2 px-4">{product.comments.length}</td>
+                    <td className="py-2 px-4">{product?.comments?.length}</td>
                     <td className="py-2 px-4 cursor-pointer">
                       <Link
                         onClick={() =>

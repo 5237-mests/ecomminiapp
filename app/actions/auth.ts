@@ -64,6 +64,7 @@ export async function signup(
   const validatedFields = SignupFormSchema.safeParse({
     name: formData.get('name'),
     email: formData.get('email'),
+    role: formData.get('role'),
     password: formData.get('password'),
   });
 
@@ -73,7 +74,7 @@ export async function signup(
     };
   }
 
-  const { name, email, password } = validatedFields.data;
+  const { name, email, password, role } = validatedFields.data;
   const hashedPassword = await bcrypt.hash(password, 10);
 
   try {
@@ -86,6 +87,7 @@ export async function signup(
       body: JSON.stringify({
         name,
         email,
+        role,
         password: hashedPassword,
       }),
     });
@@ -101,5 +103,5 @@ export async function signup(
     console.error('Error during signup:', error);
     return { errors: { form: ['An unexpected error occurred.'] } };
   }
-  redirect('/admin');
+  redirect('/admin/employee');
 }
