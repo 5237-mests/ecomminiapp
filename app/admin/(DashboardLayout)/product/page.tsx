@@ -169,12 +169,12 @@ export default function ProductsPage() {
                 Item{' '}
                 <span className="text-gray-400">
                   {' '}
-                  {filteredProducts.length}
+                  {filteredProducts?.length}
                 </span>
               </p>
               <p className="text-blue-500 bg-white rounded-lg py-1 px-3 shadow-md">
                 On Service{' '}
-                <span className="text-gray-400"> {availableItems.length}</span>
+                <span className="text-gray-400"> {availableItems?.length}</span>
               </p>
             </div>
 

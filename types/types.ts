@@ -13,6 +13,16 @@ export interface category {
   img: string;
 }
 
+export interface Employee {
+  id: number;
+  first_name: string;
+  last_name: string;
+  username: string;
+  photo_url: string;
+  role: string;
+  email: string;
+  phone: string;
+}
 export interface Product {
   product_id: number | null;
   name: string;
