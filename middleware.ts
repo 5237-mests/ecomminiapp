@@ -2,7 +2,14 @@ import { NextRequest, NextResponse } from 'next/server';
 import { decrypt, updateSession } from '@/app/lib/session';
 import { cookies } from 'next/headers';
 
-const publicRoutes = ['/admin/login', '/api/admin/login', '/api/signup', '/'];
+const publicRoutes = [
+  '/admin/login',
+  '/api/admin/login',
+  '/api/signup',
+  '/',
+  '/api/cart',
+  '/api/product',
+];
 
 const isPublicRoute = (path: string) =>
   publicRoutes.includes(path) || path.match(/\/(admin|api)\/(login|signup)/);
