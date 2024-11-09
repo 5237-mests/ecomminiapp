@@ -1,9 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { decrypt, updateSession } from '@/app/lib/session';
 import { cookies } from 'next/headers';
-// import { retrieveLaunchParams } from '@telegram-apps/sdk';
 
-const publicRoutes = ['/admin/login', '/api/admin/login', '/api/signup'];
+const publicRoutes = ['/admin/login', '/api/admin/login', '/api/signup', '/'];
 
 const isPublicRoute = (path: string) =>
   publicRoutes.includes(path) || path.match(/\/(admin|api)\/(login|signup)/);
@@ -12,26 +11,8 @@ const isProtectedRoute = (path: string) =>
   (path.startsWith('/admin') || path.startsWith('/api')) &&
   !isPublicRoute(path);
 
-// Check if the request is coming from Telegram
-// const isTelegramRequest = () => {
-//   try {
-//     const { initDataRaw, initData, platform } = retrieveLaunchParams();
-//     console.log('Launch Params', initDataRaw, initData, platform);
-//     return true;
-//   } catch (error) {
-//     console.error('Error retrieving launch params:', error);
-//     return false;
-//   }
-// };
-
 export default async function middleware(req: NextRequest) {
   const path = req.nextUrl.pathname;
-
-  // Bypass for public routes
-  if (isPublicRoute(path)) {
-    return NextResponse.next();
-  }
-
   // Check for a session on protected routes
   if (isProtectedRoute(path)) {
     const cookieToken = (await cookies()).get('session')?.value;

@@ -1,24 +1,44 @@
 'use client';
-import { useEffect } from 'react';
 import Image from 'next/image';
 import img from '@/assets/banner.webp';
 import axios from 'axios';
 import { retrieveLaunchParams } from '@telegram-apps/sdk';
 import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import Loading from '../components/Loading/page';
 
 export default function Page() {
   const router = useRouter();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const checkInitData = async () => {
+      try {
+        const { initDataRaw } = retrieveLaunchParams();
+        const initData = localStorage.getItem('initData');
+        if (initData || initDataRaw) {
+          console.log('initData', initData);
+        } else {
+          console.log('initData not found');
+          router.push('/admin');
+          return; // Avoid setting loading state if redirecting
+        }
+      } catch (error) {
+        console.error('Error retrieving launch params:', error);
+        router.push('/admin');
+        return; // Prevent setting loading state if redirecting due to an error
+      }
+      setLoading(false); // Set loading to false only if no redirect occurs
+    };
+
+    checkInitData();
+  }, [router]);
+
   useEffect(() => {
     const init = () => {
       try {
-        const { initDataRaw, initData, platform } = retrieveLaunchParams();
+        const { initDataRaw, initData } = retrieveLaunchParams();
 
-        console.log(
-          'Launch Params from miniapp',
-          initDataRaw,
-          initData,
-          platform,
-        );
         axios
           .post('/api/store-init-data', { initDataRaw, initData })
           .then((response) => {
@@ -29,21 +49,12 @@ export default function Page() {
           });
       } catch (error) {
         console.error('Error Init:', error);
-        router.push('/admin');
       }
     };
 
-    init();
-  }, []);
-
-  useEffect(() => {
     const launch = () => {
       try {
         const tg = window?.Telegram?.WebApp;
-        console.log('TG', tg);
-        if (!tg.Telegram) {
-          console.log('TG not found');
-        }
 
         if (tg) {
           if (tg.BackButton.isVisible) {
@@ -57,7 +68,12 @@ export default function Page() {
     };
 
     launch();
+    init();
   }, []);
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <div>

@@ -8,6 +8,8 @@ import { FavoritesProvider } from '@/context/FavoriteContext';
 import Script from 'next/script';
 import { usePathname } from 'next/navigation';
 // import useTelegram from "@/hooks/useTelegram";
+import { useEffect } from 'react';
+import { retrieveLaunchParams } from '@telegram-apps/sdk';
 
 interface RootLayoutProps {
   children: React.ReactNode;
@@ -15,6 +17,17 @@ interface RootLayoutProps {
 export default function RootLayout({ children }: RootLayoutProps) {
   const pathname = usePathname();
   const isAdminRoute = pathname.startsWith('/admin');
+
+  useEffect(() => {
+    try {
+      const { initDataRaw } = retrieveLaunchParams();
+      localStorage.setItem('initData', JSON.stringify(initDataRaw));
+    } catch (error) {
+      console.error('Error retrieving launch params:', error);
+      localStorage.removeItem('initData');
+    }
+  }, []);
+
   return (
     <>
       <html lang="en" suppressHydrationWarning>
