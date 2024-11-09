@@ -27,7 +27,6 @@ export async function signin(
   }
 
   const { email, password } = validatedFields.data;
-
   try {
     // 2. Send the login request to the server
     const response = await fetch('/api/admin/login', {
@@ -39,17 +38,25 @@ export async function signin(
     });
 
     if (!response.ok) {
-      const { errors } = await response.json();
-      return { errors: errors || { form: ['Invalid email or password.'] } };
+      let errorData;
+      try {
+        errorData = await response.json();
+      } catch {
+        errorData = { errors: { form: ['Invalid email or password.'] } };
+      }
+
+      return {
+        errors: errorData.errors || { form: ['Invalid email or password.'] },
+      };
     }
 
     // 3. Handle successful login and redirect
+    window.location.href = '/admin';
+    return {}; // Empty response, as the redirect will handle further flow
   } catch (error) {
     console.error('Error during signin:', error);
     return { errors: { form: ['An unexpected error occurred.'] } };
   }
-
-  redirect('/admin');
 }
 
 type SignupResponse = {
