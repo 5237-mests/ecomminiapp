@@ -130,14 +130,15 @@ model Comment {
 model Cart {
   cart_id      String   @id @default(cuid())
   user_id      String   @unique
-  createdAt    DateTime @default(now()) @map("created_at")
-  updatedAt    DateTime @updatedAt @map("updated_at")
 
   // Foreign key relation to User
   user         User     @relation(fields: [user_id], references: [id])
 
   // One-to-many relation to CartItem
   items        CartItem[]
+
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
 }
 
 // CartItem model
