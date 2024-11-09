@@ -105,7 +105,7 @@ export async function PATCH(request: Request) {
 
 // get
 export async function GET(request: Request) {
-  const userId = request.headers.get('user-id');
+  const userId = request.headers.get('userId');
 
   if (!userId) {
     return NextResponse.json({ error: 'User ID required' }, { status: 400 });
@@ -136,42 +136,6 @@ export async function GET(request: Request) {
 }
 
 // DELETE
-
-// export async function DELETE(request: Request) {
-//   const { userId, productId } = await request.json();
-
-//   if (!userId || !productId) {
-//     return NextResponse.json({ error: 'Invalid input data' }, { status: 400 });
-//   }
-
-//   try {
-//     const cart = await prisma.cart.findUnique({
-//       where: { user_id: userId },
-//     });
-
-//     if (!cart) {
-//       return NextResponse.json({ error: 'Cart not found' }, { status: 404 });
-//     }
-
-//     await prisma.cartItem.delete({
-//       where: {
-//         cart_id_product_id: { cart_id: cart.cart_id, product_id: productId },
-//       },
-//     });
-
-//     return NextResponse.json(
-//       { message: 'Item removed from cart' },
-//       { status: 200 },
-//     );
-//   } catch (error) {
-//     console.error('Error removing item from cart:', error);
-//     return NextResponse.json(
-//       { error: 'Failed to remove item' },
-//       { status: 500 },
-//     );
-//   }
-// }
-
 export async function DELETE(request: Request) {
   const { userId, productId } = await request.json();
 

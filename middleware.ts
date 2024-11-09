@@ -9,6 +9,7 @@ const publicRoutes = [
   '/',
   '/api/cart',
   '/api/product',
+  '/api/favorites',
 ];
 
 const isPublicRoute = (path: string) =>
