@@ -125,7 +125,10 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: 'Cart not found' }, { status: 404 });
     }
 
-    return NextResponse.json({ cartItems: cart.items }, { status: 200 });
+    return NextResponse.json(
+      { id: cart.cart_id, cartItems: cart.items },
+      { status: 200 },
+    );
   } catch (error) {
     console.error('Error retrieving cart items:', error);
     return NextResponse.json(

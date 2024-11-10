@@ -10,6 +10,7 @@ const publicRoutes = [
   '/api/cart',
   '/api/product',
   '/api/favorites',
+  '/api/category',
 ];
 
 const isPublicRoute = (path: string) =>
