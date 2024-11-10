@@ -45,9 +45,9 @@ export async function POST(request: Request) {
 }
 
 export async function DELETE(request: Request) {
-  const { userId, productId } = await request.json();
+  const { userId } = await request.json();
 
-  if (!userId || !productId) {
+  if (!userId) {
     return NextResponse.json({ error: 'Invalid input data' }, { status: 400 });
   }
 
@@ -55,7 +55,6 @@ export async function DELETE(request: Request) {
     await prisma.favorite.deleteMany({
       where: {
         user_id: userId,
-        product_id: productId,
       },
     });
 
