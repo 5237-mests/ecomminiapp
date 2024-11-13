@@ -1,7 +1,7 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import data from '@/assets/data.json';
-import { category } from '@/types/types';
+// import data from '@/assets/data.json';
+import { Category, Product } from '@/types/types';
 import { FaMinus, FaPlus } from 'react-icons/fa';
 import Image from 'next/image';
 import logo from '@/assets/fun shop.png';
@@ -11,10 +11,11 @@ import { useEffect, useState } from 'react';
 import { useTheme } from '@/context/ThemeContext';
 import ThumbsUp from '@/assets/Thumbs Up.png';
 import CommentTag from '@/assets/10001.png';
+import { fetchProducts, fetchCategories } from '@/controller/ProductController';
 
 interface ProductsProps {
   params: {
-    categoryId: string;
+    categoryId: number;
   };
 }
 
@@ -23,6 +24,7 @@ const Page = ({ params }: ProductsProps) => {
   const back = () => {
     router.back();
   };
+  console.log('params', params);
   useEffect(() => {
     WebApp.BackButton.show();
 
@@ -33,10 +35,17 @@ const Page = ({ params }: ProductsProps) => {
 
     WebApp.BackButton.onClick(handleBackClick);
 
+    fetchProducts().then((data) => {
+      setProducts(data);
+    });
+    fetchCategories().then((data) => {
+      setCategories(data);
+    });
+
     return () => {
       WebApp.BackButton.offClick(handleBackClick);
     };
-  }, []);
+  }, [ params]);
   const { theme } = useTheme();
   const [likedProducts, setLikedProducts] = useState<{
     [key: number]: boolean;
@@ -45,24 +54,26 @@ const Page = ({ params }: ProductsProps) => {
     {},
   );
   const [likeCounts, setLikeCounts] = useState<{ [key: number]: number }>({});
+  const [products, setProducts] = useState<Product[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const { cartItems, addItem, removeItem } = useCart();
   const { categoryId } = params;
-  const categories: category[] = data.categories;
-  const products = data.products;
+  console.log('params', params);
+  ////////
+  // const categorie: Category[] = categories;
+  // const product = products;
 
   if (!categoryId || typeof categoryId !== 'string') {
     return <p>Loading...</p>;
   }
 
-  const category = categories.find(
-    (cat) => cat.category_id === parseInt(categoryId),
-  );
+  const category = categories.find((cat) => cat.id === parseInt(categoryId));
   if (!category) return <p>Category not found</p>;
 
   const filteredProducts = products.filter(
     (prod) => prod.category_id === parseInt(categoryId),
   );
-
+  ///////////////
   const handleLikeClick = (productId: number) => {
     setLikedProducts((prevState) => ({
       ...prevState,
@@ -85,6 +96,7 @@ const Page = ({ params }: ProductsProps) => {
       setIsAnimating((prevState) => ({ ...prevState, [productId]: false }));
     }, 1100);
   };
+  console.log('products', products);
   return (
     <div className="mb-20" style={{ backgroundColor: theme.secondaryBgColor }}>
       <div
@@ -110,7 +122,7 @@ const Page = ({ params }: ProductsProps) => {
       </div>
 
       <div className="p-8 gap-1 pt-20">
-        {filteredProducts.map((product) => (
+        {filteredProducts?.map((product) => (
           <div
             className="border rounded-lg mb-4 shadow-xl"
             style={{ backgroundColor: theme.sectionBgColor }}
@@ -141,13 +153,13 @@ const Page = ({ params }: ProductsProps) => {
                       backgroundColor: theme.buttonColor,
                     }}
                   >
-                    {likeCounts[product.product_id] || 0}
+                    {likeCounts[product.product_id ?? 0]}
                   </p>
 
-                  <div onClick={() => handleLikeClick(product.product_id)}>
+                  <div onClick={() => handleLikeClick(product.product_id ?? 0)}>
                     <Image
                       src={
-                        isAnimating[product.product_id]
+                        isAnimating[product.product_id ?? 0]
                           ? 'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/People/Thumbs%20Up.webp'
                           : ThumbsUp // Use your static image here
                       }
@@ -166,10 +178,10 @@ const Page = ({ params }: ProductsProps) => {
                 {/* <CommentTag className="text-teal-500" /> */}
               </span>
               <div>
-                {!cartItems[product.product_id] ? (
+                {!cartItems[product.product_id ?? 0] ? (
                   <FaPlus
                     size={25}
-                    onClick={() => addItem(product.product_id)}
+                    // onClick={() => addItem(product.product_id)}
                     className="p-1 flex items-center justify-center font-bold  rounded-3xl"
                     style={{
                       backgroundColor: theme.buttonColor,
@@ -180,7 +192,7 @@ const Page = ({ params }: ProductsProps) => {
                   <div className="flex gap-2">
                     <FaMinus
                       size={25}
-                      onClick={() => removeItem(product.product_id)}
+                      // onClick={() => removeItem(product.product_id)}
                       className="p-1 flex items-center justify-center font-bold  rounded-3xl"
                       style={{
                         backgroundColor: theme.secondaryBgColor,
@@ -194,11 +206,11 @@ const Page = ({ params }: ProductsProps) => {
                         color: theme.buttonTextColor,
                       }}
                     >
-                      {cartItems[product.product_id] || 0}
+                      {/* {cartItems[product.product_id] || 0} */}
                     </span>
                     <FaPlus
                       size={25}
-                      onClick={() => addItem(product.product_id)}
+                      // onClick={() => addItem(product.product_id)}
                       className="p-1 flex items-center justify-center font-bold  rounded-3xl"
                       style={{
                         backgroundColor: theme.secondaryBgColor,

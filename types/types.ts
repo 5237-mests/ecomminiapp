@@ -34,6 +34,7 @@ export interface Product {
   category_id: string | number;
   category: {
     name: string;
+    img: string;
   };
   img: string;
   createdAt?: string;
@@ -47,17 +48,17 @@ export interface CustomFile {
   lastModified: number;
   file: File | ArrayBuffer | Blob | null;
 }
-export interface Products {
-  id: number | null;
-  name: string;
-  description: string;
-  price: number;
-  available: boolean;
-  category_id: number;
-  image?: string | null;
-  file?: CustomFile;
-  createdAt?: string;
-}
+// export interface Products {
+//   id: number | null;
+//   name: string;
+//   description: string;
+//   price: number;
+//   available: boolean;
+//   category_id: number;
+//   image?: string | null;
+//   file?: CustomFile;
+//   createdAt?: string;
+// }
 
 export interface Comment {
   id: number;
