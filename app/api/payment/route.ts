@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/utils/prisma';
+
 export async function POST(request: Request) {
   const { orderId, paymentMethod } = await request.json();
 
@@ -20,8 +21,47 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Order not found' }, { status: 404 });
     }
 
-    // Create a payment entry
-    const payment = await prisma.payment.create({
+    // fetch user
+    const user = await prisma.user.findUnique({
+      where: { id: order.user_id },
+    });
+
+    // Payment payload
+    const payload = {
+      amount: order.total_price,
+      currency: 'ETB',
+      email: user?.email,
+      first_name: user?.first_name,
+      last_name: user?.last_name,
+      phone_number: user?.phone_number,
+      'customization[title]': 'Payment for my TMA',
+      'customization[description]': 'I love online payments',
+      'meta[hide_receipt]': 'true',
+    };
+
+    const chapasecret = process.env.CHAPA_SECRET;
+
+    // Assuming you need to send a POST request to the payment gateway
+    const response = await fetch(
+      'https://api.chapa.co/v1/transaction/initialize',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${chapasecret}`,
+        },
+        body: JSON.stringify(payload),
+      },
+    );
+
+    if (!response.ok) {
+      throw new Error('Failed to initialize payment');
+    }
+
+    const paymentData = await response.json();
+
+    // Save payment info to the database
+    await prisma.payment.create({
       data: {
         order_id: orderId,
         amount: order.total_price,
@@ -30,7 +70,7 @@ export async function POST(request: Request) {
       },
     });
 
-    return NextResponse.json({ payment }, { status: 201 });
+    return NextResponse.json({ paymentData }, { status: 201 });
   } catch (error) {
     console.error('Error creating payment:', error);
     return NextResponse.json(

@@ -183,7 +183,7 @@ model Order {
   orderItems       OrderItem[]
 
   // Relation to Payment
-  payment          Payment?
+  payment          Payment[]
 }
 
 enum DeliveryType {
@@ -233,26 +233,17 @@ model DeliveryPersonnel {
 // Payments model
 model Payment {
   payment_id     String   @id @default(cuid())
-  order_id       String   @unique
+  order_id       String
   amount         Decimal  @db.Decimal(10, 2)
-  payment_method PaymentMethod
-  status         PaymentStatus @default(pending)
-  payment_date   DateTime @default(now()) @map("payment_date")
-
+  payment_method String
+  status         String
+  email          String?
+  phone          String?
+  transaction_id String?
   // Foreign key relation to Order
   order          Order     @relation(fields: [order_id], references: [order_id], onDelete: Cascade)
-}
-
-enum PaymentMethod {
-  cash
-  credit_card
-  online
-}
-
-enum PaymentStatus {
-  pending
-  completed
-  failed
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 }
 
 // // DeliveryRoute model
