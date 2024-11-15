@@ -43,7 +43,7 @@ npx prisma studio
 
 npx prisma migrate dev --name init
 
-<!-- push db -->
+<!-- push minor update db -->
 
 npx prisma db push
 

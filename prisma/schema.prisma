@@ -162,14 +162,14 @@ model Order {
   order_id         String   @id @default(cuid())
   user_id          String
   total_price      Decimal  @db.Decimal(10, 2)
-  delivery_id      String
+  delivery_id      String?
   status           OrderStatus @default(PENDING)
   order_date       DateTime @default(now()) @map("order_date")
   delivery_date    DateTime?
-  pickup_address   String   @db.VarChar(255)
-  delivery_type    DeliveryType @default(ontable)
-  delivery_address String   @db.VarChar(255)
-  delivery_fee     Decimal  @db.Decimal(10, 2) @default(0)
+  pickup_address   String?   @db.VarChar(255)
+  delivery_type    DeliveryType? @default(ontable)
+  delivery_address String?   @db.VarChar(255)
+  delivery_fee     Decimal?  @db.Decimal(10, 2) @default(0)
   createdAt        DateTime @default(now()) @map("created_at")
   updatedAt        DateTime @updatedAt @map("updated_at")
 
@@ -209,7 +209,7 @@ model OrderItem {
   quantity    Int
 
   // Foreign key relation to Order
-  order       Order   @relation(fields: [order_id], references: [order_id])
+  order       Order   @relation(fields: [order_id], references: [order_id], onDelete: Cascade)
 
   // Foreign key relation to Product
   product     Product @relation(fields: [product_id], references: [product_id], onDelete: Cascade)
@@ -228,20 +228,6 @@ model DeliveryPersonnel {
 
   // Relation to Order
   orders        Order[]
-}
-
-// Favorites model
-model Favorite {
-  favorite_id   Int     @id @default(autoincrement())
-  user_id       String
-  product_id    String
-  added_date    DateTime @default(now()) @map("added_date")
-
-
-  // Foreign key relations to User and Product
-  user          User     @relation(fields: [user_id], references: [id])
-  product       Product  @relation(fields: [product_id], references: [product_id], onDelete: Cascade)
-  @@unique([user_id, product_id])
 }
 
 // Payments model
@@ -293,4 +279,19 @@ model ProductLike {
   product     Product  @relation(fields: [product_id], references: [product_id], onDelete: Cascade)
 
   @@unique([user_id, product_id]) // Prevents duplicate likes from the same user on the same product
+}
+
+
+// Favorites model
+model Favorite {
+  favorite_id   Int     @id @default(autoincrement())
+  user_id       String
+  product_id    String
+  added_date    DateTime @default(now()) @map("added_date")
+
+
+  // Foreign key relations to User and Product
+  user          User     @relation(fields: [user_id], references: [id])
+  product       Product  @relation(fields: [product_id], references: [product_id], onDelete: Cascade)
+  @@unique([user_id, product_id])
 }
