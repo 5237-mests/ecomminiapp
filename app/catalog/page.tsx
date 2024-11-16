@@ -8,10 +8,10 @@ import { useRouter } from 'next/navigation';
 import { fetchCategories } from '@/controller/ProductController';
 
 const Page: React.FC = () => {
-const [categories, setCategories] = useState<Category[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   useEffect(() => {
     // setIsLoading(true);
-    fetchCategories( ).then((data) => {
+    fetchCategories().then((data) => {
       console.log('data', data);
       setCategories(data);
     });
@@ -32,8 +32,8 @@ const [categories, setCategories] = useState<Category[]>([]);
         tg.BackButton.offClick(() => router.push('/'));
       };
     }
-  }, [router])  
-console.log("categories", categories);
+  }, [router]);
+  console.log('categories', categories);
   return (
     <div>
       <h1 className="bg-gray-100 w-full p-4 text-2xl font-bold mb-4 fixed top-0">

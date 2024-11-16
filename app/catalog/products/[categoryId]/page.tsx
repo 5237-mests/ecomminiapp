@@ -45,7 +45,7 @@ const Page = ({ params }: ProductsProps) => {
     return () => {
       WebApp.BackButton.offClick(handleBackClick);
     };
-  }, [ params]);
+  }, [params]);
   const { theme } = useTheme();
   const [likedProducts, setLikedProducts] = useState<{
     [key: number]: boolean;
@@ -56,7 +56,11 @@ const Page = ({ params }: ProductsProps) => {
   const [likeCounts, setLikeCounts] = useState<{ [key: number]: number }>({});
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
-  const { cartItems, addItem, removeItem } = useCart();
+  const {
+    cartItems,
+    // addItem,
+    // removeItem
+  } = useCart();
   const { categoryId } = params;
   console.log('params', params);
   ////////

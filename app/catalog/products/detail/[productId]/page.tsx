@@ -1,7 +1,7 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import data from '@/assets/data.json';
-import { useFavorites } from '@/context/FavoriteContext'; // Import the useFavorites hook
+// import data from '@/assets/data.json';
+// import { useFavorites } from '@/context/FavoriteContext'; // Import the useFavorites hook
 import { useCart } from '@/context/CartContext'; // Import the context
 import { FaHeart, FaMinus, FaPlus } from 'react-icons/fa';
 import Image from 'next/image';
@@ -28,29 +28,34 @@ const Page = ({ params }: ProductProps) => {
   useEffect(() => {
     WebApp.BackButton.show();
     const getProduct = async () => {
-    try {
-      const productData = await fetchProductById(productId);
-      setProducts(productData);
-      // setDetailImages(productData.detail_img);
-    } catch (error) {
-      // setError('Failed to load product details.');
-      throw new Error('Failed to load product details.' + error);
-    }};
+      try {
+        const productData = await fetchProductById(productId);
+        setProducts(productData);
+        // setDetailImages(productData.detail_img);
+      } catch (error) {
+        // setError('Failed to load product details.');
+        throw new Error('Failed to load product details.' + error);
+      }
+    };
     const handleBackClick = () => {
       back();
       WebApp.BackButton.offClick(handleBackClick);
     };
 
     WebApp.BackButton.onClick(handleBackClick);
-    
+
     getProduct();
     return () => {
       WebApp.BackButton.offClick(handleBackClick);
     };
   }, []);
   const { theme } = useTheme();
-  const { addFavorite, removeFavorite, isFavorite } = useFavorites();
-  const { cartItems, addItem, removeItem } = useCart();
+  // const { addFavorite, removeFavorite, isFavorite } = useFavorites();
+  const {
+    cartItems,
+    // addItem,
+    // removeItem
+  } = useCart();
 
   // const products = data.products;
 
@@ -68,11 +73,11 @@ const Page = ({ params }: ProductProps) => {
   // const favoriteStatus = isFavorite(products.product_id ?? 0);
 
   const handleFavoriteToggle = () => {
-    if (0) {
-      // removeFavorite(product.product_id);
-    } else {
-      // addFavorite(product.product_id);
-    }
+    // if (0) {
+    //   // removeFavorite(product.product_id);
+    // } else {
+    //   // addFavorite(product.product_id);
+    // }
   };
 
   return (
@@ -99,7 +104,7 @@ const Page = ({ params }: ProductProps) => {
         <FaHeart
           onClick={handleFavoriteToggle}
           className={`bg-white w-20 h-10 py-2 px-4 border rounded-3xl ${
-            0 ? 'text-sky-500' : 'text-gray-500'
+            products?.isLiked ? 'text-sky-500' : 'text-gray-500'
           } `}
         />
       </div>

@@ -37,6 +37,7 @@ export interface Product {
     img: string;
   };
   img: string;
+  isLiked: boolean;
   createdAt?: string;
   updatedAt?: string;
 }
