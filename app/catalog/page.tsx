@@ -8,10 +8,10 @@ import { useRouter } from 'next/navigation';
 import { fetchCategories } from '@/controller/ProductController';
 
 const Page: React.FC = () => {
-const [categories, setCategories] = useState<Category[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   useEffect(() => {
     // setIsLoading(true);
-    fetchCategories( ).then((data) => {
+    fetchCategories().then((data) => {
       console.log('data', data);
       setCategories(data);
     });
@@ -32,8 +32,8 @@ const [categories, setCategories] = useState<Category[]>([]);
         tg.BackButton.offClick(() => router.push('/'));
       };
     }
-  }, [router])  
-console.log("categories", categories);
+  }, [router]);
+  console.log('categories', categories);
   return (
     <div>
       <h1 className="bg-gray-100 w-full p-4 text-2xl font-bold mb-4 fixed top-0">
@@ -43,7 +43,7 @@ console.log("categories", categories);
         {categories?.map((category: Category) => (
           <Link
             key={category.id}
-            href={`catalog/products/${category.id}`}
+            href={`catalog/products/${category.name}/${category.id}`}
             className="bg-gray-100 border-3 w-full px-2 py-0 cursor-pointer mb-5"
           >
             <div className="w-full  overflow-hidden object-cover bg-white border rounded-lg">
