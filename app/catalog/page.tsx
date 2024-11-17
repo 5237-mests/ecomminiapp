@@ -43,7 +43,7 @@ const Page: React.FC = () => {
         {categories?.map((category: Category) => (
           <Link
             key={category.id}
-            href={`catalog/products/${category.id}`}
+            href={`catalog/products/${category.name}/${category.id}`}
             className="bg-gray-100 border-3 w-full px-2 py-0 cursor-pointer mb-5"
           >
             <div className="w-full  overflow-hidden object-cover bg-white border rounded-lg">

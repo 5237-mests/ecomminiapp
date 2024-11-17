@@ -5,9 +5,9 @@ import prisma from '@/utils/prisma';
 export async function POST(request: Request) {
   const { userId, productId, quantity } = await request.json();
 
-  if (!userId || !productId || quantity <= 0) {
-    return NextResponse.json({ error: 'Invalid input data' }, { status: 400 });
-  }
+  // if (!userId || !productId || quantity <= 0) {
+  //   return NextResponse.json({ error: 'Invalid input data' }, { status: 400 });
+  // }
 
   try {
     // Ensure the user has a cart, or create one

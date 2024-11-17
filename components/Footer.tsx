@@ -14,7 +14,7 @@ import {
 
 const Navbar: React.FC = () => {
   const pathname = usePathname(); // Get current path
-  const { cartItems } = useCart();
+  const { cartIteemsProducts } = useCart();
 
   // Function to apply active class based on current route
   const isActive = (path: string) => pathname === path;
@@ -67,9 +67,9 @@ const Navbar: React.FC = () => {
       >
         <FaShoppingCart className="text-2xl" />
         <span className="text-xs mt-1">Cart</span>
-        {Object.keys(cartItems).length > 0 && (
+        {Object.keys(cartIteemsProducts).length > 0 && (
           <div className="absolute bottom-10 left-8 bg-sky-500 text-white rounded-full w-5 h-5 flex justify-center items-center text-xs">
-            {Object.keys(cartItems).length}
+            {Object.keys(cartIteemsProducts).length}
           </div>
         )}
       </Link>

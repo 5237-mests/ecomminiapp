@@ -40,6 +40,7 @@ export interface Product {
   isLiked: boolean;
   createdAt?: string;
   updatedAt?: string;
+  quantity?: number;
 }
 
 export interface CustomFile {
@@ -68,4 +69,25 @@ export interface Comment {
   user: {
     username: string;
   };
+}
+
+export interface UseCartReturnType {
+  // cartItems: (productId: number) => void;
+  cartItems: { [key: number]: number };
+  addItem: (productId: number) => void;
+  removeItem: (productId: number) => void;
+  clearCart: () => void;
+  loading: { [key: number]: boolean };
+  isCartOpen: { [key: number]: boolean };
+  itemQuantity: (productId: number) => number;
+  cartIteemsProducts: {
+    product_id: number;
+    quantity: number;
+    product: {
+      img: string;
+      name: string;
+      price: number;
+      product_id: number;
+    };
+  }[];
 }
