@@ -11,18 +11,18 @@ import Image from 'next/image';
 import { useCart } from '@/context/CartContext';
 import data from '@/assets/data.json';
 import { useFavorites } from '@/context/FavoriteContext';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 // import { fetchcart } from '@/controller/CartController';
 import { BeatLoader } from 'react-spinners';
 
 const Page = () => {
   const router = useRouter();
-  const [cart, setCart] = useState<{ product_id: number; quantity: number }[]>(
-    [],
-  );
-  console.log('cart', cart[0]);
-  // console.log('Full Cart Data:', JSON.stringify(cart[0].prod, null, 2));
+  // const [cart, setCart] = useState<{ product_id: number; quantity: number }[]>(
+  //   [],
+  // );
+  // console.log('cart', cart[0]);
+  // // console.log('Full Cart Data:', JSON.stringify(cart[0].prod, null, 2));
 
   useEffect(() => {
     const tg = window?.Telegram?.WebApp;

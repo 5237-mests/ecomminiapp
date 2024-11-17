@@ -1,4 +1,4 @@
-export const handleCartQuantity = async (requestBody: {}) => {
+export const handleCartQuantity = async (requestBody: object) => {
   try {
     const response = await fetch('/api/cart', {
       method: 'POST',

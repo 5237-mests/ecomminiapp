@@ -10,7 +10,7 @@
     "lint": "next lint",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,md,mdx,css,yaml,yml}\"",
     "check": "eslint . --ext .ts,.tsx,.js,.jsx --color -f table",
-    "prepare": "husky"
+    "prepare": "npm run format && husky"
   },
   "dependencies": {
     "@headlessui/react": "^2.1.10",

@@ -101,7 +101,7 @@ const Page = ({ params }: ProductProps) => {
         <FaHeart
           onClick={handleFavoriteToggle}
           className={`bg-white w-20 h-10 py-2 px-4 border rounded-3xl ${
-            products?.isLiked ? 'text-sky-500' : 'text-gray-500'
+            product?.isLiked ? 'text-sky-500' : 'text-gray-500'
           } `}
         />
       </div>
