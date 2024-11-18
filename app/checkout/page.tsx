@@ -54,6 +54,7 @@ const CheckoutPage = () => {
 
       // Replace with your API endpoint to create an order and get payment URL
       const response = await axios.post('/api/checkout', orderData);
+      console.log(response.data);
 
       // Assume response structure includes paymentData.data.checkout_url
       //   const checkoutUrl = response.data.paymentData?.data?.checkout_url;
