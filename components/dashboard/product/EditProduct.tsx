@@ -30,8 +30,9 @@ const EditProduct: React.FC<EditProductProps> = ({
     comments: [],
     available: false,
     category_id: '',
-    category: { name: '' },
+    category: { name: '', img: '' },
     img: '',
+    isLiked: false,
     createdAt: undefined,
     updatedAt: undefined,
   };
@@ -58,6 +59,7 @@ const EditProduct: React.FC<EditProductProps> = ({
         available: productToEdit.available,
         img: productToEdit.img,
         likes: productToEdit.likes,
+        isLiked: productToEdit.isLiked,
         comments: productToEdit.comments,
         category: productToEdit.category,
       });

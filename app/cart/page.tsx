@@ -13,9 +13,17 @@ import data from '@/assets/data.json';
 import { useFavorites } from '@/context/FavoriteContext';
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+// import { fetchcart } from '@/controller/CartController';
+import { BeatLoader } from 'react-spinners';
 
 const Page = () => {
   const router = useRouter();
+  // const [cart, setCart] = useState<{ product_id: number; quantity: number }[]>(
+  //   [],
+  // );
+  // console.log('cart', cart[0]);
+  // // console.log('Full Cart Data:', JSON.stringify(cart[0].prod, null, 2));
+
   useEffect(() => {
     const tg = window?.Telegram?.WebApp;
     if (tg) {
@@ -29,11 +37,19 @@ const Page = () => {
       };
     }
   }, [router]);
-
-  const { cartItems, addItem, removeItem, clearCart } = useCart();
+  const {
+    cartItems,
+    addItem,
+    removeItem,
+    clearCart,
+    cartIteemsProducts,
+    loading,
+    itemQuantity,
+    isCartOpen,
+  } = useCart();
   const { isFavorite, addFavorite, removeFavorite } = useFavorites();
   const products = data.products;
-
+  console.log('cartIteemsProducts', cartIteemsProducts.length);
   // Get only the products that are in the cart
   const cartProductItems = products.filter(
     (product) => cartItems[product.product_id],
@@ -47,9 +63,9 @@ const Page = () => {
   );
   return (
     <div className="mb-20">
-      <div className="p-4 bg-gray-100 flex w-full justify-between fixed top-0 mb-20">
+      <div className="d-hidden p-4 bg-gray-100 flex w-full justify-between fixed top-0 mb-20">
         <h1 className="text-2xl font-bold">Cart</h1>
-        {cartProductItems.length > 0 && (
+        {cartIteemsProducts.length > 0 && (
           <span
             onClick={() => clearCart()} // No argument needed
             className="cursor-pointer text-red-500 font-bold text-center border rounded-3xl p-2"
@@ -60,7 +76,7 @@ const Page = () => {
       </div>
 
       {/* If cart is empty */}
-      {cartProductItems.length === 0 ? (
+      {cartIteemsProducts.length === 0 ? (
         <div className="flex flex-col gap-4 items-center pt-20">
           <FaShoppingCart className="text-8xl border-4 p-5 text-sky-500 rounded-full" />
           <h2 className="text-2xl font-bold">Your cart is empty</h2>
@@ -77,49 +93,55 @@ const Page = () => {
         </div>
       ) : (
         <div className="p-4 flex flex-col gap-6 pt-20 border-gray-300">
-          {cartProductItems.map((product) => (
+          {cartIteemsProducts.map((item) => (
             <div
-              key={product.product_id}
+              key={item.product_id}
               className="flex items-center gap-4 p-4 border-t"
             >
               <Image
-                src={product.img}
-                alt={product.name}
+                src={item.product.img}
+                alt={item.product.name}
                 width={100}
                 height={100}
                 className="rounded-lg"
               />
               <div className="flex-grow">
-                <h2 className="text-xl font-bold">{product.name}</h2>
-                <p className="text-sky-500">Price: ${product.price}</p>
+                <h2 className="text-xl font-bold">{item.product.name}</h2>
+                <p className="text-sky-500">Price: ${item.product.price}</p>
               </div>
               {/* flex columns */}
               <div className="flex flex-col gap-5 items-center">
                 <div className="flex items-center gap-2">
                   <FaMinus
                     size={25}
-                    onClick={() => removeItem(product.product_id)}
+                    onClick={() => removeItem(item.product_id)}
                     className="p-1 flex items-center justify-center text-sky-500 bg-white font-bold border rounded-3xl"
                   />
 
                   <span className="flex items-center justify-center text-white bg-sky-500 font-bold border rounded-3xl w-10 h-6">
-                    {cartItems[product.product_id] || 0}
+                    {loading[item.product.product_id] ? (
+                      <BeatLoader color="#14eca5" size={8} />
+                    ) : !isCartOpen[item.product.product_id ?? 0] ? (
+                      itemQuantity(item.product.product_id ?? 0)
+                    ) : (
+                      cartItems[item.product.product_id ?? 0]
+                    )}
                   </span>
                   <FaPlus
                     size={25}
-                    onClick={() => addItem(product.product_id)}
+                    onClick={() => addItem(item.product_id)}
                     className="p-1 flex items-center justify-center text-sky-500 bg-white font-bold border rounded-3xl"
                   />
                 </div>
                 <>
-                  {isFavorite(product.product_id) ? (
+                  {isFavorite(item.product_id) ? (
                     <FaHeart
-                      onClick={() => removeFavorite(product.product_id)}
+                      onClick={() => removeFavorite(item.product_id)}
                       className="text-sky-500 cursor-pointer border rounded-3xl p-1 w-8 h-8"
                     />
                   ) : (
                     <FaRegHeart
-                      onClick={() => addFavorite(product.product_id)}
+                      onClick={() => addFavorite(item.product_id)}
                       className="text-gray-500 cursor-pointer border rounded-3xl p-1 w-8 h-8"
                     />
                   )}

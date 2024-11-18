@@ -8,6 +8,7 @@ import { Product, Category } from '@/types/types';
 import CatalogList from '@/components/dashboard/product/CatalogList';
 import ProductTable from '@/components/dashboard/product/ProductTable';
 import Loading from '@/components/Loading/page';
+import { fetchCategories, fetchProducts } from '@/controller/ProductController';
 
 export default function ProductsPage() {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -27,8 +28,15 @@ export default function ProductsPage() {
   // Fetch categories and products
   useEffect(() => {
     setIsLoading(true);
-    fetchCategories();
-    fetchProducts();
+    fetchCategories().then((data) => {
+      // console.log('data', data);
+      setCategories(data);
+    });
+    fetchProducts().then((data) => {
+      // console.log('data', data);
+      setProducts(data);
+      setIsLoading(false);
+    });
   }, []);
 
   useEffect(() => {
@@ -39,28 +47,18 @@ export default function ProductsPage() {
     setActiveCategory(null);
   }, [products]);
 
-  const fetchCategories = async () => {
-    try {
-      const res = await fetch('/api/category');
-      const data = await res.json();
-      setCategories(data.data);
-    } catch (error) {
-      console.error('Error fetching categories:', error);
-    }
-  };
-
-  const fetchProducts = async () => {
-    try {
-      const res = await fetch('/api/product');
-      const data = await res.json();
-      setProducts(data.data);
-      console.log('products', data);
-      // setStatus(data.available);
-    } catch (error) {
-      console.error('Error fetching products:', error);
-    }
-    setIsLoading(false);
-  };
+  // const fetchProducts = async () => {
+  //   try {
+  //     const res = await fetch('/api/product');
+  //     const data = await res.json();
+  //     setProducts(data.data);
+  //     console.log('products', data);
+  //     // setStatus(data.available);
+  //   } catch (error) {
+  //     console.error('Error fetching products:', error);
+  //   }
+  //   setIsLoading(false);
+  // };
   const updateProductAvailability = async (product: Product) => {
     setAvailableItemLoading(String(product.product_id));
     const newAvailability = !product.available;
@@ -169,12 +167,12 @@ export default function ProductsPage() {
                 Item{' '}
                 <span className="text-gray-400">
                   {' '}
-                  {filteredProducts.length}
+                  {filteredProducts?.length}
                 </span>
               </p>
               <p className="text-blue-500 bg-white rounded-lg py-1 px-3 shadow-md">
                 On Service{' '}
-                <span className="text-gray-400"> {availableItems.length}</span>
+                <span className="text-gray-400"> {availableItems?.length}</span>
               </p>
             </div>
 

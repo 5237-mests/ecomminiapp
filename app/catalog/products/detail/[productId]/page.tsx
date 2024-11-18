@@ -1,14 +1,16 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import data from '@/assets/data.json';
-import { useFavorites } from '@/context/FavoriteContext'; // Import the useFavorites hook
+// import { useFavorites } from '@/context/FavoriteContext'; // Import the useFavorites hook
 import { useCart } from '@/context/CartContext'; // Import the context
 import { FaHeart, FaMinus, FaPlus } from 'react-icons/fa';
 import Image from 'next/image';
 import WebApp from '@twa-dev/sdk';
 import logo from '@/assets/fun shop.png';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useTheme } from '@/context/ThemeContext';
+import { Product } from '@/types/types';
+import { fetchProductById } from '@/controller/ProductController';
+import { BeatLoader } from 'react-spinners';
 
 interface ProductProps {
   params: {
@@ -21,9 +23,20 @@ const Page = ({ params }: ProductProps) => {
   const back = () => {
     router.back();
   };
+  const [product, setProduct] = useState<Product | null>(null);
+  const { productId } = params;
   useEffect(() => {
     WebApp.BackButton.show();
-
+    const getProduct = async () => {
+      try {
+        const productData = await fetchProductById(productId);
+        setProduct(productData);
+        // setDetailImages(productData.detail_img);
+      } catch (error) {
+        // setError('Failed to load product details.');
+        throw new Error('Failed to load product details.' + error);
+      }
+    };
     const handleBackClick = () => {
       back();
       WebApp.BackButton.offClick(handleBackClick);
@@ -31,36 +44,37 @@ const Page = ({ params }: ProductProps) => {
 
     WebApp.BackButton.onClick(handleBackClick);
 
+    getProduct();
     return () => {
       WebApp.BackButton.offClick(handleBackClick);
     };
-  });
+  }, []);
   const { theme } = useTheme();
-  const { addFavorite, removeFavorite, isFavorite } = useFavorites();
-  const { cartItems, addItem, removeItem } = useCart();
+  // const { addFavorite, removeFavorite, isFavorite } = useFavorites();
+  const { cartItems, addItem, removeItem, isCartOpen, loading, itemQuantity } =
+    useCart();
 
-  const { productId } = params;
-  const products = data.products;
+  // const products = data.products;
 
   if (!productId) {
     return <p>Loading...</p>;
   }
 
-  const product = products.find(
-    (prod) => prod.product_id === parseInt(productId),
-  );
+  // const product = products.find(
+  //   (prod) => prod.product_id === parseInt(productId),
+  // );
 
   if (!product) return <p>Product not found</p>;
 
   // Check if the product is already a favorite
-  const favoriteStatus = isFavorite(product.product_id);
+  // const favoriteStatus = isFavorite(products.product_id ?? 0);
 
   const handleFavoriteToggle = () => {
-    if (favoriteStatus) {
-      removeFavorite(product.product_id);
-    } else {
-      addFavorite(product.product_id);
-    }
+    // if (0) {
+    //   // removeFavorite(product.product_id);
+    // } else {
+    //   // addFavorite(product.product_id);
+    // }
   };
 
   return (
@@ -79,7 +93,7 @@ const Page = ({ params }: ProductProps) => {
         <Image
           onClick={() => router.push('/')}
           src={logo}
-          alt={product.name}
+          alt={'logo'}
           width="100"
           height="100"
           style={{ color: theme.textColor }}
@@ -87,31 +101,31 @@ const Page = ({ params }: ProductProps) => {
         <FaHeart
           onClick={handleFavoriteToggle}
           className={`bg-white w-20 h-10 py-2 px-4 border rounded-3xl ${
-            favoriteStatus ? 'text-sky-500' : 'text-gray-500'
+            product?.isLiked ? 'text-sky-500' : 'text-gray-500'
           } `}
         />
       </div>
 
       <div className="pt-20 p-4 w-full">
         <Image
-          src={product.img}
-          alt={`Image of ${product.name}`}
+          src={product?.img}
+          alt={`Image of ${product?.name}`}
           width="200"
           height="150"
           className="w-full h-[200px] object-cover border rounded-xl"
         />
 
-        <h1 className="text-2xl font-bold">{product.name}</h1>
-        <p className="text-gray-500">Description: {product.description}</p>
-        <p className="text-sky-500">Price: ${product.price}</p>
+        <h1 className="text-2xl font-bold">{product?.name}</h1>
+        <p className="text-gray-500">Description: {product?.description}</p>
+        <p className="text-sky-500">Price: ${product?.price}</p>
         <p className="text-gray-500">
-          Availability: {product.available ? 'In Stock' : 'Out of Stock'}
+          Availability: {product?.available ? 'In Stock' : 'Out of Stock'}
         </p>
         <div className="flex justify-between px-4 py-2 gap-4 bg-sky-500 fixed bottom-20 w-full left-0">
-          <p className="text-white">${product.price}</p>
-          {!cartItems[product.product_id] ? (
+          <p className="text-white">${product?.price}</p>
+          {itemQuantity(product.product_id ?? 0) == 0 ? (
             <span
-              onClick={() => addItem(product.product_id)}
+              onClick={() => addItem(product.product_id ?? 0)}
               className="items-center flex bg-white font-small px-4 text-sky-500 h-8 border rounded-3xl"
             >
               Add to cart <b className="font-bold ml-2">+</b>
@@ -120,15 +134,23 @@ const Page = ({ params }: ProductProps) => {
             <div className="flex gap-2 p-1">
               <FaMinus
                 size={25}
-                onClick={() => removeItem(product.product_id)}
+                onClick={() => removeItem(product.product_id ?? 0)}
                 className="p-1 flex items-center justify-center text-white bg-sky-500 font-bold border rounded-3xl"
               />
+
               <span className="flex items-center justify-center text-sky-500 bg-white font-bold border rounded-3xl w-10 h-6">
-                {cartItems[product.product_id] || 0}
+                {loading[product.product_id ?? 0] ? (
+                  <BeatLoader color="#14eca5" size={8} />
+                ) : !isCartOpen[product.product_id ?? 0] ? (
+                  itemQuantity(product.product_id ?? 0)
+                ) : (
+                  cartItems[product.product_id ?? 0]
+                )}
               </span>
+
               <FaPlus
                 size={25}
-                onClick={() => addItem(product.product_id)}
+                onClick={() => addItem(product.product_id ?? 0)}
                 className="p-1 flex items-center justify-center text-white bg-sky-500 font-bold border rounded-3xl"
               />
             </div>
