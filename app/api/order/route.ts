@@ -102,10 +102,18 @@ export async function GET(request: Request) {
 
       return NextResponse.json({ orders }, { status: 200 });
     } else {
-      return NextResponse.json(
-        { error: 'User ID or Order ID required' },
-        { status: 400 },
-      );
+      // return NextResponse.json(
+      //   { error: 'User ID or Order ID required' },
+      //   { status: 400 },
+      // );
+
+      //fetch all orders
+      const orders = await prisma.order.findMany({
+        include: { orderItems: { include: { product: true } } },
+        orderBy: { createdAt: 'desc' },
+      });
+
+      return NextResponse.json({ orders }, { status: 200 });
     }
   } catch (error) {
     console.error('Error retrieving orders:', error);
