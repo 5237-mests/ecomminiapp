@@ -9,7 +9,6 @@ import {
 import Link from 'next/link';
 import Image from 'next/image';
 import { useCart } from '@/context/CartContext';
-import data from '@/assets/data.json';
 import { useFavorites } from '@/context/FavoriteContext';
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
@@ -46,19 +45,33 @@ const Page = () => {
     loading,
     itemQuantity,
     isCartOpen,
+    userId,
   } = useCart();
   const { isFavorite, addFavorite, removeFavorite } = useFavorites();
-  const products = data.products;
+  // const products = data.products;
   console.log('cartIteemsProducts', cartIteemsProducts.length);
-  // Get only the products that are in the cart
-  const cartProductItems = products.filter(
-    (product) => cartItems[product.product_id],
-  );
 
-  // Calculate total price of the cart
-  const totalPrice = cartProductItems.reduce(
-    (total, product) =>
-      total + product.price * (cartItems[product.product_id] || 0),
+  const createOrder = async () => {
+    const response = await fetch('/api/order', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        userId: userId,
+        deliveryType: 'ontable',
+        pickupAddress: '',
+        deliveryAddress: '',
+      }),
+    });
+    const data = await response.json();
+    console.log('Order created:', data.order.order_id);
+    router.push(`/checkout/${data.order.order_id}`);
+  };
+
+  // const userId = 'cm2w8sjta00009lg4w2152lwo';
+  const totalPrice = cartIteemsProducts.reduce(
+    (quantity, item) => quantity + item.product.price * item.quantity,
     0,
   );
   return (
@@ -150,23 +163,70 @@ const Page = () => {
               </div>
             </div>
           ))}
-          <div className="border-t">
-            <h2 className="font-bold">
-              Unique Products in cart: {cartProductItems.length}
-            </h2>
-            <h2 className="text-2xl font-bold">
-              Total: ${totalPrice.toFixed(2)}
-            </h2>
+
+          {/* // */}
+
+          <div className="relative overflow-x-auto bg-white shadow-lg sm:rounded-lg">
+            <table className="w-full text-sm text-left rtl:text-right text-gray-500 ">
+              <thead className="text-xs text-gray-700 uppercase bg-gray-50 border-b">
+                <tr>
+                  <th
+                    scope="col"
+                    className="py-2 px-4 text-left text-sm font-medium text-gray-500"
+                  >
+                    Product name
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    Qty
+                  </th>
+                  <th>Price per unit</th>
+                  <th scope="col" className="px-6 py-3 rounded-e-lg">
+                    Total
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {cartIteemsProducts.map((item) => (
+                  <tr className="bg-white border-b">
+                    <th
+                      scope="row"
+                      className="py-2 px-4 text-left text-sm font-medium text-gray-500 "
+                    >
+                      {item.product.name}
+                    </th>
+                    <td className="px-6 py-4">{item.quantity}</td>
+                    <td className="px-6 py-4">${item.product.price}</td>
+                    <td>${item.product.price * item.quantity}</td>
+                  </tr>
+                ))}
+              </tbody>
+              <tfoot className="font-semibold text-gray-900 bg-gray-50 w-full">
+                <tr className="font-semibold text-gray-900 bg-gray-50 ">
+                  <th
+                    scope="row"
+                    className="py-2 px-4 text-left text-sm font-medium text-gray-500 "
+                  >
+                    Total
+                  </th>
+                  <td className="px-6 py-3"></td>
+                  <td></td>
+                  <td className="px-6 py-3">${totalPrice}</td>
+                </tr>
+              </tfoot>
+            </table>
           </div>
+
+          {/* // */}
           <div className="flex justify-center">
-            <Link href="/checkout">
-              <button
-                type="button"
-                className="bg-sky-500 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded-3xl"
-              >
-                Proceed to Checkout
-              </button>
-            </Link>
+            {/* <Link href={`/checkout/${userId}`}> */}
+            <button
+              onClick={createOrder}
+              type="button"
+              className="bg-sky-500 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded-3xl"
+            >
+              Proceed to Checkout
+            </button>
+            {/* </Link> */}
           </div>
         </div>
       )}

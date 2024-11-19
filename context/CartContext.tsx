@@ -127,6 +127,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         itemQuantity,
         isCartOpen,
         cartIteemsProducts,
+        userId,
       }}
     >
       {children}

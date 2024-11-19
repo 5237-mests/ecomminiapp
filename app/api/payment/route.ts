@@ -2,7 +2,8 @@ import { NextResponse } from 'next/server';
 import prisma from '@/utils/prisma';
 
 export async function POST(request: Request) {
-  const { orderId, paymentMethod } = await request.json();
+  const { orderId, paymentMethod, first_name, last_name, phone } =
+    await request.json();
 
   if (!orderId || !paymentMethod) {
     return NextResponse.json(
@@ -31,16 +32,16 @@ export async function POST(request: Request) {
       amount: order.total_price,
       currency: 'ETB',
       email: user?.email,
-      first_name: user?.first_name,
-      last_name: user?.last_name,
-      phone_number: user?.phone_number,
+      first_name: first_name || user?.first_name,
+      last_name: last_name || user?.last_name,
+      phone_number: phone || user?.phone_number,
       'customization[title]': 'Payment for my TMA',
       'customization[description]': 'I love online payments',
       'meta[hide_receipt]': 'true',
     };
 
     const chapasecret = process.env.CHAPA_SECRET;
-
+    const csrfToken = request.headers.get('X-CSRF-TOKEN');
     // Assuming you need to send a POST request to the payment gateway
     const response = await fetch(
       'https://api.chapa.co/v1/transaction/initialize',
@@ -49,6 +50,7 @@ export async function POST(request: Request) {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${chapasecret}`,
+          'X-CSRF-TOKEN': csrfToken ?? '',
         },
         body: JSON.stringify(payload),
       },
