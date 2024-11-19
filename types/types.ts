@@ -80,6 +80,7 @@ export interface UseCartReturnType {
   loading: { [key: number]: boolean };
   isCartOpen: { [key: number]: boolean };
   itemQuantity: (productId: number) => number;
+  userId: string | null;
   cartIteemsProducts: {
     product_id: number;
     quantity: number;
